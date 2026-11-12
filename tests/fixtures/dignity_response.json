@@ -1,0 +1,782 @@
+{
+  "schema_version": "1.1",
+  "module_version": "1.1.0",
+  "chart_id": "ARTIFICIAL_EXAMPLE_NOT_A_REAL_HORARY",
+  "source_chart_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "source_chart_hash_verified_by_this_module": false,
+  "sect": "DAY",
+  "dignity_table_profile": "OLESHKO_1999_P55",
+  "profile_sha256": "ac181816f9301e5dc58ac2369724df33d18a301346c73b3948edd57dc4f91da3",
+  "calculation_input_sha256": "2fb1df91c53392725562ee523f1b263ce87554b1c826e0bf050638778e225bcc",
+  "table_is_verified_against_frawley_2014": false,
+  "placements": [
+    {
+      "planet": "Sun",
+      "longitude_deg": 5.0,
+      "sign": "Aries",
+      "degree_in_sign": 5.0,
+      "dignity_owners": {
+        "domicile": "Mars",
+        "exaltation": "Sun",
+        "triplicity": "Sun",
+        "term": "Jupiter",
+        "face": "Mars",
+        "detriment": "Venus",
+        "fall": "Saturn"
+      },
+      "own_essential_dignities": [
+        "exaltation",
+        "triplicity"
+      ],
+      "own_essential_debilities": [],
+      "peregrine": false,
+      "rule_ids": [
+        "DR-001",
+        "DR-002",
+        "DR-003"
+      ]
+    },
+    {
+      "planet": "Moon",
+      "longitude_deg": 45.0,
+      "sign": "Taurus",
+      "degree_in_sign": 15.0,
+      "dignity_owners": {
+        "domicile": "Venus",
+        "exaltation": "Moon",
+        "triplicity": "Venus",
+        "term": "Jupiter",
+        "face": "Moon",
+        "detriment": "Mars",
+        "fall": null
+      },
+      "own_essential_dignities": [
+        "exaltation",
+        "face"
+      ],
+      "own_essential_debilities": [],
+      "peregrine": false,
+      "rule_ids": [
+        "DR-001",
+        "DR-002",
+        "DR-003"
+      ]
+    },
+    {
+      "planet": "Mercury",
+      "longitude_deg": 75.0,
+      "sign": "Gemini",
+      "degree_in_sign": 15.0,
+      "dignity_owners": {
+        "domicile": "Mercury",
+        "exaltation": null,
+        "triplicity": "Saturn",
+        "term": "Venus",
+        "face": "Mars",
+        "detriment": "Jupiter",
+        "fall": null
+      },
+      "own_essential_dignities": [
+        "domicile"
+      ],
+      "own_essential_debilities": [],
+      "peregrine": false,
+      "rule_ids": [
+        "DR-001",
+        "DR-002",
+        "DR-003"
+      ]
+    },
+    {
+      "planet": "Venus",
+      "longitude_deg": 10.0,
+      "sign": "Aries",
+      "degree_in_sign": 10.0,
+      "dignity_owners": {
+        "domicile": "Mars",
+        "exaltation": "Sun",
+        "triplicity": "Sun",
+        "term": "Venus",
+        "face": "Sun",
+        "detriment": "Venus",
+        "fall": "Saturn"
+      },
+      "own_essential_dignities": [
+        "term"
+      ],
+      "own_essential_debilities": [
+        "detriment"
+      ],
+      "peregrine": false,
+      "rule_ids": [
+        "DR-001",
+        "DR-002",
+        "DR-003"
+      ]
+    },
+    {
+      "planet": "Mars",
+      "longitude_deg": 188.0,
+      "sign": "Libra",
+      "degree_in_sign": 8.0,
+      "dignity_owners": {
+        "domicile": "Venus",
+        "exaltation": "Saturn",
+        "triplicity": "Saturn",
+        "term": "Venus",
+        "face": "Moon",
+        "detriment": "Mars",
+        "fall": "Sun"
+      },
+      "own_essential_dignities": [],
+      "own_essential_debilities": [
+        "detriment"
+      ],
+      "peregrine": true,
+      "rule_ids": [
+        "DR-001",
+        "DR-002",
+        "DR-003"
+      ]
+    },
+    {
+      "planet": "Jupiter",
+      "longitude_deg": 105.0,
+      "sign": "Cancer",
+      "degree_in_sign": 15.0,
+      "dignity_owners": {
+        "domicile": "Moon",
+        "exaltation": "Jupiter",
+        "triplicity": "Mars",
+        "term": "Mercury",
+        "face": "Mercury",
+        "detriment": "Saturn",
+        "fall": "Mars"
+      },
+      "own_essential_dignities": [
+        "exaltation"
+      ],
+      "own_essential_debilities": [],
+      "peregrine": false,
+      "rule_ids": [
+        "DR-001",
+        "DR-002",
+        "DR-003"
+      ]
+    },
+    {
+      "planet": "Saturn",
+      "longitude_deg": 315.0,
+      "sign": "Aquarius",
+      "degree_in_sign": 15.0,
+      "dignity_owners": {
+        "domicile": "Saturn",
+        "exaltation": null,
+        "triplicity": "Saturn",
+        "term": "Venus",
+        "face": "Mercury",
+        "detriment": "Sun",
+        "fall": null
+      },
+      "own_essential_dignities": [
+        "domicile",
+        "triplicity"
+      ],
+      "own_essential_debilities": [],
+      "peregrine": false,
+      "rule_ids": [
+        "DR-001",
+        "DR-002",
+        "DR-003"
+      ]
+    }
+  ],
+  "directional_receptions": [
+    {
+      "from_planet": "Sun",
+      "to_planet": "Venus",
+      "dignity_kind": "detriment",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Sun",
+      "to_planet": "Mars",
+      "dignity_kind": "domicile",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Sun",
+      "to_planet": "Mars",
+      "dignity_kind": "face",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Sun",
+      "to_planet": "Jupiter",
+      "dignity_kind": "term",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Sun",
+      "to_planet": "Saturn",
+      "dignity_kind": "fall",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Moon",
+      "to_planet": "Venus",
+      "dignity_kind": "domicile",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Moon",
+      "to_planet": "Venus",
+      "dignity_kind": "triplicity",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Moon",
+      "to_planet": "Mars",
+      "dignity_kind": "detriment",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Moon",
+      "to_planet": "Jupiter",
+      "dignity_kind": "term",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Mercury",
+      "to_planet": "Venus",
+      "dignity_kind": "term",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Mercury",
+      "to_planet": "Mars",
+      "dignity_kind": "face",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Mercury",
+      "to_planet": "Jupiter",
+      "dignity_kind": "detriment",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Mercury",
+      "to_planet": "Saturn",
+      "dignity_kind": "triplicity",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Venus",
+      "to_planet": "Sun",
+      "dignity_kind": "exaltation",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Venus",
+      "to_planet": "Sun",
+      "dignity_kind": "triplicity",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Venus",
+      "to_planet": "Sun",
+      "dignity_kind": "face",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Venus",
+      "to_planet": "Mars",
+      "dignity_kind": "domicile",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Venus",
+      "to_planet": "Saturn",
+      "dignity_kind": "fall",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Mars",
+      "to_planet": "Sun",
+      "dignity_kind": "fall",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Mars",
+      "to_planet": "Moon",
+      "dignity_kind": "face",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Mars",
+      "to_planet": "Venus",
+      "dignity_kind": "domicile",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Mars",
+      "to_planet": "Venus",
+      "dignity_kind": "term",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Mars",
+      "to_planet": "Saturn",
+      "dignity_kind": "exaltation",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Mars",
+      "to_planet": "Saturn",
+      "dignity_kind": "triplicity",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Jupiter",
+      "to_planet": "Moon",
+      "dignity_kind": "domicile",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Jupiter",
+      "to_planet": "Mercury",
+      "dignity_kind": "term",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Jupiter",
+      "to_planet": "Mercury",
+      "dignity_kind": "face",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Jupiter",
+      "to_planet": "Mars",
+      "dignity_kind": "fall",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Jupiter",
+      "to_planet": "Mars",
+      "dignity_kind": "triplicity",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Jupiter",
+      "to_planet": "Saturn",
+      "dignity_kind": "detriment",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Saturn",
+      "to_planet": "Sun",
+      "dignity_kind": "detriment",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Saturn",
+      "to_planet": "Mercury",
+      "dignity_kind": "face",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Saturn",
+      "to_planet": "Venus",
+      "dignity_kind": "term",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    }
+  ],
+  "self_dignities_and_self_debilities": [
+    {
+      "from_planet": "Sun",
+      "to_planet": "Sun",
+      "dignity_kind": "exaltation",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Sun",
+      "to_planet": "Sun",
+      "dignity_kind": "triplicity",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Moon",
+      "to_planet": "Moon",
+      "dignity_kind": "exaltation",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Moon",
+      "to_planet": "Moon",
+      "dignity_kind": "face",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Mercury",
+      "to_planet": "Mercury",
+      "dignity_kind": "domicile",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Venus",
+      "to_planet": "Venus",
+      "dignity_kind": "detriment",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Venus",
+      "to_planet": "Venus",
+      "dignity_kind": "term",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Mars",
+      "to_planet": "Mars",
+      "dignity_kind": "detriment",
+      "polarity": "NEGATIVE",
+      "rule_id": "REC-012"
+    },
+    {
+      "from_planet": "Jupiter",
+      "to_planet": "Jupiter",
+      "dignity_kind": "exaltation",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Saturn",
+      "to_planet": "Saturn",
+      "dignity_kind": "domicile",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    },
+    {
+      "from_planet": "Saturn",
+      "to_planet": "Saturn",
+      "dignity_kind": "triplicity",
+      "polarity": "POSITIVE",
+      "rule_id": "REC-011"
+    }
+  ],
+  "mutual_receptions": [
+    {
+      "planet_a": "Sun",
+      "planet_b": "Venus",
+      "classification": "MUTUAL_MIXED",
+      "a_to_b": [
+        {
+          "from_planet": "Sun",
+          "to_planet": "Venus",
+          "dignity_kind": "detriment",
+          "polarity": "NEGATIVE",
+          "rule_id": "REC-012"
+        }
+      ],
+      "b_to_a": [
+        {
+          "from_planet": "Venus",
+          "to_planet": "Sun",
+          "dignity_kind": "exaltation",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        },
+        {
+          "from_planet": "Venus",
+          "to_planet": "Sun",
+          "dignity_kind": "triplicity",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        },
+        {
+          "from_planet": "Venus",
+          "to_planet": "Sun",
+          "dignity_kind": "face",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "does_not_perfect_event": true,
+      "rule_id": "REC-013"
+    },
+    {
+      "planet_a": "Sun",
+      "planet_b": "Mars",
+      "classification": "MUTUAL_MIXED",
+      "a_to_b": [
+        {
+          "from_planet": "Sun",
+          "to_planet": "Mars",
+          "dignity_kind": "domicile",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        },
+        {
+          "from_planet": "Sun",
+          "to_planet": "Mars",
+          "dignity_kind": "face",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "b_to_a": [
+        {
+          "from_planet": "Mars",
+          "to_planet": "Sun",
+          "dignity_kind": "fall",
+          "polarity": "NEGATIVE",
+          "rule_id": "REC-012"
+        }
+      ],
+      "does_not_perfect_event": true,
+      "rule_id": "REC-013"
+    },
+    {
+      "planet_a": "Sun",
+      "planet_b": "Saturn",
+      "classification": "MUTUAL_NEGATIVE",
+      "a_to_b": [
+        {
+          "from_planet": "Sun",
+          "to_planet": "Saturn",
+          "dignity_kind": "fall",
+          "polarity": "NEGATIVE",
+          "rule_id": "REC-012"
+        }
+      ],
+      "b_to_a": [
+        {
+          "from_planet": "Saturn",
+          "to_planet": "Sun",
+          "dignity_kind": "detriment",
+          "polarity": "NEGATIVE",
+          "rule_id": "REC-012"
+        }
+      ],
+      "does_not_perfect_event": true,
+      "rule_id": "REC-013"
+    },
+    {
+      "planet_a": "Moon",
+      "planet_b": "Mars",
+      "classification": "MUTUAL_MIXED",
+      "a_to_b": [
+        {
+          "from_planet": "Moon",
+          "to_planet": "Mars",
+          "dignity_kind": "detriment",
+          "polarity": "NEGATIVE",
+          "rule_id": "REC-012"
+        }
+      ],
+      "b_to_a": [
+        {
+          "from_planet": "Mars",
+          "to_planet": "Moon",
+          "dignity_kind": "face",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "does_not_perfect_event": true,
+      "rule_id": "REC-013"
+    },
+    {
+      "planet_a": "Moon",
+      "planet_b": "Jupiter",
+      "classification": "MUTUAL_POSITIVE",
+      "a_to_b": [
+        {
+          "from_planet": "Moon",
+          "to_planet": "Jupiter",
+          "dignity_kind": "term",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "b_to_a": [
+        {
+          "from_planet": "Jupiter",
+          "to_planet": "Moon",
+          "dignity_kind": "domicile",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "does_not_perfect_event": true,
+      "rule_id": "REC-013"
+    },
+    {
+      "planet_a": "Mercury",
+      "planet_b": "Jupiter",
+      "classification": "MUTUAL_MIXED",
+      "a_to_b": [
+        {
+          "from_planet": "Mercury",
+          "to_planet": "Jupiter",
+          "dignity_kind": "detriment",
+          "polarity": "NEGATIVE",
+          "rule_id": "REC-012"
+        }
+      ],
+      "b_to_a": [
+        {
+          "from_planet": "Jupiter",
+          "to_planet": "Mercury",
+          "dignity_kind": "term",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        },
+        {
+          "from_planet": "Jupiter",
+          "to_planet": "Mercury",
+          "dignity_kind": "face",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "does_not_perfect_event": true,
+      "rule_id": "REC-013"
+    },
+    {
+      "planet_a": "Mercury",
+      "planet_b": "Saturn",
+      "classification": "MUTUAL_POSITIVE",
+      "a_to_b": [
+        {
+          "from_planet": "Mercury",
+          "to_planet": "Saturn",
+          "dignity_kind": "triplicity",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "b_to_a": [
+        {
+          "from_planet": "Saturn",
+          "to_planet": "Mercury",
+          "dignity_kind": "face",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "does_not_perfect_event": true,
+      "rule_id": "REC-013"
+    },
+    {
+      "planet_a": "Venus",
+      "planet_b": "Mars",
+      "classification": "MUTUAL_POSITIVE",
+      "a_to_b": [
+        {
+          "from_planet": "Venus",
+          "to_planet": "Mars",
+          "dignity_kind": "domicile",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "b_to_a": [
+        {
+          "from_planet": "Mars",
+          "to_planet": "Venus",
+          "dignity_kind": "domicile",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        },
+        {
+          "from_planet": "Mars",
+          "to_planet": "Venus",
+          "dignity_kind": "term",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "does_not_perfect_event": true,
+      "rule_id": "REC-013"
+    },
+    {
+      "planet_a": "Venus",
+      "planet_b": "Saturn",
+      "classification": "MUTUAL_MIXED",
+      "a_to_b": [
+        {
+          "from_planet": "Venus",
+          "to_planet": "Saturn",
+          "dignity_kind": "fall",
+          "polarity": "NEGATIVE",
+          "rule_id": "REC-012"
+        }
+      ],
+      "b_to_a": [
+        {
+          "from_planet": "Saturn",
+          "to_planet": "Venus",
+          "dignity_kind": "term",
+          "polarity": "POSITIVE",
+          "rule_id": "REC-011"
+        }
+      ],
+      "does_not_perfect_event": true,
+      "rule_id": "REC-013"
+    }
+  ],
+  "judgment_status": "NOT_PERFORMED",
+  "warnings": [
+    "INTERPRETATION_REQUIRES_QUESTION_ROLES_AND_PERFECTION",
+    "FRAWLEY_2014_TABLE_RECONCILIATION_PENDING"
+  ],
+  "rule_ids": [
+    "DR-001",
+    "DR-002",
+    "DR-003",
+    "REC-011",
+    "REC-012",
+    "REC-013",
+    "GATE-011"
+  ]
+}
