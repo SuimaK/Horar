@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/horary/v1.0/RuleRecord.schema.json",
+  "title": "RuleRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "rule_id",
+    "title",
+    "statement",
+    "authority",
+    "status",
+    "source_document",
+    "implementation_priority"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "rule_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority": {
+      "enum": [
+        "FRAWLEY_CORE",
+        "FRAWLEY_EARLY_PENDING_2014",
+        "OLESHKO_COMPATIBLE",
+        "PROJECT_CONVENTION",
+        "EXPERT_REVIEW"
+      ]
+    },
+    "status": {
+      "enum": [
+        "ADOPTED",
+        "PROVISIONAL",
+        "EXPERT_REQUIRED",
+        "DISABLED"
+      ]
+    },
+    "source_document": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_locator": {
+      "type": "string"
+    },
+    "implementation_priority": {
+      "enum": [
+        "P0",
+        "P1",
+        "P2"
+      ]
+    },
+    "test_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  }
+}

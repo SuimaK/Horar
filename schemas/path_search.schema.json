@@ -1,0 +1,241 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/horary/v1.0/PathSearchResult.schema.json",
+  "title": "PathSearchResult",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "question_id",
+    "chart_id",
+    "method_profile",
+    "horizon",
+    "searched_channels",
+    "unsearched_channels",
+    "search_coverage",
+    "paths",
+    "source_chart_hash",
+    "search_version"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "question_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "chart_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "method_profile": {
+      "enum": [
+        "frawley_early",
+        "oleshko_comparison"
+      ]
+    },
+    "horizon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start_utc",
+        "end_utc",
+        "basis"
+      ],
+      "properties": {
+        "start_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "end_utc": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "Z$"
+        },
+        "basis": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "searched_channels": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "DIRECT",
+          "TRANSLATION",
+          "COLLECTION",
+          "SPECIAL_TOPIC"
+        ]
+      }
+    },
+    "unsearched_channels": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "DIRECT",
+          "TRANSLATION",
+          "COLLECTION",
+          "SPECIAL_TOPIC"
+        ]
+      }
+    },
+    "search_coverage": {
+      "enum": [
+        "DIRECT_ONLY_FOR_SPECIFIED_PAIR",
+        "PARTIAL",
+        "EXHAUSTIVE_WITHIN_QUESTION_HORIZON",
+        "NOT_EVALUATED"
+      ]
+    },
+    "full_required_scope_implemented": {
+      "type": "boolean"
+    },
+    "paths": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path_id",
+          "channel",
+          "geometry_status",
+          "participants",
+          "contacts",
+          "rule_ids"
+        ],
+        "properties": {
+          "path_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "channel": {
+            "enum": [
+              "DIRECT",
+              "TRANSLATION",
+              "COLLECTION",
+              "SPECIAL_TOPIC"
+            ]
+          },
+          "geometry_status": {
+            "enum": [
+              "DIRECT_GEOMETRY",
+              "GEOMETRIC_TRANSLATION",
+              "GEOMETRIC_COLLECTION",
+              "PAST_CONTACT_FRESHNESS_REVIEW",
+              "SPEED_REVIEW",
+              "INTERRUPTION_REVIEW",
+              "INTERVENING_CONTACT_REVIEW",
+              "SIGN_CHANGE_REVIEW",
+              "STATION_PREVENTED_PROJECTED_CONTACT_IN_WINDOW",
+              "NOT_EVALUATED_GEOMETRY_ONLY"
+            ]
+          },
+          "participants": {
+            "type": "array",
+            "minItems": 2,
+            "items": {
+              "type": "string",
+              "enum": [
+                "Sun",
+                "Moon",
+                "Mercury",
+                "Venus",
+                "Mars",
+                "Jupiter",
+                "Saturn"
+              ]
+            }
+          },
+          "contacts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "contact_utc",
+                "aspect",
+                "planet_a",
+                "planet_b"
+              ],
+              "properties": {
+                "contact_utc": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "Z$"
+                },
+                "aspect": {
+                  "enum": [
+                    "CONJUNCTION",
+                    "SEXTILE",
+                    "SQUARE",
+                    "TRINE",
+                    "OPPOSITION"
+                  ]
+                },
+                "planet_a": {
+                  "type": "string",
+                  "enum": [
+                    "Sun",
+                    "Moon",
+                    "Mercury",
+                    "Venus",
+                    "Mars",
+                    "Jupiter",
+                    "Saturn"
+                  ]
+                },
+                "planet_b": {
+                  "type": "string",
+                  "enum": [
+                    "Sun",
+                    "Moon",
+                    "Mercury",
+                    "Venus",
+                    "Mars",
+                    "Jupiter",
+                    "Saturn"
+                  ]
+                },
+                "sign_change_review": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "rule_ids": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "review_reasons": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "source_chart_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "search_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
