@@ -1,0 +1,314 @@
+{
+  "schema_version": "1.2",
+  "engine_version": "1.2.0",
+  "chart_id": "synthetic_sample_12",
+  "source_chart_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "source_chart_hash_verified_by_this_module": false,
+  "accidental_profile": "FRAWLEY_EARLY_ACCIDENTAL_V1_2_WITH_OLESHKO_SPEED_REFERENCE",
+  "profile_sha256": "a3ed24201888b870ecbe905a263d1e6bce0bfb331253c800832bb5c75eb4cb70",
+  "calculation_input_sha256": "a385e29b183cd76625d4dbb21061101a92758372acd5d17b024bc2b59a606999",
+  "planets": [
+    {
+      "planet": "Sun",
+      "house": 10,
+      "house_class": "STRONG_ANGULAR",
+      "is_in_house_joy": false,
+      "house_joy_number": 9,
+      "motion": {
+        "zodiacal_speed_deg_per_day": 0.985,
+        "direction": "DIRECT",
+        "reference_speed_deg_per_day": 0.9855555555555555,
+        "speed_ratio_abs": 0.999436302,
+        "relative_speed": "NOT_ASSESSED_FOR_SUN",
+        "near_station_not_confirmed": false,
+        "retrograde_context": "NO_RETROGRADE_IMPAIRMENT_INFERRED",
+        "station_confirmed": false,
+        "rule_ids": [
+          "AC-020",
+          "AC-021",
+          "AC-022",
+          "AC-023"
+        ]
+      },
+      "solar": {
+        "state": "NOT_APPLICABLE",
+        "distance_deg": 0,
+        "same_sign": true,
+        "contact_trend": "NOT_APPLICABLE",
+        "qualifiers": [],
+        "rule_ids": [
+          "AC-030"
+        ]
+      },
+      "moon_phase": null,
+      "rule_ids": [
+        "AC-010",
+        "AC-011",
+        "AC-020",
+        "AC-030"
+      ]
+    },
+    {
+      "planet": "Moon",
+      "house": 3,
+      "house_class": "MIDDLE_OR_NEUTRAL",
+      "is_in_house_joy": true,
+      "house_joy_number": 3,
+      "motion": {
+        "zodiacal_speed_deg_per_day": 13.25,
+        "direction": "DIRECT",
+        "reference_speed_deg_per_day": 13.183333333333334,
+        "speed_ratio_abs": 1.00505689,
+        "relative_speed": "NEAR_REFERENCE_SPEED",
+        "near_station_not_confirmed": false,
+        "retrograde_context": "NO_RETROGRADE_IMPAIRMENT_INFERRED",
+        "station_confirmed": false,
+        "rule_ids": [
+          "AC-020",
+          "AC-021",
+          "AC-022",
+          "AC-023"
+        ]
+      },
+      "solar": {
+        "state": "OUTSIDE_BEAMS",
+        "distance_deg": 115.0,
+        "same_sign": false,
+        "contact_trend": "SEPARATING",
+        "qualifiers": [],
+        "rule_ids": [
+          "AC-030",
+          "AC-031",
+          "AC-032"
+        ]
+      },
+      "moon_phase": "WAXING",
+      "rule_ids": [
+        "AC-010",
+        "AC-011",
+        "AC-020",
+        "AC-030"
+      ]
+    },
+    {
+      "planet": "Mercury",
+      "house": 6,
+      "house_class": "WEAK",
+      "is_in_house_joy": false,
+      "house_joy_number": 1,
+      "motion": {
+        "zodiacal_speed_deg_per_day": 1.0,
+        "direction": "DIRECT",
+        "reference_speed_deg_per_day": 1.3833333333333333,
+        "speed_ratio_abs": 0.722891566,
+        "relative_speed": "SLOW_BY_PROJECT_HEURISTIC",
+        "near_station_not_confirmed": false,
+        "retrograde_context": "NO_RETROGRADE_IMPAIRMENT_INFERRED",
+        "station_confirmed": false,
+        "rule_ids": [
+          "AC-020",
+          "AC-021",
+          "AC-022",
+          "AC-023"
+        ]
+      },
+      "solar": {
+        "state": "OUTSIDE_BEAMS",
+        "distance_deg": 34.0,
+        "same_sign": false,
+        "contact_trend": "SEPARATING",
+        "qualifiers": [],
+        "rule_ids": [
+          "AC-030",
+          "AC-031",
+          "AC-032"
+        ]
+      },
+      "moon_phase": null,
+      "rule_ids": [
+        "AC-010",
+        "AC-011",
+        "AC-020",
+        "AC-030"
+      ]
+    },
+    {
+      "planet": "Venus",
+      "house": 7,
+      "house_class": "STRONG_ANGULAR",
+      "is_in_house_joy": false,
+      "house_joy_number": 5,
+      "motion": {
+        "zodiacal_speed_deg_per_day": 1.0,
+        "direction": "DIRECT",
+        "reference_speed_deg_per_day": 1.2,
+        "speed_ratio_abs": 0.833333333,
+        "relative_speed": "NEAR_REFERENCE_SPEED",
+        "near_station_not_confirmed": false,
+        "retrograde_context": "NO_RETROGRADE_IMPAIRMENT_INFERRED",
+        "station_confirmed": false,
+        "rule_ids": [
+          "AC-020",
+          "AC-021",
+          "AC-022",
+          "AC-023"
+        ]
+      },
+      "solar": {
+        "state": "OUTSIDE_BEAMS",
+        "distance_deg": 45.0,
+        "same_sign": false,
+        "contact_trend": "SEPARATING",
+        "qualifiers": [],
+        "rule_ids": [
+          "AC-030",
+          "AC-031",
+          "AC-032"
+        ]
+      },
+      "moon_phase": null,
+      "rule_ids": [
+        "AC-010",
+        "AC-011",
+        "AC-020",
+        "AC-030"
+      ]
+    },
+    {
+      "planet": "Mars",
+      "house": 4,
+      "house_class": "STRONG_ANGULAR",
+      "is_in_house_joy": false,
+      "house_joy_number": 6,
+      "motion": {
+        "zodiacal_speed_deg_per_day": 0.5,
+        "direction": "DIRECT",
+        "reference_speed_deg_per_day": 0.5166666666666667,
+        "speed_ratio_abs": 0.967741935,
+        "relative_speed": "NEAR_REFERENCE_SPEED",
+        "near_station_not_confirmed": false,
+        "retrograde_context": "NO_RETROGRADE_IMPAIRMENT_INFERRED",
+        "station_confirmed": false,
+        "rule_ids": [
+          "AC-020",
+          "AC-021",
+          "AC-022",
+          "AC-023"
+        ]
+      },
+      "solar": {
+        "state": "OUTSIDE_BEAMS",
+        "distance_deg": 175.0,
+        "same_sign": false,
+        "contact_trend": "SEPARATING",
+        "qualifiers": [],
+        "rule_ids": [
+          "AC-030",
+          "AC-031",
+          "AC-032"
+        ]
+      },
+      "moon_phase": null,
+      "rule_ids": [
+        "AC-010",
+        "AC-011",
+        "AC-020",
+        "AC-030"
+      ]
+    },
+    {
+      "planet": "Jupiter",
+      "house": 11,
+      "house_class": "MIDDLE_OR_NEUTRAL",
+      "is_in_house_joy": true,
+      "house_joy_number": 11,
+      "motion": {
+        "zodiacal_speed_deg_per_day": 0.08,
+        "direction": "DIRECT",
+        "reference_speed_deg_per_day": 0.08333333333333333,
+        "speed_ratio_abs": 0.96,
+        "relative_speed": "NEAR_REFERENCE_SPEED",
+        "near_station_not_confirmed": false,
+        "retrograde_context": "NO_RETROGRADE_IMPAIRMENT_INFERRED",
+        "station_confirmed": false,
+        "rule_ids": [
+          "AC-020",
+          "AC-021",
+          "AC-022",
+          "AC-023"
+        ]
+      },
+      "solar": {
+        "state": "OUTSIDE_BEAMS",
+        "distance_deg": 95.0,
+        "same_sign": false,
+        "contact_trend": "SEPARATING",
+        "qualifiers": [],
+        "rule_ids": [
+          "AC-030",
+          "AC-031",
+          "AC-032"
+        ]
+      },
+      "moon_phase": null,
+      "rule_ids": [
+        "AC-010",
+        "AC-011",
+        "AC-020",
+        "AC-030"
+      ]
+    },
+    {
+      "planet": "Saturn",
+      "house": 12,
+      "house_class": "WEAK",
+      "is_in_house_joy": true,
+      "house_joy_number": 12,
+      "motion": {
+        "zodiacal_speed_deg_per_day": 0.025,
+        "direction": "DIRECT",
+        "reference_speed_deg_per_day": 0.03333333333333333,
+        "speed_ratio_abs": 0.75,
+        "relative_speed": "SLOW_BY_PROJECT_HEURISTIC",
+        "near_station_not_confirmed": false,
+        "retrograde_context": "NO_RETROGRADE_IMPAIRMENT_INFERRED",
+        "station_confirmed": false,
+        "rule_ids": [
+          "AC-020",
+          "AC-021",
+          "AC-022",
+          "AC-023"
+        ]
+      },
+      "solar": {
+        "state": "OUTSIDE_BEAMS",
+        "distance_deg": 35.0,
+        "same_sign": false,
+        "contact_trend": "SEPARATING",
+        "qualifiers": [],
+        "rule_ids": [
+          "AC-030",
+          "AC-031",
+          "AC-032"
+        ]
+      },
+      "moon_phase": null,
+      "rule_ids": [
+        "AC-010",
+        "AC-011",
+        "AC-020",
+        "AC-030"
+      ]
+    }
+  ],
+  "judgment_status": "NOT_PERFORMED",
+  "predictive_confidence": null,
+  "warnings": [
+    "Frawley revised 2014 has not been fully source-verified",
+    "Oleshko 1999 p.57 mean speeds are comparisons, not a Frawley profile",
+    "FAST/SLOW thresholds and possible-station band are project heuristics",
+    "Station status cannot be confirmed from a single instant of speed",
+    "No complete accidental score, event perfection or client verdict is produced",
+    "House cusp proximity, besiegement, close aspects, nodes and stars are not assessed"
+  ]
+}

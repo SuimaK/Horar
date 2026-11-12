@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.2",
+  "chart_id": "synthetic_sample_12",
+  "source_chart_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "accidental_profile": "FRAWLEY_EARLY_ACCIDENTAL_V1_2_WITH_OLESHKO_SPEED_REFERENCE",
+  "context": {
+    "return_theme": false
+  },
+  "planets": [
+    {
+      "name": "Sun",
+      "longitude_deg": 15,
+      "house": 10,
+      "speed_deg_per_day": 0.985
+    },
+    {
+      "name": "Moon",
+      "longitude_deg": 130,
+      "house": 3,
+      "speed_deg_per_day": 13.25
+    },
+    {
+      "name": "Mercury",
+      "longitude_deg": 49,
+      "house": 6,
+      "speed_deg_per_day": 1.0
+    },
+    {
+      "name": "Venus",
+      "longitude_deg": 60,
+      "house": 7,
+      "speed_deg_per_day": 1.0
+    },
+    {
+      "name": "Mars",
+      "longitude_deg": 200,
+      "house": 4,
+      "speed_deg_per_day": 0.5
+    },
+    {
+      "name": "Jupiter",
+      "longitude_deg": 280,
+      "house": 11,
+      "speed_deg_per_day": 0.08
+    },
+    {
+      "name": "Saturn",
+      "longitude_deg": 340,
+      "house": 12,
+      "speed_deg_per_day": 0.025
+    }
+  ]
+}

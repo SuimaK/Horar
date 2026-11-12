@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.1",
+  "chart_id": "ARTIFICIAL_EXAMPLE_NOT_A_REAL_HORARY",
+  "source_chart_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "sect": "DAY",
+  "dignity_table_profile": "OLESHKO_1999_P55",
+  "planets": [
+    {"name": "Sun", "longitude_deg": 5.0},
+    {"name": "Moon", "longitude_deg": 45.0},
+    {"name": "Mercury", "longitude_deg": 75.0},
+    {"name": "Venus", "longitude_deg": 10.0},
+    {"name": "Mars", "longitude_deg": 188.0},
+    {"name": "Jupiter", "longitude_deg": 105.0},
+    {"name": "Saturn", "longitude_deg": 315.0}
+  ]
+}
