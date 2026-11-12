@@ -136,8 +136,8 @@ function currentAspects(chart){
   return out.sort((a,b)=>a.orb_deg-b.orb_deg);
 }
 const unwrap=(value,ref)=>ref+mod(value-ref+180)-180;
-export function contactCandidates(astro,jd0,days=30){
-  const STEP=.25,ticks=Array.from({length:Math.round(days/STEP)+1},(_,i)=>i*STEP);
+export function contactCandidates(astro,jd0,days=30,STEP=.125){
+  const ticks=Array.from({length:Math.round(days/STEP)+1},(_,i)=>i*STEP);
   const samples=ticks.map(t=>astro.positions(jd0+t)),contacts=[];
   for(let ia=0;ia<NAMES.length;ia++)for(let ib=ia+1;ib<NAMES.length;ib++){
     const a=NAMES[ia],b=NAMES[ib];let prev=mod(samples[0][b].longitude_deg-samples[0][a].longitude_deg);
@@ -167,6 +167,7 @@ export function contactCandidates(astro,jd0,days=30){
           if(root<=1e-6)continue;
           const pa=astro.position(jd0+root,a),pb=astro.position(jd0+root,b);
           if(!signCompatible(pa.longitude_deg,pb.longitude_deg,aspect))continue;
+          if([pa.longitude_deg,pb.longitude_deg].some(l=>l%30<1e-5||30-l%30<1e-5))continue;
           if(contacts.some(x=>x.a===a&&x.b===b&&x.aspect===aspect&&Math.abs(x.days-root)<.0001))continue;
           let ingress=false,station=false;
           for(let j=0;j<=k;j++)for(const name of [a,b]){
@@ -180,6 +181,14 @@ export function contactCandidates(astro,jd0,days=30){
     }
   }
   return contacts.sort((a,b)=>a.days-b.days);
+}
+export function verifyChartTrace(chart,astro,jd){
+  const h=astro.houses(jd,chart.latitude_deg,chart.longitude_deg),p=astro.positions(jd);
+  const close=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<1e-7;
+  return chart.cusps.length===12&&chart.cusps.every((c,i)=>c.house===i+1&&close(c.longitude_deg,h.cusps[i]))&&
+    chart.planets.length===7&&new Set(chart.planets.map(x=>x.name)).size===7&&chart.planets.every(x=>p[x.name]&&
+      close(x.longitude_deg,p[x.name].longitude_deg)&&close(x.latitude_deg,p[x.name].latitude_deg)&&
+      close(x.speed_deg_per_day,p[x.name].speed_deg_per_day)&&x.house===houseFor(p[x.name].longitude_deg,h.cusps));
 }
 function pathSearch(v,chart,roles,astro,jd){
   const end=iso(v.ms+30*MS_DAY);
@@ -233,6 +242,7 @@ export async function build(data,api,constants,rules){
   const settings={flags:'MOSEPH|SPEED',house_code:'R',observer:'geocentric',longitude_positive:'east',zodiac:'tropical'};
   const hash=await canonicalHash({question_id:v.qid,revision:v.revision,moment_utc:v.moment_utc,latitude_deg:v.lat,longitude_deg:v.lon,coordinate_source:v.coordinate_source,house_system:'REGIOMONTANUS',profile:v.profile,ephemeris:settings});
   const chart={schema_version:'1.0',chart_id:`${v.qid}:r${v.revision}`,question_id:v.qid,moment_utc:v.moment_utc,latitude_deg:v.lat,longitude_deg:v.lon,location_source:v.coordinate_source,house_system:'REGIOMONTANUS',zodiac:'TROPICAL',ephemeris:{library:'Swiss Ephemeris/Moshier WebAssembly',version:String(api.version()),calculation_settings:settings},planets,cusps:cusps.map((x,i)=>({house:i+1,longitude_deg:rnd(x,9)})),data_kind:'REAL_EPHEMERIS',source_chart_hash:hash,calculation_utc:iso(Date.now()),notes:'Moshier в браузере, геоцентрически; экспертные трактовки не рассчитаны.'};
+  if(!verifyChartTrace(chart,astro,jd))throw Error('Повторный расчёт карты не совпал с исходным снимком');
   const ruleHash=await canonicalHash(rules),ids=new Set(rules.rules.map(x=>x.rule_id));
   const roles=rolesFor(v,chart),paths=pathSearch(v,chart,roles,astro,jd),j=judgment(v,chart,roles,paths,ruleHash,ids);
   // Versions 1.1 and 1.2 are *additional evidence*, not amendments of ChartSnapshot 1.0.
@@ -248,7 +258,7 @@ export async function build(data,api,constants,rules){
     ?assembleRoleEvidence(essential,accidental,roles,role_receptions):null;
   const live_gate=liveGate({question_kind:v.intent,roles_locked:roles.roles_locked,
     safety_tier:j.processing_status==='SAFETY_LIMITED'?'HIGH':'STANDARD',
-    trace_recomputed_from_chart:false,all_channels_covered:false,semantic_perfection_review_complete:false});
+    trace_recomputed_from_chart:true,all_channels_covered:false,semantic_perfection_review_complete:false});
   if(essential){
     j.unknowns=j.unknowns.filter(x=>!x.startsWith('Не проверены рецепции, достоинства'));
     j.unknowns.unshift('Эссенциальные достоинства и рецепции рассчитаны как факты v1.1, но их роль в итоговом суждении не проверена.');
@@ -259,6 +269,9 @@ export async function build(data,api,constants,rules){
   j.expert_text+=` Модули 1.1/1.2: достоинства ${essential?'рассчитаны':'ожидают секты'}, акцидентальные факторы рассчитаны; синтез события отсутствует.`;
   return {question:question(v),chart,roles,path_search:paths,judgment:j,current_aspects:currentAspects(chart),
     evidence:{sect_info,essential,accidental,joined,role_receptions,role_assembly,live_gate,
+      numerical_trace:{schema_version:'1.4',trace_recomputed_from_chart:true,source_chart_hash:hash,
+        source_versions:{chart:'1.4',dignity:'1.1',accidental:'1.2',semantic:'1.3'},
+        sampling_hours:3,all_channels_covered:false,can_issue_client_verdict:false,final_prediction:null,timing_prediction:null},
       limits:['Нет проверки совершенствования с учётом всех каналов и препятствий',
         'Версия Фроули 2014 не сверена с таблицами Олешко 1999',
         '88 семантических сценариев не реализованы']},
