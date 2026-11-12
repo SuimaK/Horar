@@ -4,7 +4,8 @@
  */
 import {solarSect, adaptDignityChart, adaptAccidentalChart, calculateDignities, calculateAccidentals, roleReceptionEvidence, mergeEvidence} from './evidence.mjs';
 import {assembleRoleEvidence,liveGate} from './assembly.mjs';
-export const ENGINE = 'horary-browser-2.1.0/moshier-wasm-v11-v12';
+import {contactGate,evaluateContact} from './contact-semantics.mjs';
+export const ENGINE = 'horary-browser-2.2.0/moshier-wasm-v11-v15';
 const NAMES = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn'];
 const LORDS = ['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const TARGETS = [[0,'CONJUNCTION'],[60,'SEXTILE'],[90,'SQUARE'],[120,'TRINE'],[180,'OPPOSITION'],[240,'TRINE'],[270,'SQUARE'],[300,'SEXTILE']];
@@ -58,6 +59,12 @@ export function validate(data){
   if(!['questioner','configured'].includes(data.coordinate_source||'configured'))throw Error('Неверный источник координат');
   if(!Array.isArray(data.house_path)||data.house_path.length>4||data.house_path.some(x=>!Number.isInteger(x)||x<1||x>12))throw Error('Некорректный путь производных домов');
   if(typeof data.roles_locked!=='boolean')throw Error('Подтверждение ролей должно быть логическим');
+  if(data.contact_options!==undefined){
+    const c=data.contact_options;
+    if(data.intent_kind!=='CONTACT'||!c||typeof c!=='object'||Array.isArray(c))throw Error('Настройки контакта допустимы только для типа «Контакт»');
+    if(typeof c.question_kind!=='string'||typeof c.relationship_kind!=='string'||typeof c.approve_l1_l7!=='boolean')throw Error('Неверные параметры сценария контакта');
+    if(!Number.isInteger(c.horizon_days)||c.horizon_days<1||c.horizon_days>30)throw Error('Горизонт поиска контакта — целое число от 1 до 30 суток');
+  }
   if(!Number.isInteger(data.revision)||data.revision<1||data.revision>10000)throw Error('Некорректная ревизия');
   const qid=data.question_id||uuid();
   if(typeof qid!=='string'||qid.length<1||qid.length>100)throw Error('Некорректный идентификатор вопроса');
@@ -190,17 +197,19 @@ export function verifyChartTrace(chart,astro,jd){
       close(x.longitude_deg,p[x.name].longitude_deg)&&close(x.latitude_deg,p[x.name].latitude_deg)&&
       close(x.speed_deg_per_day,p[x.name].speed_deg_per_day)&&x.house===houseFor(p[x.name].longitude_deg,h.cusps));
 }
-function pathSearch(v,chart,roles,astro,jd){
-  const end=iso(v.ms+30*MS_DAY);
+function pathSearch(v,chart,roles,astro,jd,gate){
+  const days=v.input.contact_options?.horizon_days??30;
+  const end=iso(v.ms+days*MS_DAY);
   const p={schema_version:'1.0',question_id:v.qid,chart_id:chart.chart_id,method_profile:v.profile,
-    horizon:{start_utc:v.moment_utc,end_utc:end,basis:'Инженерный горизонт 30 суток; не хорарная шкала сроков'},
+    horizon:{start_utc:v.moment_utc,end_utc:end,basis:`Инженерный горизонт ${days} суток; не хорарная шкала сроков`},
     searched_channels:[],unsearched_channels:['DIRECT','TRANSLATION','COLLECTION','SPECIAL_TOPIC'],search_coverage:'NOT_EVALUATED',full_required_scope_implemented:false,paths:[],source_chart_hash:chart.source_chart_hash,search_version:ENGINE,notes:'Нет полного поиска всех каналов; окончательное NO запрещено.'};
   if(RISK.some(s=>(v.input.raw_text+' '+v.context).toLowerCase().includes(s))){p.notes='Вопрос высокого риска: геометрический поиск отключён.';return p;}
   if(SPECIAL.has(v.intent)){p.notes='Для выбранной темы специализированный алгоритм не принят.';return p;}
+  if(gate&&gate.status!=='READY'){p.notes=gate.reason;return p;}
   if(roles.assignments.length<2||roles.status!=='CONFIRMED')return p;
   const [a,b]=roles.assignments.slice(0,2).map(x=>x.effective_significator);
   if(a===b)return p;
-  const all=contactCandidates(astro,jd);
+  const all=contactCandidates(astro,jd,days);
   p.searched_channels=['DIRECT'];p.unsearched_channels=['TRANSLATION','COLLECTION','SPECIAL_TOPIC'];p.search_coverage='DIRECT_ONLY_FOR_SPECIFIED_PAIR';
   const direct=all.filter(c=>c.a===a&&c.b===b||c.a===b&&c.b===a);
   for(const [i,c] of direct.slice(0,50).entries()){
@@ -229,7 +238,7 @@ function judgment(v,chart,roles,paths,rulesHash,ids){
   for(const [i,p] of paths.paths.slice(0,5).entries()){
     const c=p.contacts[0];key.push(evidence('G-001',`Кандидат на ${c.aspect} ${c.planet_a}–${c.planet_b} ${c.contact_utc} (не итоговое суждение)`,i+3));
   }
-  const unknowns=['Не проверены рецепции, достоинства, помехи и воля участников.','Не реализованы полные каналы передачи и собирания света.','Не проведены 88 семантических приёмочных тестов.'];
+  const unknowns=['Не проверены рецепции, достоинства, помехи и воля участников.','Не реализованы полные каналы передачи и собирания света.','88 условных сценариев v1.3 не удостоверяют итоговое суждение по реальной карте.'];
   if(status==='TOPIC_MODULE_REQUIRED')unknowns.unshift('Отсутствует утверждённый алгоритм выбранной темы.');
   return {schema_version:'1.0',question_id:v.qid,method_profile:v.profile,processing_status:status,judgment_status:'NOT_APPLICABLE',roles_locked:v.roles_locked,event_assessment:why,outcome_quality:'UNKNOWN',benefit_for_querent:'UNKNOWN',timing:null,key_evidence:key,counterevidence:[],conditions:[],unknowns,calculation_version:ENGINE,rule_set_hash:rulesHash,source_chart_hash:chart.source_chart_hash,search_coverage:paths.search_coverage,limitations:['Астрология не является научно подтверждённым методом прогноза.','Выводы YES/NO/TIMING заблокированы до методической приёмки.'],human_review:true,client_text:`${why} Карта и сигнификаторы рассчитаны технически; положительный или отрицательный прогноз не сформирован.`,expert_text:`Профиль: frawley_early. Семь традиционных планет; Региомонтанус; Moshier WASM. Статус ролей: ${roles.status}; прямых кандидатов: ${paths.paths.length}; покрытие: ${paths.search_coverage}. Текущая версия не является принятым смысловым интерпретатором.`};
 }
@@ -244,7 +253,8 @@ export async function build(data,api,constants,rules){
   const chart={schema_version:'1.0',chart_id:`${v.qid}:r${v.revision}`,question_id:v.qid,moment_utc:v.moment_utc,latitude_deg:v.lat,longitude_deg:v.lon,location_source:v.coordinate_source,house_system:'REGIOMONTANUS',zodiac:'TROPICAL',ephemeris:{library:'Swiss Ephemeris/Moshier WebAssembly',version:String(api.version()),calculation_settings:settings},planets,cusps:cusps.map((x,i)=>({house:i+1,longitude_deg:rnd(x,9)})),data_kind:'REAL_EPHEMERIS',source_chart_hash:hash,calculation_utc:iso(Date.now()),notes:'Moshier в браузере, геоцентрически; экспертные трактовки не рассчитаны.'};
   if(!verifyChartTrace(chart,astro,jd))throw Error('Повторный расчёт карты не совпал с исходным снимком');
   const ruleHash=await canonicalHash(rules),ids=new Set(rules.rules.map(x=>x.rule_id));
-  const roles=rolesFor(v,chart),paths=pathSearch(v,chart,roles,astro,jd),j=judgment(v,chart,roles,paths,ruleHash,ids);
+  const roles=rolesFor(v,chart),gate=contactGate(v.input,roles);
+  const paths=pathSearch(v,chart,roles,astro,jd,gate),j=judgment(v,chart,roles,paths,ruleHash,ids);
   // Versions 1.1 and 1.2 are *additional evidence*, not amendments of ChartSnapshot 1.0.
   // The source hash and chart ID must be preserved across both independent modules.
   const sect_info=solarSect(jd,v.lat,v.lon,pos.Sun.longitude_deg,pos.Sun.latitude_deg);
@@ -253,12 +263,21 @@ export async function build(data,api,constants,rules){
   const joined=essential?mergeEvidence(essential,accidental):null;
   // The role/domain binding has strict preconditions; no inference from an unconfirmed role.
   const role_receptions=essential&&roles.roles_locked&&roles.status==='CONFIRMED'
-    ?roleReceptionEvidence(essential,roles,'OTHER'):null;
+    ?roleReceptionEvidence(essential,roles,gate?.status==='READY'?'RELATIONSHIP':'OTHER'):null;
   const role_assembly=role_receptions?.analysis_status==='EVIDENCE_ONLY_NO_VERDICT'
     ?assembleRoleEvidence(essential,accidental,roles,role_receptions):null;
   const live_gate=liveGate({question_kind:v.intent,roles_locked:roles.roles_locked,
     safety_tier:j.processing_status==='SAFETY_LIMITED'?'HIGH':'STANDARD',
     trace_recomputed_from_chart:true,all_channels_covered:false,semantic_perfection_review_complete:false});
+  const contact_evidence=evaluateContact({input:v.input,chart,roles,astro,jd,search:contactCandidates,
+    gate:j.processing_status==='SAFETY_LIMITED'&&gate?{status:'SAFETY_LIMITED',reason:j.event_assessment}:gate});
+  if(contact_evidence){
+    j.processing_status=contact_evidence.status;
+    j.event_assessment=contact_evidence.reason||contact_evidence.text_interpretation;
+    j.client_text=j.event_assessment;
+    j.unknowns=j.unknowns.filter(x=>!x.includes('полные каналы передачи'));
+    j.unknowns.push('Кандидаты передачи и собирания света не прошли смысловую экспертную проверку; промежуточный контакт не равен запрету.');
+  }
   if(essential){
     j.unknowns=j.unknowns.filter(x=>!x.startsWith('Не проверены рецепции, достоинства'));
     j.unknowns.unshift('Эссенциальные достоинства и рецепции рассчитаны как факты v1.1, но их роль в итоговом суждении не проверена.');
@@ -267,13 +286,13 @@ export async function build(data,api,constants,rules){
   }
   j.unknowns.unshift('Акцидентальные факторы v1.2 рассчитаны, но не являются полной оценкой силы сигнификатора.');
   j.expert_text+=` Модули 1.1/1.2: достоинства ${essential?'рассчитаны':'ожидают секты'}, акцидентальные факторы рассчитаны; синтез события отсутствует.`;
-  return {question:question(v),chart,roles,path_search:paths,judgment:j,current_aspects:currentAspects(chart),
+  return {question:question(v),chart,roles,path_search:paths,judgment:j,current_aspects:currentAspects(chart),contact_evidence,
     evidence:{sect_info,essential,accidental,joined,role_receptions,role_assembly,live_gate,
       numerical_trace:{schema_version:'1.4',trace_recomputed_from_chart:true,source_chart_hash:hash,
         source_versions:{chart:'1.4',dignity:'1.1',accidental:'1.2',semantic:'1.3'},
         sampling_hours:3,all_channels_covered:false,can_issue_client_verdict:false,final_prediction:null,timing_prediction:null},
       limits:['Нет проверки совершенствования с учётом всех каналов и препятствий',
         'Версия Фроули 2014 не сверена с таблицами Олешко 1999',
-        '88 семантических сценариев не реализованы']},
+        'Условные сценарии v1.3 не являются численной проверкой итогового прогноза']},
     meta:{location_label:v.location_label,zone_name:v.zone_name,moment_local:v.moment_local,ascendant_deg:rnd(asc,9),mc_deg:rnd(mc,9),rules_hash:ruleHash}};
 }

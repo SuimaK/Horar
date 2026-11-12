@@ -14,3 +14,13 @@
 .method-line{display:flex;gap:8px;align-items:baseline;justify-content:space-between;padding:7px 2px;border-bottom:1px solid #eae2d7;font-size:12px;line-height:1.4}
 .method-line b{flex:0 0 45%;font-weight:600}
 .method-line span{flex:1;text-align:right;color:#635748}
+
+/* Contact scenarios keep the existing iPhone form and archive. */
+[hidden]{display:none!important}
+.contact-options{border:1px solid #d7c9af;background:#faf7ef;border-radius:16px;padding:16px;margin:6px 0 20px}
+.contact-approval{display:flex;gap:10px;align-items:flex-start;font-size:14px;line-height:1.5;margin:8px 0 18px}
+.contact-approval input{flex:0 0 auto;width:20px;height:20px;margin-top:2px;accent-color:#78623e}
+.actor-evidence{padding:10px 0;border-bottom:1px solid #e9e2d6}
+.actor-evidence h4{margin:4px 0}.actor-evidence p{font-size:14px;margin:6px 0}
+.lunar-event{padding:8px 0}.lunar-event p{margin:6px 0}.lunar-sequence{padding-left:22px}
+.lunar-sequence li{margin:12px 0}.method-evidence small{display:block;line-height:1.5;color:#726b60;margin-top:5px}

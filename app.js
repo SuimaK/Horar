@@ -1,3 +1,4 @@
+import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
 'use strict';
 (() => {
   const $ = id => document.getElementById(id);
@@ -46,6 +47,17 @@
     const h=Number($('subjectHouse').value),k=Number($('turnedHouse').value);
     $('derivedNote').textContent=!h?'Предмет вопроса ещё не назначен':(k?`Производный ${k}-й от ${h}-го → радикальный дом ${((h+k-2)%12)+1}`:`Радикальный ${h}-й дом (без производного)`);
   }
+  function syncContactForm(clearApproval=false){
+    const enabled=$('intent').value==='CONTACT';
+    $('contactOptions').hidden=!enabled;
+    const personal=['MEETING_WITH_NAMED_PERSON','CONTACT_WITH_NAMED_PERSON','MESSAGE_FROM_NAMED_PERSON'].includes($('contactKind').value);
+    $('personContactFields').hidden=!personal;
+    $('contactKind').required=enabled;
+    $('contactHorizon').required=enabled;
+    $('contactHorizon').disabled=!enabled;
+    if(clearApproval)$('approveContactRoles').checked=false;
+    $('contactScenarioNote').textContent=!$('contactKind').value?'Сначала выберите сценарий. Сообщение от человека и доставка посылки разбираются по разным правилам.':personal?'Поддерживается только человек без специальной социальной роли при подтверждённом I/VII. Сообщение не назначается автоматически III дому.':'Для этой темы нужен отдельный модуль. Карта сохранится, но поиск контактов по I/VII не запустится.';
+  }
   function getPayload() {
     const local=$('momentLocal').value;
     if(!/^\d{4}-\d\d-\d\dT\d\d:\d\d(:\d\d)?$/.test(local))throw Error('Укажите дату и местное время.');
@@ -72,6 +84,7 @@
       house_path:house?[Number(house),...(derived?[Number(derived)]:[])]:[],roles_locked:$('lockRoles').checked};
     if(!$('latitude').value||!$('longitude').value)throw Error('Введите широту и долготу места построения.');
     if(!Number.isFinite(p.latitude_deg)||!Number.isFinite(p.longitude_deg))throw Error('Координаты должны быть числами.');
+    if(p.intent_kind==='CONTACT')p.contact_options={question_kind:$('contactKind').value,relationship_kind:$('relationshipKind').value,approve_l1_l7:$('approveContactRoles').checked,horizon_days:Number($('contactHorizon').value)};
     return p;
   }
   function recordResult(input,result) {
@@ -172,11 +185,11 @@
     const recHtml=rec?.length?`<div class="method-receptions">${rec.map(x=>`<div class="method-line"><b>${cap(ru[x.from_planet])} → ${cap(ru[x.to_planet])}</b><span>${cap(kindRu[x.dignity_kind]||x.dignity_kind)} · ${x.polarity==='POSITIVE'?'положительная':'отрицательная'}</span></div>`).join('')}</div>`:'<p class="small-note">Направленные рецепции не установлены / секта не определена.</p>';
     const paired=d?.mutual_receptions?.length?`<p class="small-note">Взаимные связи: ${d.mutual_receptions.map(x=>`${cap(ru[x.planet_a])} ↔ ${cap(ru[x.planet_b])} (${x.classification==='MUTUAL_MIXED'?'смешанная':x.classification==='MUTUAL_POSITIVE'?'положительная':'отрицательная'})`).join('; ')}. Не доказывают наступление события.</p>`:'';
     const byActors=e.role_receptions;
-    const roleText=byActors?`<p class="small-note">Рецепции по подтверждённым ролям: ${byActors.reception_evidence_by_actor.length} направлений. Тема: OTHER (без предположений о сюжете вопроса). ${byActors.analysis_status==='NEEDS_EXPERT_REVIEW'?'Есть совпадающие сигнификаторы, необходим эксперт.':'Вывод о намерениях, действиях и событии не сделан.'}</p>`:
+    const roleText=byActors?`<p class="small-note">Рецепции по подтверждённым ролям: ${byActors.reception_evidence_by_actor.length} направлений. Тема: ${r.contact_evidence?.analysis?'контакт с человеком':'общие свидетельства'}. ${byActors.analysis_status==='NEEDS_EXPERT_REVIEW'?'Есть совпадающие сигнификаторы, необходим эксперт.':'Вывод о намерениях, действиях и событии не сделан.'}</p>`:
       '<p class="small-note">Для связи рецепций с участниками необходимо подтвердить и заблокировать роли.</p>';
     const acc=e.accidental?.planets||[];
     const accTable=`<div class="method-table-wrap"><table class="method-table"><thead><tr><th>Планета</th><th>Дом, движение</th><th>Солнце</th></tr></thead><tbody>${acc.map(p=>`<tr><td>${cap(ru[p.planet])}<small>${p.is_in_house_joy?'Радость в доме '+p.house_joy_number:''}</small></td><td>Дом ${p.house} · ${cap(houseRu[p.house_class])}<small>${cap(motionRu[p.motion.direction])} · ${cap(speedRu[p.motion.relative_speed])}</small></td><td>${cap(stateRu[p.solar.state])}<small>${p.planet==='Sun'?'':p.solar.distance_deg.toFixed(2)+'° до Солнца'}${p.moon_phase?' · '+cap({WAXING:'Луна растёт',WANING:'Луна убывает',NEW_MOON_BOUNDARY:'Новолуние',FULL_MOON_BOUNDARY:'Полнолуние'}[p.moon_phase]):''}</small></td></tr>`).join('')}</tbody></table></div>`;
-    return `<div class="section-mini">МЕТОДИКА · версии 1.1 и 1.2</div><p class="small-note">Секта: <b>${sector}</b> (геометрическая высота Солнца ${Number(e.sect_info?.solar_altitude_deg).toFixed(2)}°). Источник достоинств: Олешко, 1999, с. 55; акцидентальных правил: ранний Фроули и отдельный справочник скоростей Олешко, с. 57. Исправленное издание Фроули 2014 не сверено.</p><details class="method-evidence" open><summary>Эссенциальные достоинства · v1.1</summary>${essentialTable}<h4>Направленные рецепции</h4>${recHtml}${paired}${roleText}</details><details class="method-evidence" open><summary>Акцидентальные факторы · v1.2</summary>${accTable}<p class="small-note">«Быстрее/медленнее» — проектные пороги, не количественные правила Фроули. По мгновенной скорости станция не подтверждается. Близость к куспидам, осада, звёзды и влияние контекста не анализируются.</p></details><p class="inline-note">Обе группы свидетельств — сведения традиционной астрологической модели, не предсказание и не факт поведения людей. Баллы и автоматическое «да/нет» не рассчитываются.</p>`;
+    return `<div class="section-mini">МЕТОДИКА · версии 1.1 и 1.2</div><p class="small-note">Секта: <b>${sector}</b> (геометрическая высота Солнца ${Number(e.sect_info?.solar_altitude_deg).toFixed(2)}°). Источник достоинств: Олешко, 1999, с. 55; акцидентальных правил: ранний Фроули и отдельный справочник скоростей Олешко, с. 57. Исправленное издание Фроули 2014 не сверено.</p><details class="method-evidence" open><summary>Эссенциальные достоинства · v1.1</summary>${essentialTable}<h4>Направленные рецепции</h4>${recHtml}${paired}${roleText}</details>${renderAssembly(e.role_assembly,esc)}<details class="method-evidence" open><summary>Акцидентальные факторы · v1.2</summary>${accTable}<p class="small-note">«Быстрее/медленнее» — проектные пороги, не количественные правила Фроули. По мгновенной скорости станция не подтверждается. Близость к куспидам, осада, звёзды и влияние контекста не анализируются.</p></details><p class="inline-note">Обе группы свидетельств — сведения традиционной астрологической модели, не предсказание и не факт поведения людей. Баллы и автоматическое «да/нет» не рассчитываются.</p>`;
   }
   function renderInterpretation(){
     if(!active)return;
@@ -185,7 +198,7 @@
     const paths=ps.paths.length?ps.paths.map(x=>{const c=x.contacts[0];return `<div class="path-item"><span class="pill">${esc(statusHints[x.geometry_status]||x.geometry_status)}</span><p><b>${esc(ru[c.planet_a])} ${aspectGlyph[c.aspect]} ${esc(ru[c.planet_b])}</b><span> · ${esc(aspectRu[c.aspect])}</span></p><small>${esc(dateRU(c.contact_utc))} · канал DIRECT</small>${(x.review_reasons||[]).length?`<p>${x.review_reasons.map(esc).join('; ')}</p>`:''}</div>`}).join(''):'<div class="info-box">Подтверждённые будущие прямые аспекты основной пары в установленном горизонте не обнаружены или поиск не запущен. Это не означает «нет».</div>';
     const unknown=j.unknowns.map(v=>`<li>${esc(v)}</li>`).join('');
     const roleReasons=roles.review_reasons.length?`<div class="info-box"><b>Нужно проверить роли:</b><ul class="unknown-list">${roles.review_reasons.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:'';
-    $('interpretationContent').innerHTML=`<div class="page-top"><div><div class="sub">ДОКАЗАТЕЛЬНЫЙ РАЗБОР</div><h2>Протокол суждения</h2></div><button type="button" class="mini-action" data-action="download-record">↓ JSON</button></div><p class="question-title">${esc(p.raw_text)}</p><div class="status-band ${j.processing_status==='SAFETY_LIMITED'?'risk':''}"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="section-mini">Клиентская формулировка</div><p class="interpret-lead">${esc(j.client_text)}</p><div class="two-cols"><div class="metric"><label>Возможность события</label><strong style="font-size:16px">Не установлена</strong><small>${esc(j.judgment_status)}</small></div><div class="metric"><label>Оценка результата</label><strong style="font-size:16px">Не определена</strong><small>Расчётные признаки ≠ итоговое суждение</small></div></div><div class="section-mini">Пути совершенствования</div><div class="small-note">Горизонт: 30 суток. Проверен только будущий точный прямой контакт выбранных сигнификаторов. Передача / собирание света и специализированные пути не исследованы.</div><div class="path-list">${paths}</div>${roleReasons}${renderMethodEvidence(r)}<div class="section-mini">Экспертные свидетельства</div><div class="evidence-list">${evidence}</div><div class="section-mini">Неизвестное / ограничения</div><ul class="unknown-list">${unknown}</ul><div class="info-box">${esc(j.expert_text)}</div><p class="small-note">Хэш исходных данных: <span style="overflow-wrap:anywhere">${esc(r.chart.source_chart_hash)}</span><br>Версия: ${esc(j.calculation_version)}<br>Профиль: ${esc(j.method_profile)}</p><div class="action-row"><button type="button" class="secondary-button" data-tab="chart">← К карте</button><button type="button" class="secondary-button" data-action="download-record">Сохранить разбор</button></div>`;
+    $('interpretationContent').innerHTML=`<div class="page-top"><div><div class="sub">ДОКАЗАТЕЛЬНЫЙ РАЗБОР</div><h2>Протокол суждения</h2></div><button type="button" class="mini-action" data-action="download-record">↓ JSON</button></div><p class="question-title">${esc(p.raw_text)}</p><div class="status-band ${j.processing_status==='SAFETY_LIMITED'?'risk':''}"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="section-mini">Клиентская формулировка</div><p class="interpret-lead">${esc(j.client_text)}</p><div class="two-cols"><div class="metric"><label>Возможность события</label><strong style="font-size:16px">Не установлена</strong><small>${esc(j.judgment_status)}</small></div><div class="metric"><label>Оценка результата</label><strong style="font-size:16px">Не определена</strong><small>Расчётные признаки ≠ итоговое суждение</small></div></div>${r.contact_evidence?renderContactEvidence(r.contact_evidence,r.chart.moment_utc,esc,dateRU):`<div class="section-mini">Пути совершенствования</div><div class="small-note">Горизонт: 30 суток. Проверены прямые контакты выбранных сигнификаторов. Для лунной последовательности и косвенных кандидатов выберите тип «Контакт / встреча» и поддерживаемый сценарий.</div><div class="path-list">${paths}</div>`}${roleReasons}${renderMethodEvidence(r)}<div class="section-mini">Экспертные свидетельства</div><div class="evidence-list">${evidence}</div><div class="section-mini">Неизвестное / ограничения</div><ul class="unknown-list">${unknown}</ul><div class="info-box">${esc(j.expert_text)}</div><p class="small-note">Хэш исходных данных: <span style="overflow-wrap:anywhere">${esc(r.chart.source_chart_hash)}</span><br>Версия: ${esc(j.calculation_version)}<br>Профиль: ${esc(j.method_profile)}</p><div class="action-row"><button type="button" class="secondary-button" data-tab="chart">← К карте</button><button type="button" class="secondary-button" data-action="download-record">Сохранить разбор</button></div>`;
   }
   function renderAll(){renderChart();renderInterpretation();drawArchive()}
 
@@ -219,6 +232,11 @@
     $('subjectHouse').value=input.house_path?.[0]||'';
     $('turnedHouse').value=input.house_path?.[1]||'';
     $('lockRoles').checked=input.roles_locked;
+    $('contactKind').value=input.contact_options?.question_kind||'';
+    $('relationshipKind').value=input.contact_options?.relationship_kind||'';
+    $('approveContactRoles').checked=input.contact_options?.approve_l1_l7===true;
+    $('contactHorizon').value=input.contact_options?.horizon_days??14;
+    syncContactForm();
     if(!$('revisionMessage')){
       const el=document.createElement('div');el.id='revisionMessage';el.className='revision-lock';
       $('questionText').closest('.field').insertAdjacentElement('afterend',el);
@@ -231,7 +249,7 @@
     revisionSource=null;$('questionForm').reset();$('questionText').readOnly=false;
     $('latitude').dataset.source='configured';$('longitude').dataset.source='configured';
     $('revisionMessage')?.remove();$('buildBtn').querySelector('span').textContent='Построить хорарную карту';
-    defaultTime();updateDerived();hideToast();go('question');
+    defaultTime();updateDerived();syncContactForm();hideToast();go('question');
   }
   function downloadJson(obj,filename){
     const blob=new Blob([JSON.stringify(obj,null,2)],{type:'application/json;charset=utf-8'});
@@ -291,6 +309,10 @@
   document.addEventListener('click',delegation);
   document.addEventListener('change',e=>{if(e.target.id==='importFile'&&e.target.files[0])importAll(e.target.files[0])});
   ['latitude','longitude'].forEach(id=>$(id).addEventListener('input',()=>{$(id).dataset.source='configured';}));
+  $('intent').addEventListener('change',()=>syncContactForm(true));
+  $('contactKind').addEventListener('change',()=>syncContactForm(true));
+  $('relationshipKind').addEventListener('change',()=>syncContactForm(true));
+  ['subjectHouse','turnedHouse','relay','ownerId','speakerId'].forEach(id=>$(id).addEventListener('change',()=>{$('approveContactRoles').checked=false;}));
   $('subjectHouse').addEventListener('change',updateDerived);
   $('turnedHouse').addEventListener('change',updateDerived);
   $('questionForm').addEventListener('submit',createChart);
@@ -311,5 +333,5 @@
   $('newQuestionBtn').addEventListener('click',newQuestion);
   $('resetBtn').addEventListener('click',newQuestion);
   if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register(new URL('sw.js', document.baseURI).href, {scope:'./'}).catch(()=>{}));
-  defaultTime();updateDerived();drawArchive();
+  defaultTime();updateDerived();syncContactForm();drawArchive();
 })();
