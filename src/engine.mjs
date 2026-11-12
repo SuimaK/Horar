@@ -5,13 +5,13 @@
 import {solarSect, adaptDignityChart, adaptAccidentalChart, calculateDignities, calculateAccidentals, roleReceptionEvidence, mergeEvidence} from './evidence.mjs';
 import {assembleRoleEvidence,liveGate} from './assembly.mjs';
 import {contactGate,evaluateContact} from './contact-semantics.mjs';
-export const ENGINE = 'horary-browser-2.2.0/moshier-wasm-v11-v15';
+import {questionScope,SENSITIVE_TOPICS} from './question-scope.mjs';
+export const ENGINE = 'horary-browser-2.2.1/moshier-wasm-v11-v15';
 const NAMES = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn'];
 const LORDS = ['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const TARGETS = [[0,'CONJUNCTION'],[60,'SEXTILE'],[90,'SQUARE'],[120,'TRINE'],[180,'OPPOSITION'],[240,'TRINE'],[270,'SQUARE'],[300,'SEXTILE']];
 const SPECIAL = new Set(['RETURN','RECOVERY','LOCATION']);
 const INTENTS = new Set(['EVENT','CONTACT','PRESERVATION','STATUS','QUALITY','COMPARISON','TIMING','RETURN','RECOVERY','LOCATION','PAST_FACT']);
-const RISK = ['суицид','самоубийств','убью себя','покончить с собой','террористическ','когда умрет','выживет ли','умрет ли','пропал ребенок','пропала девочка','пропал мальчик'];
 const MS_DAY = 86400000;
 const iso = ms => new Date(ms).toISOString().slice(0,19)+'Z';
 const mod = n => (n%360+360)%360;
@@ -38,20 +38,22 @@ export function validate(data){
   if(!data||typeof data!=='object'||Array.isArray(data))throw Error('Ожидается объект вопроса');
   requireStr(data,'raw_text',4000);
   if(typeof (data.context??'')!=='string'||(data.context??'').length>8000)throw Error('Контекст слишком длинный');
-  const dt=data.moment_local;
-  if(typeof dt!=='string'||dt.length>40||!/^\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d)?[+-](?:0\d|1[0-4]):[0-5]\d$/.test(dt))throw Error('Укажите дату и местное время с UTC-смещением');
+  const dt=data.moment_local??data.moment_utc;
+  if(typeof dt!=='string'||dt.length>40||!/^\d{4}-\d\d-\d\dT\d\d:\d\d(?::\d\d)?(?:Z|[+-](?:0\d|1[0-4]):[0-5]\d)$/.test(dt))throw Error('Укажите дату и время с UTC-смещением или Z');
   const year=Number(dt.slice(0,4));
   if(year<1800||year>2399)throw Error('Поддерживаются годы 1800–2399');
   const ms=Date.parse(dt);
   if(!Number.isFinite(ms))throw Error('Некорректные дата или смещение');
-  const off=dt.slice(-6),signOff=off[0]==='-'?-1:1;
+  const off=dt.endsWith('Z')?'+00:00':dt.slice(-6),signOff=off[0]==='-'?-1:1;
   const minutes=signOff*(Number(off.slice(1,3))*60+Number(off.slice(4)));
   if(Math.abs(minutes)>14*60)throw Error('Некорректное смещение UTC');
-  const localPart=dt.slice(0,-6).length===16?dt.slice(0,-6)+':00':dt.slice(0,-6);
+  const bare=dt.slice(0,dt.endsWith('Z')?-1:-6);
+  const localPart=bare.length===16?bare+':00':bare;
   const roundTrip=new Date(ms+minutes*60000).toISOString().slice(0,19);
   if(roundTrip!==localPart)throw Error('Несуществующая календарная дата или время');
-  const lat=Number(data.latitude_deg),lon=Number(data.longitude_deg);
-  if(data.latitude_deg===null||data.longitude_deg===null||!Number.isFinite(lat)||!Number.isFinite(lon)||Math.abs(lat)>89||Math.abs(lon)>180)throw Error('Введите широту −89…89 и долготу −180…180');
+  if(data.moment_utc!==undefined&&(typeof data.moment_utc!=='string'||!data.moment_utc.endsWith('Z')||Date.parse(data.moment_utc)!==ms))throw Error('UTC-время не совпадает с местным моментом');
+  const lat=data.latitude_deg,lon=data.longitude_deg;
+  if(typeof lat!=='number'||typeof lon!=='number'||!Number.isFinite(lat)||!Number.isFinite(lon)||Math.abs(lat)>89||Math.abs(lon)>180)throw Error('Введите широту −89…89 и долготу −180…180 конечными числами');
   if(data.house_system!=='REGIOMONTANUS')throw Error('Поддерживается только система Региомонтануса');
   if(data.method_profile!=='frawley_early')throw Error('Недоступный методический профиль');
   if(!INTENTS.has(data.intent_kind||'EVENT'))throw Error('Неизвестный тип вопроса');
@@ -59,6 +61,9 @@ export function validate(data){
   if(!['questioner','configured'].includes(data.coordinate_source||'configured'))throw Error('Неверный источник координат');
   if(!Array.isArray(data.house_path)||data.house_path.length>4||data.house_path.some(x=>!Number.isInteger(x)||x<1||x>12))throw Error('Некорректный путь производных домов');
   if(typeof data.roles_locked!=='boolean')throw Error('Подтверждение ролей должно быть логическим');
+  if(data.question_provenance!==undefined&&!['USER_CONFIRMED_MOMENT','DEMONSTRATION_NOT_ACTUAL_QUESTION','DOCUMENTED_ASTROLOGER_MOMENT'].includes(data.question_provenance))throw Error('Неизвестное происхождение вопроса');
+  if(data.sensitive_topic!==undefined&&!SENSITIVE_TOPICS.includes(data.sensitive_topic))throw Error('Неизвестная чувствительная тема');
+  if(data.safety_tier!==undefined&&!['STANDARD','HIGH'].includes(data.safety_tier))throw Error('Неизвестный уровень ограничений вопроса');
   if(data.contact_options!==undefined){
     const c=data.contact_options;
     if(data.intent_kind!=='CONTACT'||!c||typeof c!=='object'||Array.isArray(c))throw Error('Настройки контакта допустимы только для типа «Контакт»');
@@ -72,7 +77,7 @@ export function validate(data){
   if([owner,speaker].some(x=>typeof x!=='string'||!x.trim()||x.length>80))throw Error('Псевдонимы участников не могут быть пустыми');
   const recorded=data.recorded_at_utc||iso(Date.now());
   if(!Number.isFinite(Date.parse(recorded))||!/(Z|[+-]\d\d:\d\d)$/.test(recorded))throw Error('Некорректное время фиксации');
-  return {input:data,qid,year,lat,lon,ms,moment_utc:iso(ms),moment_local:localPart+off,recorded:iso(Date.parse(recorded)),owner:owner.trim(),speaker:speaker.trim(),intent:data.intent_kind||'EVENT',relay:data.relay_mode||'direct',profile:'frawley_early',revision:data.revision,house_path:data.house_path,roles_locked:data.roles_locked,coordinate_source:data.coordinate_source||'configured',location_label:String(data.location_label??'').slice(0,120),zone_name:String(data.zone_name??'').slice(0,120),context:data.context||''};
+  return {input:data,qid,year,lat,lon,ms,moment_utc:iso(ms),moment_local:localPart+off,recorded:iso(Date.parse(recorded)),owner:owner.trim(),speaker:speaker.trim(),intent:data.intent_kind||'EVENT',relay:data.relay_mode||'direct',profile:'frawley_early',revision:data.revision,house_path:data.house_path,roles_locked:data.roles_locked,coordinate_source:data.coordinate_source||'configured',location_label:String(data.location_label??'').slice(0,120),zone_name:String(data.zone_name??'').slice(0,120),context:data.context||'',provenance:data.question_provenance||'USER_CONFIRMED_MOMENT'};
 }
 const houseFor = (lon,cusps) => {
   for(let i=0;i<12;i++){
@@ -113,7 +118,7 @@ function question(v){
     recorded_at_utc:v.recorded,question_owner_id:v.owner,relay_mode:v.relay,
     intent:{kind:v.intent,classification_status:'CONFIRMED',notes:'Тип выбран пользователем; семантическая классификация не выполнена'},
     actors,chart_time_policy:'user_confirmed_convention',moment_utc:v.moment_utc,
-    location_source:v.coordinate_source,roles_locked:v.roles_locked,method_profile:v.profile,context:v.context};
+    location_source:v.coordinate_source,roles_locked:v.roles_locked,method_profile:v.profile,context:v.context,question_provenance:v.provenance};
 }
 function rolesFor(v,chart){
   const cusps=chart.cusps.map(x=>x.longitude_deg),l1=lord(cusps[0]);
@@ -203,7 +208,7 @@ function pathSearch(v,chart,roles,astro,jd,gate){
   const p={schema_version:'1.0',question_id:v.qid,chart_id:chart.chart_id,method_profile:v.profile,
     horizon:{start_utc:v.moment_utc,end_utc:end,basis:`Инженерный горизонт ${days} суток; не хорарная шкала сроков`},
     searched_channels:[],unsearched_channels:['DIRECT','TRANSLATION','COLLECTION','SPECIAL_TOPIC'],search_coverage:'NOT_EVALUATED',full_required_scope_implemented:false,paths:[],source_chart_hash:chart.source_chart_hash,search_version:ENGINE,notes:'Нет полного поиска всех каналов; окончательное NO запрещено.'};
-  if(RISK.some(s=>(v.input.raw_text+' '+v.context).toLowerCase().includes(s))){p.notes='Вопрос высокого риска: геометрический поиск отключён.';return p;}
+  if(questionScope(v.input).limited){p.notes='Вопрос чувствительной темы: событийный поиск отключён.';return p;}
   if(SPECIAL.has(v.intent)){p.notes='Для выбранной темы специализированный алгоритм не принят.';return p;}
   if(gate&&gate.status!=='READY'){p.notes=gate.reason;return p;}
   if(roles.assignments.length<2||roles.status!=='CONFIRMED')return p;
@@ -220,8 +225,8 @@ function pathSearch(v,chart,roles,astro,jd,gate){
   return p;
 }
 function judgment(v,chart,roles,paths,rulesHash,ids){
-  const unsafe=RISK.some(s=>(v.input.raw_text+' '+v.context).toLowerCase().includes(s));let status,why;
-  if(unsafe){status='SAFETY_LIMITED';why='Вопрос может касаться угрозы жизни или безопасности: не используйте хорар вместо экстренной помощи.';}
+  const scope=questionScope(v.input);let status,why;
+  if(scope.limited){status='SAFETY_LIMITED';why=scope.reason;}
   else if(SPECIAL.has(v.intent)){status='TOPIC_MODULE_REQUIRED';why='Для поиска, местонахождения или возвращения требуется отдельный методический модуль.';}
   else if(!v.house_path.length||!v.roles_locked){status='NEEDS_CLARIFICATION';why='Выберите дом предмета вопроса и подтвердите назначение ролей.';}
   else if(roles.status!=='CONFIRMED'){status='NEEDS_EXPERT_REVIEW';why='Роли или посредничество требуют экспертного разрешения.';}
@@ -294,5 +299,5 @@ export async function build(data,api,constants,rules){
       limits:['Нет проверки совершенствования с учётом всех каналов и препятствий',
         'Версия Фроули 2014 не сверена с таблицами Олешко 1999',
         'Условные сценарии v1.3 не являются численной проверкой итогового прогноза']},
-    meta:{location_label:v.location_label,zone_name:v.zone_name,moment_local:v.moment_local,ascendant_deg:rnd(asc,9),mc_deg:rnd(mc,9),rules_hash:ruleHash}};
+    meta:{location_label:v.location_label,zone_name:v.zone_name,moment_local:v.moment_local,question_provenance:v.provenance,question_scope:questionScope(v.input),ascendant_deg:rnd(asc,9),mc_deg:rnd(mc,9),rules_hash:ruleHash}};
 }

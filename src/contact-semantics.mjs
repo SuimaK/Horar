@@ -153,8 +153,10 @@ export function analyzeContacts({astro,jd,a,b,past,future,ingress,stations=[],ho
 
 export function evaluateContact({input,chart,roles,astro,jd,search,gate}){
   if(!gate)return null;
-  const base={schema_version:'1.5',question_kind:input.contact_options?.question_kind||null,
-    question_classification:gate.classification||null,status:gate.status,reason:gate.reason||null,
+  const kind=input.contact_options?.question_kind;
+  const base={schema_version:'1.5',question_kind:PERSON_TOPICS.includes(kind)||Object.hasOwn(OUTSIDE,kind)?kind:null,
+    question_provenance:input.question_provenance||'USER_CONFIRMED_MOMENT',
+    question_classification:gate.classification||{branch:'UNASSIGNED',primary_houses:[],ordinary_radical_third_used:false,message_delivery_house_assigned:false,rule_ids:['CT-101']},status:gate.status,reason:gate.reason||null,
     can_issue_client_verdict:false,final_prediction:null,timing_prediction:null,analysis:null,data_kind:'NO_ASTRONOMICAL_EVALUATION'};
   if(gate.status!=='READY')return base;
   const days=input.contact_options.horizon_days??14;

@@ -1,4 +1,5 @@
 import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
+import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
 'use strict';
 (() => {
   const $ = id => document.getElementById(id);
@@ -19,9 +20,11 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
   let records = readRecords();
   let active = null;
   let revisionSource = null;
+  let archiveBusy = false;
+  let calculating = false;
 
   function readRecords() {
-    try {const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(x)?x:[]}catch{return []}
+    try {const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(x)?x.filter(g=>g&&typeof g.question_id==='string'&&Array.isArray(g.revisions)).map(g=>({...g,revisions:g.revisions.filter(r=>r&&r.input&&typeof r.input.raw_text==='string')})):[]}catch{return []}
   }
   function persist() {
     try {localStorage.setItem(STORAGE_KEY,JSON.stringify(records));return true}
@@ -74,7 +77,7 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
     if(src && raw!==src.raw_text)throw Error('Исходный вопрос нельзя изменять в новой ревизии. Создайте новый вопрос.');
     const p={question_id:src?.question_id||uuid(), revision:(src?.revision||0)+1,
       recorded_at_utc:src?.recorded_at_utc||new Date().toISOString().replace(/\.\d\d\dZ$/,'Z'),
-      raw_text:raw,context:$('questionContext').value,
+      raw_text:raw,context:$('questionContext').value,question_provenance:$('questionProvenance').value,sensitive_topic:$('sensitiveTopic').value,
       question_owner_id:$('ownerId').value.trim()||'я', speaker_id:$('speakerId').value.trim()||'я',
       intent_kind:$('intent').value,relay_mode:$('relay').value,
       moment_local:timeWithOffset,zone_name:$('zoneName').value.trim(),location_label:$('placeLabel').value.trim(),
@@ -99,10 +102,11 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
   }
   async function createChart(ev) {
     ev.preventDefault();hideToast();
+    if(archiveBusy||calculating){toast('Дождитесь завершения текущей проверки или расчёта.');return;}
     let payload;
     try{payload=getPayload()}catch(e){toast(e.message);return}
     const btn=$('buildBtn'),old=btn.innerHTML;
-    btn.disabled=true;btn.innerHTML='<span>Выполняется точный расчёт…</span><span class="button-arrow">◷</span>';
+    calculating=true;btn.disabled=true;btn.innerHTML='<span>Выполняется точный расчёт…</span><span class="button-arrow">◷</span>';
     try{
       // No HTTP API or background upload: compute exclusively on the device.
       await new Promise(resolve=>requestAnimationFrame(()=>setTimeout(resolve,0)));
@@ -111,7 +115,7 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
       if(!data?.chart?.source_chart_hash||!data?.judgment?.processing_status)throw Error('Неполный результат локального расчёта.');
       recordResult(payload,data);newQuestion();renderAll();go('chart');
     }catch(e){toast(e?.message||'Локальный расчёт не выполнен; сохранённые карты доступны в архиве.')}
-    finally{btn.disabled=false;btn.innerHTML=old}
+    finally{calculating=false;btn.disabled=false;btn.innerHTML=old}
   }
 
   function svgWheel(r) {
@@ -165,7 +169,7 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
     const desc=roles.map(a=>`<div class="metric"><label>${a.role_kind==='QUERENT'?'Кверент · I дом':`Предмет · ${a.radical_house} дом`}</label><strong>${glyph[a.base_lord]} ${esc(ru[a.base_lord])}</strong><small>${a.role_kind==='QUERENT'?'L1':'Управитель куспида'}</small></div>`).join('');
     const planets=chart.planets.map(p=>`<div class="planet-item"><span class="planet-name"><span class="planet-symbol">${glyph[p.name]}</span> ${esc(ru[p.name])}${p.speed_deg_per_day<0?'<sup class="mini-r">R</sup>':''}</span><span class="planet-position">${deg(p.longitude_deg)}<small>${p.house} дом · ${p.speed_deg_per_day.toFixed(3)}°/сут.</small></span></div>`).join('');
     const aspects=(r.current_aspects||[]).length?r.current_aspects.slice(0,15).map(a=>`<div class="aspect-item"><strong>${esc(ru[a.planet_a])} <span class="aspect-glyph">${aspectGlyph[a.aspect]}</span> ${esc(ru[a.planet_b])}</strong><small>${Number(a.orb_deg).toFixed(2)}° · ${a.motion==='APPLYING'?'сходящийся':'расходящийся'}${a.sign_compatible?'':' · вне знаковой связи'}</small></div>`).join(''):'<p class="small-note">В пределах 6° орбиса мажорные аспекты не найдены.</p>';
-    $('chartContent').innerHTML=`<div class="page-top"><div><div class="sub">КАРТА · РЕВИЗИЯ ${p.revision}</div><h2>Хорарный круг</h2></div><button type="button" class="mini-action" data-action="revise">↻ Ревизия</button></div><p class="question-title">${esc(p.raw_text)}</p><div class="meta-row"><span class="tag">${esc(intentRu[p.intent_kind])}</span><span class="tag">Региомонтанус</span><span class="tag">7 планет</span></div><div class="chart-card">${svgWheel(r)}<div class="chart-legend"><span><i class="legend-dot"></i> Границы домов</span><span>R — ретроградность</span></div></div><p class="inline-note">${esc(p.location_label||'Указанные координаты')} · ${esc(dateRU(chart.moment_utc))} · ${esc(p.moment_local.slice(-6))} местное смещение</p><div class="status-band"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="compact-head"><h3>Сигнификаторы</h3><small>${r.roles.status==='CONFIRMED'?'Роли подтверждены':'Требуют уточнения'}</small></div><div class="two-cols">${desc}</div><div class="compact-head"><h3>Планеты</h3><small>Тропический зодиак</small></div><div class="planet-list">${planets}</div><div class="compact-head"><h3>Аспекты в карте</h3><small>Орбис ≤ 6°</small></div><div>${aspects}</div><div class="action-row"><button type="button" class="secondary-button" data-tab="interpretation">Смотреть разбор →</button><button type="button" class="secondary-button" data-action="download-record">Экспорт JSON</button></div><p class="small-note">Положения планет и куспидов технически рассчитаны; показанные линии и аспекты не являются готовым астрологическим суждением.</p>`;
+    $('chartContent').innerHTML=`<div class="page-top"><div><div class="sub">КАРТА · РЕВИЗИЯ ${p.revision}</div><h2>Хорарный круг</h2></div><button type="button" class="mini-action" data-action="revise">↻ Ревизия</button></div><p class="question-title">${esc(p.raw_text)}</p>${r.question.question_provenance==='DEMONSTRATION_NOT_ACTUAL_QUESTION'?'<p class="info-box">Учебный пример — не реальный хорарный вопрос.</p>':''}<div class="meta-row"><span class="tag">${esc(intentRu[p.intent_kind])}</span><span class="tag">Региомонтанус</span><span class="tag">7 планет</span></div><div class="chart-card">${svgWheel(r)}<div class="chart-legend"><span><i class="legend-dot"></i> Границы домов</span><span>R — ретроградность</span></div></div><p class="inline-note">${esc(p.location_label||'Указанные координаты')} · ${esc(dateRU(chart.moment_utc))} · ${esc(p.moment_local.slice(-6))} местное смещение</p><div class="status-band"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="compact-head"><h3>Сигнификаторы</h3><small>${r.roles.status==='CONFIRMED'?'Роли подтверждены':'Требуют уточнения'}</small></div><div class="two-cols">${desc}</div><div class="compact-head"><h3>Планеты</h3><small>Тропический зодиак</small></div><div class="planet-list">${planets}</div><div class="compact-head"><h3>Аспекты в карте</h3><small>Орбис ≤ 6°</small></div><div>${aspects}</div><div class="action-row"><button type="button" class="secondary-button" data-tab="interpretation">Смотреть разбор →</button><button type="button" class="secondary-button" data-action="download-record">Экспорт JSON</button></div><p class="small-note">Положения планет и куспидов технически рассчитаны; показанные линии и аспекты не являются готовым астрологическим суждением.</p>`;
   }
   function renderMethodEvidence(r){
     const e=r.evidence;
@@ -206,10 +210,10 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
     const count=records.reduce((total,g)=>total+(g.revisions?.length||0),0);
     const items=records.flatMap(g=>(g.revisions||[]).map(x=>x)).sort((a,b)=>new Date(b.saved_at)-new Date(a.saved_at));
     const html=items.map(item=>{
-      const {input, result}=item;
-      return `<div class="archive-item"><div class="date">${esc(dateRU(result.chart.moment_utc))} · R${input.revision}</div><h3>${esc(input.raw_text)}</h3><div class="bottom"><span>${esc(input.location_label||'Без названия города')} · ${esc(intentRu[input.intent_kind])}</span><button type="button" data-action="open" data-id="${esc(input.question_id)}" data-revision="${input.revision}">Открыть →</button></div></div>`;
+      const {input}=item;
+      return `<div class="archive-item"><div class="date">${esc(dateRU(input.moment_local||input.moment_utc))} · R${input.revision}</div><h3>${esc(input.raw_text)}</h3><div class="bottom"><span>${esc(input.location_label||'Без названия города')} · ${esc(intentRu[input.intent_kind])}</span><button type="button" data-action="open" data-id="${esc(input.question_id)}" data-revision="${input.revision}">Открыть →</button></div></div>`;
     }).join('');
-    $('archiveContent').innerHTML=`<div class="page-top"><div><div class="sub">ВАША БИБЛИОТЕКА</div><h2>Архив хораров</h2></div><span class="version-tag">${count} записей</span></div><p class="small-note">Все карты хранятся только на этом устройстве. При очистке данных Safari они могут исчезнуть — делайте резервные копии.</p><div class="archive-controls"><button type="button" class="secondary-button" data-action="export-all">↓ Экспорт архива</button><button type="button" class="secondary-button" data-action="import-all">↑ Импорт архива</button></div><input type="file" id="importFile" accept="application/json,.json" class="file-upload"><div>${html||'<div class="empty-screen"><div class="empty-icon">▤</div><h2>Архив пока пуст</h2><p>Первая построенная карта автоматически появится здесь.</p></div>'}</div>`;
+    $('archiveContent').innerHTML=`<div class="page-top"><div><div class="sub">ВАША БИБЛИОТЕКА</div><h2>Архив хораров</h2></div><span class="version-tag">${count} записей</span></div><p class="small-note">Все карты хранятся только на этом устройстве. При очистке данных Safari они могут исчезнуть — делайте резервные копии.</p><div class="archive-controls"><button type="button" class="secondary-button" data-action="export-all">↓ Экспорт архива</button><button type="button" class="secondary-button" data-action="import-all">↑ Импорт архива</button></div><p class="small-note" id="archiveProgress" role="status" aria-live="polite">При открытии и импорте карта сверяется повторным расчётом. Текст разбора формируется заново.</p><input type="file" id="importFile" accept="application/json,.json" class="file-upload"><div>${html||'<div class="empty-screen"><div class="empty-icon">▤</div><h2>Архив пока пуст</h2><p>Первая построенная карта автоматически появится здесь.</p></div>'}</div>`;
   }
   function revise(){
     if(!active)return;
@@ -218,11 +222,14 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
     $('questionText').value=input.raw_text;
     $('questionText').readOnly=true;
     $('questionContext').value=input.context;
+    $('questionProvenance').value=input.question_provenance||'USER_CONFIRMED_MOMENT';
+    $('sensitiveTopic').value=input.sensitive_topic||'STANDARD';
     $('intent').value=input.intent_kind;
     $('ownerId').value=input.question_owner_id||'я';$('speakerId').value=input.speaker_id||'я';
     $('relay').value=input.relay_mode;
-    $('momentLocal').value=input.moment_local.slice(0,19);
-    $('offset').value=input.moment_local.slice(-6);
+    const local=active.result.meta.moment_local;
+    $('momentLocal').value=local.slice(0,19);
+    $('offset').value=local.slice(-6);
     $('zoneName').value=input.zone_name;
     $('placeLabel').value=input.location_label;
     $('latitude').value=input.latitude_deg;
@@ -256,41 +263,50 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
     const link=document.createElement('a');const url=URL.createObjectURL(blob);
     link.href=url;link.download=filename;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
   }
+  function archiveState(busy){
+    archiveBusy=busy;
+    $('buildBtn').disabled=busy;
+    document.querySelectorAll('#archiveContent button').forEach(b=>{b.disabled=busy;});
+    if($('archiveProgress'))$('archiveProgress').textContent=busy?'Проверяем архив и пересчитываем карты…':'При открытии и импорте карта сверяется повторным расчётом. Текст разбора формируется заново.';
+  }
+  async function calculateArchiveInput(input){
+    if(typeof window.horaryBuild!=='function')throw Error('Не загружен локальный модуль проверки карты. Обновите страницу.');
+    await new Promise(resolve=>setTimeout(resolve,0));
+    return window.horaryBuild(input);
+  }
   async function importAll(file){
-    if(!file||file.size>15*1024*1024){alert('Выберите JSON-архив не более 15 МБ.');return}
+    if(archiveBusy||calculating)return;
+    if(!file||file.size>15*1024*1024){alert('Выберите JSON-архив не более 15 МБ.');return;}
+    archiveState(true);
     try{
-      const src=JSON.parse(await file.text());
-      if(src?.format!=='horary-iphone-archive-v1'||!Array.isArray(src.records))throw Error('Неизвестный формат архива.');
-      let added=0, duplicates=0;
-      const draft=JSON.parse(JSON.stringify(records)); // atomically commit only a fully checked archive
-      if(src.records.length>5000)throw Error('Слишком много групп вопросов в архиве.');
-      for(const group of src.records){
-        if(typeof group?.question_id!=='string'||group.question_id.length>100||
-           !Array.isArray(group.revisions)||group.revisions.length>1000)throw Error('Повреждена группа записей.');
-        let target=draft.find(x=>x.question_id===group.question_id);
-        if(!target){target={question_id:group.question_id,revisions:[]};draft.push(target)}
-        for(const item of group.revisions){
-          const hash=item?.result?.chart?.source_chart_hash;
-          if(item?.input?.question_id!==group.question_id||!Number.isInteger(item?.input?.revision)||
-             item?.result?.question?.question_id!==group.question_id||
-             item?.result?.question?.raw_text!==item?.input?.raw_text||
-             item?.result?.question?.revision!==item?.input?.revision||
-             item?.result?.chart?.question_id!==group.question_id||
-             !/^[a-f0-9]{64}$/.test(hash||'')||
-             item?.result?.judgment?.source_chart_hash!==hash||
-             typeof item?.result?.judgment?.processing_status!=='string')throw Error('Повреждена ревизия архива.');
-          const existing=target.revisions.find(x=>x.input.revision===item.input.revision);
-          if(existing){
-            if(existing.result.chart.source_chart_hash!==hash)throw Error(`Конфликт: вопрос ${group.question_id} / ревизия ${item.input.revision} содержит другую карту.`);
-            duplicates++;
-          }else{
-            target.revisions.push(item);added++;
-          }
-        }
-      }
-      records=draft;
-      persist();drawArchive();alert(`Импорт завершён. Добавлено: ${added}; совпадающих ревизий пропущено: ${duplicates}.`);
-    }catch(e){alert(`Ошибка импорта: ${e.message}`)}
+      const source=JSON.parse(await file.text());
+      const checked=await verifyArchive(source,records,calculateArchiveInput);
+      // Commit only a fully checked archive, including successful persistence.
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(checked.records));
+      records=checked.records;drawArchive();
+      alert(`Импорт завершён. Добавлено: ${checked.added}; совпадающих ревизий проверено: ${checked.duplicates}. Все разборы сформированы заново.`);
+    }catch(e){alert(`Ошибка импорта: ${e.message}`);}
+    finally{archiveState(false);}
+  }
+  async function openStored(group,item){
+    if(archiveBusy||calculating)return;
+    archiveState(true);
+    try{
+      const checked=await verifyArchiveRecord(item,calculateArchiveInput);
+      const index=group.revisions.indexOf(item);
+      group.revisions[index]=checked;persist();
+      active=checked;renderAll();go('chart');
+    }catch(e){alert(`Карта не прошла проверку: ${e.message}`);}
+    finally{archiveState(false);}
+  }
+  async function exportAll(){
+    if(archiveBusy||calculating)return;
+    archiveState(true);
+    try{
+      const checked=await verifyArchive({format:'horary-iphone-archive-v1',records},[],calculateArchiveInput);
+      downloadJson({format:'horary-iphone-archive-v1',exported_at:new Date().toISOString(),records:checked.records},'horary-backup.json');
+    }catch(e){alert(`Ошибка экспорта: ${e.message}`);}
+    finally{archiveState(false);}
   }
   function delegation(event){
     const t=event.target.closest('button');if(!t)return;
@@ -301,9 +317,9 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
     if(a==='open'){
       const group=records.find(x=>x.question_id===t.dataset.id);
       const item=group?.revisions?.find(x=>x.input.revision===Number(t.dataset.revision));
-      if(item){active=item;renderAll();go('chart')}
+      if(item)openStored(group,item);
     }
-    if(a==='export-all')downloadJson({format:'horary-iphone-archive-v1',exported_at:new Date().toISOString(),records},'horary-backup.json');
+    if(a==='export-all')exportAll();
     if(a==='import-all')$('importFile')?.click();
   }
   document.addEventListener('click',delegation);

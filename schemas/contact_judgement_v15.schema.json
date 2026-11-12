@@ -1,30 +1,224 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/horary/contact_judgement_v15.schema.json",
-  "title": "Conservative horary contact evidence v1.5",
+  "title": "Horary contact evidence v1.5 — browser gates, revision 2.2.1",
   "type": "object",
-  "required": ["schema_version","question_kind","question_classification","status","can_issue_client_verdict","final_prediction","timing_prediction","analysis","data_kind"],
+  "required": [
+    "schema_version",
+    "question_kind",
+    "question_classification",
+    "status",
+    "can_issue_client_verdict",
+    "final_prediction",
+    "timing_prediction",
+    "analysis",
+    "data_kind"
+  ],
   "properties": {
-    "schema_version": {"const":"1.5"},
-    "question_kind": {"enum":["MEETING_WITH_NAMED_PERSON","CONTACT_WITH_NAMED_PERSON","MESSAGE_FROM_NAMED_PERSON","PHYSICAL_LETTER_OR_PARCEL","DID_THEY_RECEIVE_MY_LETTER","VISITOR_ARRIVAL_AT_HOME"]},
-    "status": {"enum":["NEEDS_EXPERT_REVIEW","TOPIC_MODULE_REQUIRED"]},
-    "can_issue_client_verdict": {"const":false},
-    "final_prediction": {"type":"null"},
-    "timing_prediction": {"type":"null"},
-    "question_classification": {"type":"object","required":["branch","rule_ids","ordinary_radical_third_used","message_delivery_house_assigned"]},
-    "data_kind":{"enum":["REAL_EPHEMERIS","NO_ASTRONOMICAL_EVALUATION"]},
-    "analysis":{"type":["object","null"]},
-    "source_chart_hash":{"type":"string","pattern":"^[a-f0-9]{64}$"},
-    "source_chart_verified":{"const":true},
-    "text_interpretation":{"type":"string"},
-    "source_coverage":{"type":"object"}
+    "schema_version": {
+      "const": "1.5"
+    },
+    "question_kind": {
+      "enum": [
+        "MEETING_WITH_NAMED_PERSON",
+        "CONTACT_WITH_NAMED_PERSON",
+        "MESSAGE_FROM_NAMED_PERSON",
+        "PHYSICAL_LETTER_OR_PARCEL",
+        "DID_THEY_RECEIVE_MY_LETTER",
+        "VISITOR_ARRIVAL_AT_HOME",
+        null
+      ]
+    },
+    "status": {
+      "enum": [
+        "NEEDS_EXPERT_REVIEW",
+        "TOPIC_MODULE_REQUIRED",
+        "NEEDS_CLARIFICATION",
+        "SAFETY_LIMITED"
+      ]
+    },
+    "can_issue_client_verdict": {
+      "const": false
+    },
+    "final_prediction": {
+      "type": "null"
+    },
+    "timing_prediction": {
+      "type": "null"
+    },
+    "question_classification": {
+      "type": "object",
+      "required": [
+        "branch",
+        "rule_ids",
+        "ordinary_radical_third_used",
+        "message_delivery_house_assigned"
+      ],
+      "properties": {
+        "branch": {
+          "type": "string"
+        },
+        "primary_houses": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          }
+        },
+        "rule_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ordinary_radical_third_used": {
+          "type": "boolean"
+        },
+        "message_delivery_house_assigned": {
+          "type": "boolean"
+        }
+      }
+    },
+    "data_kind": {
+      "enum": [
+        "REAL_EPHEMERIS",
+        "NO_ASTRONOMICAL_EVALUATION"
+      ]
+    },
+    "analysis": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "source_chart_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "source_chart_verified": {
+      "const": true
+    },
+    "text_interpretation": {
+      "type": "string"
+    },
+    "source_coverage": {
+      "type": "object"
+    },
+    "question_provenance": {
+      "enum": [
+        "USER_CONFIRMED_MOMENT",
+        "DEMONSTRATION_NOT_ACTUAL_QUESTION",
+        "DOCUMENTED_ASTROLOGER_MOMENT"
+      ]
+    },
+    "reason": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
   },
-  "allOf": [{
-    "if":{"properties":{"status":{"const":"NEEDS_EXPERT_REVIEW"}}},
-    "then":{"required":["source_chart_hash","source_chart_verified","source_coverage","text_interpretation"],
-            "properties":{"data_kind":{"const":"REAL_EPHEMERIS"},"analysis":{"type":"object"}}}
-  },{
-    "if":{"properties":{"status":{"const":"TOPIC_MODULE_REQUIRED"}}},
-    "then":{"properties":{"data_kind":{"const":"NO_ASTRONOMICAL_EVALUATION"},"analysis":{"type":"null"}}}
-  }]
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "data_kind": {
+            "const": "REAL_EPHEMERIS"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "source_chart_hash",
+          "source_chart_verified",
+          "source_coverage",
+          "text_interpretation"
+        ],
+        "properties": {
+          "question_kind": {
+            "enum": [
+              "MEETING_WITH_NAMED_PERSON",
+              "CONTACT_WITH_NAMED_PERSON",
+              "MESSAGE_FROM_NAMED_PERSON"
+            ]
+          },
+          "status": {
+            "const": "NEEDS_EXPERT_REVIEW"
+          },
+          "analysis": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "data_kind": {
+            "const": "NO_ASTRONOMICAL_EVALUATION"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "reason"
+        ],
+        "properties": {
+          "analysis": {
+            "type": "null"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "status": {
+            "enum": [
+              "NEEDS_EXPERT_REVIEW",
+              "TOPIC_MODULE_REQUIRED",
+              "NEEDS_CLARIFICATION",
+              "SAFETY_LIMITED"
+            ]
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "source_chart_hash"
+              ]
+            },
+            {
+              "required": [
+                "source_chart_verified"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "TOPIC_MODULE_REQUIRED",
+              "NEEDS_CLARIFICATION",
+              "SAFETY_LIMITED"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "data_kind": {
+            "const": "NO_ASTRONOMICAL_EVALUATION"
+          },
+          "analysis": {
+            "type": "null"
+          }
+        }
+      }
+    }
+  ]
 }

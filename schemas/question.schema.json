@@ -143,6 +143,13 @@
         "frawley_early",
         "oleshko_comparison"
       ]
+    },
+    "question_provenance": {
+      "enum": [
+        "USER_CONFIRMED_MOMENT",
+        "DEMONSTRATION_NOT_ACTUAL_QUESTION",
+        "DOCUMENTED_ASTROLOGER_MOMENT"
+      ]
     }
   }
 }
