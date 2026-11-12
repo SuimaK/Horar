@@ -3,6 +3,7 @@
  * Protocol shape intentionally remains compatible with server MVP 1.0.
  */
 import {solarSect, adaptDignityChart, adaptAccidentalChart, calculateDignities, calculateAccidentals, roleReceptionEvidence, mergeEvidence} from './evidence.mjs';
+import {assembleRoleEvidence,liveGate} from './assembly.mjs';
 export const ENGINE = 'horary-browser-2.1.0/moshier-wasm-v11-v12';
 const NAMES = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn'];
 const LORDS = ['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
@@ -243,6 +244,11 @@ export async function build(data,api,constants,rules){
   // The role/domain binding has strict preconditions; no inference from an unconfirmed role.
   const role_receptions=essential&&roles.roles_locked&&roles.status==='CONFIRMED'
     ?roleReceptionEvidence(essential,roles,'OTHER'):null;
+  const role_assembly=role_receptions?.analysis_status==='EVIDENCE_ONLY_NO_VERDICT'
+    ?assembleRoleEvidence(essential,accidental,roles,role_receptions):null;
+  const live_gate=liveGate({question_kind:v.intent,roles_locked:roles.roles_locked,
+    safety_tier:j.processing_status==='SAFETY_LIMITED'?'HIGH':'STANDARD',
+    trace_recomputed_from_chart:false,all_channels_covered:false,semantic_perfection_review_complete:false});
   if(essential){
     j.unknowns=j.unknowns.filter(x=>!x.startsWith('Не проверены рецепции, достоинства'));
     j.unknowns.unshift('Эссенциальные достоинства и рецепции рассчитаны как факты v1.1, но их роль в итоговом суждении не проверена.');
@@ -252,7 +258,7 @@ export async function build(data,api,constants,rules){
   j.unknowns.unshift('Акцидентальные факторы v1.2 рассчитаны, но не являются полной оценкой силы сигнификатора.');
   j.expert_text+=` Модули 1.1/1.2: достоинства ${essential?'рассчитаны':'ожидают секты'}, акцидентальные факторы рассчитаны; синтез события отсутствует.`;
   return {question:question(v),chart,roles,path_search:paths,judgment:j,current_aspects:currentAspects(chart),
-    evidence:{sect_info,essential,accidental,joined,role_receptions,
+    evidence:{sect_info,essential,accidental,joined,role_receptions,role_assembly,live_gate,
       limits:['Нет проверки совершенствования с учётом всех каналов и препятствий',
         'Версия Фроули 2014 не сверена с таблицами Олешко 1999',
         '88 семантических сценариев не реализованы']},
