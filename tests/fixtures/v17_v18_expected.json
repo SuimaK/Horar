@@ -1,0 +1,2412 @@
+{
+  "1_7": [
+    {
+      "id": "RT17-001",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "READY_FOR_V16_EVIDENCE_ONLY",
+        "reason_codes": [
+          "LOCKED_INTENT_AND_ROLES"
+        ],
+        "legacy_v16_request": {
+          "chart_id": "DEMO_LONDON_2025_NOT_REAL_QUESTION",
+          "question_id": "RT-2026-001",
+          "question_kind": "MESSAGE_FROM_NAMED_PERSON",
+          "question_provenance": "DEMONSTRATION_NOT_ACTUAL_QUESTION",
+          "relationship_kind": "UNRELATED_NAMED_PERSON",
+          "approve_l1_l7": true,
+          "moment_utc": "2025-01-20T12:00:00Z",
+          "latitude_deg": 51.5074,
+          "longitude_deg": -0.1278,
+          "location_source": "configured",
+          "house_system": "REGIOMONTANUS",
+          "horizon_days": 14
+        },
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-002",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "READY_FOR_V16_EVIDENCE_ONLY",
+        "reason_codes": [
+          "LOCKED_INTENT_AND_ROLES"
+        ],
+        "legacy_v16_request": {
+          "chart_id": "DEMO_LONDON_2025_NOT_REAL_QUESTION",
+          "question_id": "RT-2026-001",
+          "question_kind": "MEETING_WITH_NAMED_PERSON",
+          "question_provenance": "DEMONSTRATION_NOT_ACTUAL_QUESTION",
+          "relationship_kind": "UNRELATED_NAMED_PERSON",
+          "approve_l1_l7": true,
+          "moment_utc": "2025-01-20T12:00:00Z",
+          "latitude_deg": 51.5074,
+          "longitude_deg": -0.1278,
+          "location_source": "configured",
+          "house_system": "REGIOMONTANUS",
+          "horizon_days": 14
+        },
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-003",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "READY_FOR_V16_EVIDENCE_ONLY",
+        "reason_codes": [
+          "LOCKED_INTENT_AND_ROLES"
+        ],
+        "legacy_v16_request": {
+          "chart_id": "DEMO_LONDON_2025_NOT_REAL_QUESTION",
+          "question_id": "RT-2026-001",
+          "question_kind": "CONTACT_WITH_NAMED_PERSON",
+          "question_provenance": "DEMONSTRATION_NOT_ACTUAL_QUESTION",
+          "relationship_kind": "UNRELATED_NAMED_PERSON",
+          "approve_l1_l7": true,
+          "moment_utc": "2025-01-20T12:00:00Z",
+          "latitude_deg": 51.5074,
+          "longitude_deg": -0.1278,
+          "location_source": "configured",
+          "house_system": "REGIOMONTANUS",
+          "horizon_days": 14
+        },
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-004",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "REPLY_TO_SENT_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "TOPIC_MODULE_REQUIRED",
+        "reason_codes": [
+          "SCENARIO_NOT_IMPLEMENTED_V16"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-005",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "CONTACT_RESUMPTION",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "TOPIC_MODULE_REQUIRED",
+        "reason_codes": [
+          "SCENARIO_NOT_IMPLEMENTED_V16"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-006",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "RECONCILIATION",
+        "event_predicate": "RELATIONSHIP_RESUMED",
+        "status": "TOPIC_MODULE_REQUIRED",
+        "reason_codes": [
+          "SCENARIO_NOT_IMPLEMENTED_V16"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-007",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "RETURN_TO_SHARED_HOME",
+        "event_predicate": "PHYSICAL_ARRIVAL",
+        "status": "TOPIC_MODULE_REQUIRED",
+        "reason_codes": [
+          "SCENARIO_NOT_IMPLEMENTED_V16"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-008",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "RETURN_TO_RELATIONSHIP",
+        "event_predicate": "RELATIONSHIP_RESUMED",
+        "status": "TOPIC_MODULE_REQUIRED",
+        "reason_codes": [
+          "SCENARIO_NOT_IMPLEMENTED_V16"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-009",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "VISITOR_ARRIVAL",
+        "event_predicate": "PHYSICAL_ARRIVAL",
+        "status": "TOPIC_MODULE_REQUIRED",
+        "reason_codes": [
+          "SCENARIO_NOT_IMPLEMENTED_V16"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-010",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "DELIVERY_OF_ITEM",
+        "event_predicate": "DELIVERY_RECEIVED",
+        "status": "TOPIC_MODULE_REQUIRED",
+        "reason_codes": [
+          "SCENARIO_NOT_IMPLEMENTED_V16"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-011",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "LOST_OR_MISSING_PERSON",
+        "event_predicate": "PHYSICAL_ARRIVAL",
+        "status": "OUTSIDE_AUTOMATION_SCOPE",
+        "reason_codes": [
+          "MISSING_PERSON_SAFETY_ESCALATION"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-012",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-013",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-014",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-015",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-016",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-017",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-018",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-019",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-020",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-021",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-022",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-023",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-024",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-025",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-026",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-027",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-028",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-029",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-030",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-031",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-032",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-033",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-034",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-035",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-036",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-037",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-038",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-039",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-040",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-041",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "RELATIONSHIP_HOUSE_ASSIGNMENT_NOT_APPROVED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-042",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "UNKNOWN",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "EVENT_PREDICATE_NOT_DEFINED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-043",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "UNKNOWN",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "EVENT_PREDICATE_NOT_DEFINED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-044",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "UNKNOWN",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "EVENT_PREDICATE_NOT_DEFINED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-045",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "PHYSICAL_ARRIVAL",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "EVENT_PREDICATE_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-046",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "PHYSICAL_ARRIVAL",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "EVENT_PREDICATE_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-047",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "PHYSICAL_ARRIVAL",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "EVENT_PREDICATE_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-048",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "L1_L7_ASSIGNMENT_NOT_LOCKED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-049",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "L1_L7_ASSIGNMENT_NOT_LOCKED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-050",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "L1_L7_ASSIGNMENT_NOT_LOCKED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-051",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "CHART_INPUT_REQUIRED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-052",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "CHART_INPUT_REQUIRED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-053",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "CHART_INPUT_REQUIRED"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-054",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "LEGACY_QUESTION_KIND_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-055",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "LEGACY_QUESTION_KIND_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-056",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "LEGACY_QUESTION_KIND_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-057",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "LEGACY_ROLE_APPROVAL_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-058",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "LEGACY_ROLE_APPROVAL_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-059",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "LEGACY_ROLE_APPROVAL_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-060",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "QUESTION_ID_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-061",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_MEETING",
+        "event_predicate": "SAME_PLACE_IN_PERSON",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "QUESTION_ID_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-062",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "PERSONAL_CONTACT",
+        "event_predicate": "TWO_WAY_CONTACT_ESTABLISHED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "QUESTION_ID_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-063",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "INCOMPLETE_LEGACY_CHART_INPUT"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-064",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "PROVENANCE_MISMATCH"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-065",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "LEGACY_CHART_INPUT_INVALID"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-066",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "LEGACY_CHART_INPUT_INVALID"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "RT17-067",
+      "output": {
+        "schema_version": "1.7",
+        "question_id": "RT-2026-001",
+        "intent_code": "INBOUND_PERSONAL_MESSAGE",
+        "event_predicate": "MESSAGE_RECEIVED",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "LEGACY_CHART_INPUT_INVALID"
+        ],
+        "legacy_v16_request": null,
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "ROUTER_IS_NOT_ASTROLOGICAL_JUDGEMENT",
+          "FRAWLEY_2014_METHOD_NOT_FULLY_VERIFIED"
+        ]
+      }
+    }
+  ],
+  "1_8": [
+    {
+      "id": "REL18-OK-FEELINGS",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "FEELINGS",
+        "status": "EVIDENCE_REVIEW_ONLY",
+        "reason_codes": [
+          "NO_AUTOMATED_RELATIONSHIP_VERDICT"
+        ],
+        "evidence_summary": [
+          {
+            "evidence_id": "rec-01",
+            "kind": "RECEPTION",
+            "source_module": "v1.1",
+            "from_role": "QUESITED",
+            "toward_role": "QUERENT",
+            "polarity": "POSITIVE"
+          }
+        ],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-OK-MUTUALITY",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "MUTUALITY",
+        "status": "EVIDENCE_REVIEW_ONLY",
+        "reason_codes": [
+          "NO_AUTOMATED_RELATIONSHIP_VERDICT"
+        ],
+        "evidence_summary": [
+          {
+            "evidence_id": "rec-01",
+            "kind": "RECEPTION",
+            "source_module": "v1.1",
+            "from_role": "QUESITED",
+            "toward_role": "QUERENT",
+            "polarity": "POSITIVE"
+          },
+          {
+            "evidence_id": "rec-02",
+            "kind": "RECEPTION",
+            "source_module": "v1.1",
+            "from_role": "QUERENT",
+            "toward_role": "QUESITED",
+            "polarity": "NEGATIVE"
+          }
+        ],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-OK-RELATIONSHIP_START",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "EVIDENCE_REVIEW_ONLY",
+        "reason_codes": [
+          "NO_AUTOMATED_RELATIONSHIP_VERDICT"
+        ],
+        "evidence_summary": [
+          {
+            "evidence_id": "path-01",
+            "kind": "PATH",
+            "source_module": "v1.6",
+            "path_id": "p1",
+            "expert_status": "UNRESOLVED",
+            "event_predicate": "RELATIONSHIP_STARTED"
+          },
+          {
+            "evidence_id": "rec-01",
+            "kind": "RECEPTION",
+            "source_module": "v1.1",
+            "from_role": "QUESITED",
+            "toward_role": "QUERENT",
+            "polarity": "POSITIVE"
+          }
+        ],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-OK-RELATIONSHIP_CONTINUATION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_CONTINUATION",
+        "status": "EVIDENCE_REVIEW_ONLY",
+        "reason_codes": [
+          "NO_AUTOMATED_RELATIONSHIP_VERDICT"
+        ],
+        "evidence_summary": [
+          {
+            "evidence_id": "cond-01",
+            "kind": "CONDITION",
+            "source_module": "v1.2",
+            "condition_code": "PLANET_RETROGRADE"
+          },
+          {
+            "evidence_id": "rec-01",
+            "kind": "RECEPTION",
+            "source_module": "v1.1",
+            "from_role": "QUESITED",
+            "toward_role": "QUERENT",
+            "polarity": "POSITIVE"
+          }
+        ],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-OK-SEPARATION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "SEPARATION",
+        "status": "EVIDENCE_REVIEW_ONLY",
+        "reason_codes": [
+          "NO_AUTOMATED_RELATIONSHIP_VERDICT"
+        ],
+        "evidence_summary": [
+          {
+            "evidence_id": "path-01",
+            "kind": "PATH",
+            "source_module": "v1.6",
+            "path_id": "p1",
+            "expert_status": "UNRESOLVED",
+            "event_predicate": "RELATIONSHIP_ENDED"
+          },
+          {
+            "evidence_id": "rec-01",
+            "kind": "RECEPTION",
+            "source_module": "v1.1",
+            "from_role": "QUESITED",
+            "toward_role": "QUERENT",
+            "polarity": "POSITIVE"
+          }
+        ],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-OK-RECONCILIATION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RECONCILIATION",
+        "status": "EVIDENCE_REVIEW_ONLY",
+        "reason_codes": [
+          "NO_AUTOMATED_RELATIONSHIP_VERDICT"
+        ],
+        "evidence_summary": [
+          {
+            "evidence_id": "path-01",
+            "kind": "PATH",
+            "source_module": "v1.6",
+            "path_id": "p1",
+            "expert_status": "UNRESOLVED",
+            "event_predicate": "RELATIONSHIP_RESUMED"
+          },
+          {
+            "evidence_id": "rec-01",
+            "kind": "RECEPTION",
+            "source_module": "v1.1",
+            "from_role": "QUESITED",
+            "toward_role": "QUERENT",
+            "polarity": "POSITIVE"
+          }
+        ],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-OK-RETURN_TO_RELATIONSHIP",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RETURN_TO_RELATIONSHIP",
+        "status": "EVIDENCE_REVIEW_ONLY",
+        "reason_codes": [
+          "NO_AUTOMATED_RELATIONSHIP_VERDICT"
+        ],
+        "evidence_summary": [
+          {
+            "evidence_id": "path-01",
+            "kind": "PATH",
+            "source_module": "v1.6",
+            "path_id": "p1",
+            "expert_status": "UNRESOLVED",
+            "event_predicate": "RELATIONSHIP_RESUMED"
+          },
+          {
+            "evidence_id": "rec-01",
+            "kind": "RECEPTION",
+            "source_module": "v1.1",
+            "from_role": "QUESITED",
+            "toward_role": "QUERENT",
+            "polarity": "POSITIVE"
+          }
+        ],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-OK-RELATIONSHIP_QUALITY",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_QUALITY",
+        "status": "EVIDENCE_REVIEW_ONLY",
+        "reason_codes": [
+          "NO_AUTOMATED_RELATIONSHIP_VERDICT"
+        ],
+        "evidence_summary": [
+          {
+            "evidence_id": "cond-01",
+            "kind": "CONDITION",
+            "source_module": "v1.2",
+            "condition_code": "PLANET_RETROGRADE"
+          },
+          {
+            "evidence_id": "rec-01",
+            "kind": "RECEPTION",
+            "source_module": "v1.1",
+            "from_role": "QUESITED",
+            "toward_role": "QUERENT",
+            "polarity": "POSITIVE"
+          }
+        ],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-PREDICATE",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "SCENARIO_PREDICATE_MISMATCH"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-STATE",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "RELATIONSHIP_STATE_NOT_SUITABLE"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-HOUSE",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "OTHER_HOUSE_SIGNIFICATOR_POSSIBLE"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-THIRD",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "MULTIPLE_SEVENTH_HOUSE_PEOPLE"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-ROLE-NOT-APPROVED",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_ROLE_APPROVAL",
+        "reason_codes": [
+          "ROLES_NOT_LOCKED"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-ROLE-CHART",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_ROLE_APPROVAL",
+        "reason_codes": [
+          "ROLE_CONTEXT_MISMATCH"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-ROLE-RELATION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_ROLE_APPROVAL",
+        "reason_codes": [
+          "ROLE_RELATIONSHIP_MISMATCH"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-ROLE-SAME",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "SAME_PLANET_ROLE_COLLISION"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-ROLE-BAD-PLANET",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_ROLE_APPROVAL",
+        "reason_codes": [
+          "INVALID_LOCKED_PLANET"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-EMPTY",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "EVIDENCE_INCOMPLETE",
+        "reason_codes": [
+          "NO_REFERENCED_EVIDENCE"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-UNKNOWN-ID",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "UNTRUSTED_EVIDENCE",
+        "reason_codes": [
+          "UNVERIFIED_OR_CROSS_CHART_EVIDENCE"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-CROSS-CHART",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "UNTRUSTED_EVIDENCE",
+        "reason_codes": [
+          "UNVERIFIED_OR_CROSS_CHART_EVIDENCE"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-PATH-PREDICATE",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "UNTRUSTED_EVIDENCE",
+        "reason_codes": [
+          "PATH_SOURCE_OR_PREDICATE_INVALID"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-PATH-SOURCE",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "UNTRUSTED_EVIDENCE",
+        "reason_codes": [
+          "PATH_SOURCE_OR_PREDICATE_INVALID"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-DUP-TRUSTED-ID",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "UNTRUSTED_EVIDENCE",
+        "reason_codes": [
+          "DUPLICATE_TRUSTED_EVIDENCE_ID"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-NO-PATH",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "EVIDENCE_INCOMPLETE",
+        "reason_codes": [
+          "EVENT_PATH_REVIEW_REQUIRED"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-NOT-REVIEWED",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "UNTRUSTED_EVIDENCE",
+        "reason_codes": [
+          "PATH_NO_EXPERT_REVIEW"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-BLOCKED-NO-OBSTACLE",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "UNTRUSTED_EVIDENCE",
+        "reason_codes": [
+          "BLOCKED_PATH_WITHOUT_OBSTACLE"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-REC-DIRECTION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "UNTRUSTED_EVIDENCE",
+        "reason_codes": [
+          "RECEPTION_DIRECTION_INVALID"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-REC-SOURCE",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "UNTRUSTED_EVIDENCE",
+        "reason_codes": [
+          "RECEPTION_SOURCE_OR_ROLE_INVALID"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-FEELINGS-REVERSE-DIRECTION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "FEELINGS",
+        "status": "EVIDENCE_INCOMPLETE",
+        "reason_codes": [
+          "QUESITED_TO_QUERENT_RECEPTION_REQUIRED"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-FEELINGS-NO-RECEPTION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "FEELINGS",
+        "status": "EVIDENCE_INCOMPLETE",
+        "reason_codes": [
+          "RECEPTION_EVIDENCE_REQUIRED"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-ONLY-ONE-WAY",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "MUTUALITY",
+        "status": "EVIDENCE_INCOMPLETE",
+        "reason_codes": [
+          "BOTH_RECEPTION_DIRECTIONS_REQUIRED"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-QUALITY-ONLY-CONDITION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_QUALITY",
+        "status": "EVIDENCE_INCOMPLETE",
+        "reason_codes": [
+          "RELATIONSHIP_RECEPTION_EVIDENCE_REQUIRED"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-QUALITY-WITHOUT-CONDITION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_QUALITY",
+        "status": "EVIDENCE_INCOMPLETE",
+        "reason_codes": [
+          "CONDITION_EVIDENCE_REQUIRED"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-START-CRITERION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RELATIONSHIP_START",
+        "status": "NEEDS_METHOD_REVIEW",
+        "reason_codes": [
+          "EVENT_OUTCOME_CRITERION_OPEN"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-NO-CRITERION",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RECONCILIATION",
+        "status": "NEEDS_METHOD_REVIEW",
+        "reason_codes": [
+          "EVENT_OUTCOME_CRITERION_OPEN"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-V17-INTENT",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RECONCILIATION",
+        "status": "NEEDS_CLARIFICATION",
+        "reason_codes": [
+          "V17_INTENT_MISMATCH"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-V17-STATUS",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RECONCILIATION",
+        "status": "NEEDS_EXPERT_REVIEW",
+        "reason_codes": [
+          "V17_GATE_STATUS_UNEXPECTED"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    },
+    {
+      "id": "REL18-NEG-NO-V17",
+      "output": {
+        "schema_version": "1.8",
+        "question_id": "question-demo",
+        "chart_id": "chart-demo",
+        "scenario_code": "RECONCILIATION",
+        "status": "NEEDS_METHOD_REVIEW",
+        "reason_codes": [
+          "V17_ROUTE_EVIDENCE_MISSING"
+        ],
+        "evidence_summary": [],
+        "can_issue_client_verdict": false,
+        "final_prediction": null,
+        "timing_prediction": null,
+        "limitations": [
+          "RELATIONSHIP_SYMBOLISM_NOT_VERIFIED_HUMAN_FEELINGS",
+          "NO_INDEPENDENT_REAL_WORLD_OUTCOME_VALIDATION",
+          "FRAWLEY_2014_NOT_FULLY_VERIFIED"
+        ]
+      }
+    }
+  ]
+}

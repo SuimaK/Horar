@@ -6,14 +6,15 @@ import {build} from '../src/engine.mjs';
 import {loadSwiss,constants,rules,payload} from './helpers/live-demo.mjs';
 import {renderAssembly,renderContactEvidence} from '../src/contact-view.mjs';
 import {verifyArchive,verifyArchiveRecord} from '../src/archive.mjs';
+import {renderSemanticEvidence} from '../src/semantic-view.mjs';
 const swe=await loadSwiss(),result=await build(payload,swe,constants,rules);
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const source=fs.readFileSync(new URL('../app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
 function open(records=[]){
  const dom=new JSDOM(html,{url:'https://example.test/Horar/',runScripts:'outside-only',pretendToBeVisual:true});
- const w=dom.window;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
+ const w=dom.window;w.structuredClone=structuredClone;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
  w.renderAssembly=renderAssembly;w.renderContactEvidence=renderContactEvidence;
- w.verifyArchive=verifyArchive;w.verifyArchiveRecord=verifyArchiveRecord;
+ w.renderSemanticEvidence=renderSemanticEvidence;w.verifyArchive=verifyArchive;w.verifyArchiveRecord=verifyArchiveRecord;
  w.horaryBuild=p=>build(p,swe,constants,rules);w.alert=()=>{};
  w.localStorage.setItem('horary-iphone-records-v1',JSON.stringify(records));
  w.eval(source);
@@ -24,7 +25,7 @@ test('contact form submits explicit scope, renders v1.3/v1.5, and preserves opti
  const {dom,w,$,change}=open();
  assert.equal($('contactOptions').hidden,true);
  change('intent','CONTACT');assert.equal($('contactOptions').hidden,false);
- change('contactKind','MESSAGE_FROM_NAMED_PERSON');change('relationshipKind','UNRELATED_NAMED_PERSON');change('subjectHouse','7');
+ change('contactKind','MESSAGE_FROM_NAMED_PERSON');change('contactPredicate','MESSAGE_RECEIVED');change('relationshipKind','UNRELATED_NAMED_PERSON');change('subjectHouse','7');
  $('approveContactRoles').checked=true;$('lockRoles').checked=true;
  $('questionText').value=payload.raw_text;$('latitude').value='51.5074';$('longitude').value='-0.1278';
  $('momentLocal').value='2025-01-20T12:00:00';$('offset').value='+00:00';
@@ -136,5 +137,54 @@ test('UI: storage failure cannot commit a partially imported archive',async()=>{
  $('importFile').dispatchEvent(new w.Event('change',{bubbles:true}));await settle(()=>message);
  assert.match(message,/Ошибка импорта/);assert.equal(w.localStorage.getItem('horary-iphone-records-v1'),before);
  assert.match($('archiveContent').textContent,/0 записей/);
+ dom.window.close();
+});
+test('v1.8 UI preserves relationship scenario and displays directional, event and quality axes',async()=>{
+ const {dom,w,$,change}=open();change('intent','RELATIONSHIP');
+ assert.equal($('relationshipOptions').hidden,false);assert.equal($('contactOptions').hidden,true);
+ change('relationshipScenario','MUTUALITY');change('relationshipPredicate','MUTUAL_ATTITUDE_SYMBOLIC');
+ change('relationshipRole','ROMANTIC_PARTNER');change('relationshipState','CURRENT');change('subjectHouse','7');
+ $('approveRelationshipRoles').checked=true;$('lockRoles').checked=true;
+ $('questionText').value='Учебный разбор взаимности';$('latitude').value='51.5074';$('longitude').value='-0.1278';
+ $('momentLocal').value='2025-01-20T12:00:00';$('offset').value='+00:00';
+ $('questionForm').dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
+ await settle(()=>$('interpretationContent').textContent.includes('ОТНОШЕНИЯ · v1.8'));
+ assert.match($('interpretationContent').textContent,/Направленные свидетельства отношения/);
+ assert.match($('interpretationContent').textContent,/Путь выбранного события/);
+ assert.match($('interpretationContent').textContent,/Условия и качество/);
+ const record=JSON.parse(w.localStorage.getItem('horary-iphone-records-v1'))[0].revisions[0];
+ assert.equal(record.result.relationship_evidence.status,'EVIDENCE_REVIEW_ONLY');assert.equal(record.result.relationship_evidence.final_prediction,null);
+ w.document.querySelector('[data-action="revise"]').click();
+ assert.equal($('relationshipScenario').value,'MUTUALITY');assert.equal($('approveRelationshipRoles').checked,true);
+ dom.window.close();
+});
+test('v1.6 UI saves a declared review in a new revision and preserves the original question',async()=>{
+ const p={...payload,scenario_options:{intent_code:'INBOUND_PERSONAL_MESSAGE',event_predicate:'MESSAGE_RECEIVED'}};
+ const r=await build(p,swe,constants,rules),item={input:p,result:r,saved_at:'2025-01-20T12:00:00Z'};
+ const {dom,w,$}=open([{question_id:p.question_id,revisions:[item]}]);
+ w.document.querySelector('[data-action="open"]').click();await settle(()=>w.document.querySelector('.path-review'));
+ const form=w.document.querySelector('.path-review[data-path-id^="DIRECT-"]'),value=(name,v)=>{form.querySelector(`[name="${name}"]`).value=v;};
+ value('reviewer_id','reviewer-demo');value('assessment','SUPPORTS_PATH');value('rationale','Declared methodological rationale for a synthetic demonstration, outcome unknown.');
+ for(const name of ['blind_to_outcome','receptions_considered','capacity_considered'])form.querySelector(`[name="${name}"]`).checked=true;
+ for(const row of form.querySelectorAll('.intervention-review')){
+  row.querySelector('[name="effect"]').value='IRRELEVANT';row.querySelector('[name="role"]').value='Нейтральный контекст';row.querySelector('[name="intervention_rationale"]').value='Заявленный контекст промежуточного контакта проверен отдельно.';
+ }
+ form.querySelector('[data-action="review-path"]').click();
+ await settle(()=>JSON.parse(w.localStorage.getItem('horary-iphone-records-v1'))[0].revisions.length===2);
+ const revisions=JSON.parse(w.localStorage.getItem('horary-iphone-records-v1'))[0].revisions;
+ assert.equal(revisions[0].input.path_reviews,undefined);assert.equal(revisions[1].input.raw_text,p.raw_text);
+ assert.equal(revisions[1].result.arbitration.final_prediction,null);assert.equal(revisions[1].result.arbitration.can_issue_client_verdict,false);
+ assert.equal(revisions[1].result.arbitration.paths.find(p=>p.kind==='DIRECT').review_result,'EXPERT_ATTESTED_SUPPORTED');
+ assert.match($('interpretationContent').textContent,/Личность и квалификация автора не удостоверяются/);
+ dom.window.close();
+});
+test('new calculation is not committed if its storage write fails',async()=>{
+ const {dom,w,$}=open();const before=w.localStorage.getItem('horary-iphone-records-v1');
+ w.Storage.prototype.setItem=()=>{throw Error('storage full');};
+ $('questionText').value='Новый вопрос';$('latitude').value='51.5074';$('longitude').value='-0.1278';
+ $('momentLocal').value='2025-01-20T12:00:00';$('offset').value='+00:00';
+ $('questionForm').dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
+ await settle(()=>$('formError').textContent.includes('Не удалось сохранить расчёт'));
+ assert.equal(w.localStorage.getItem('horary-iphone-records-v1'),before);assert.equal($('questionText').value,'Новый вопрос');
  dom.window.close();
 });

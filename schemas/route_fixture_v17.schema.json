@@ -1,0 +1,12 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema", "title":"Synthetic routing fixture",
+ "type":"object", "additionalProperties":false,
+ "required":["id","purpose","input","expected_status","expected_reason"],
+ "properties":{
+  "id":{"type":"string","pattern":"^RT17-[0-9]{3}$"},
+  "purpose":{"type":"string","minLength":3},
+  "input":{"type":"object"},
+  "expected_status":{"enum":["READY_FOR_V16_EVIDENCE_ONLY","NEEDS_CLARIFICATION","NEEDS_EXPERT_REVIEW","TOPIC_MODULE_REQUIRED","OUTSIDE_AUTOMATION_SCOPE"]},
+  "expected_reason":{"type":"string","minLength":3}
+ }
+}

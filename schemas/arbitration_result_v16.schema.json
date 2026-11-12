@@ -1,0 +1,22 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Horary semantic event-path arbitration v1.6 (not a prediction)",
+  "type":"object",
+  "required":["schema_version","status","synthesis","paths","can_issue_client_verdict","final_prediction","timing_prediction","limitations"],
+  "properties":{
+    "schema_version":{"const":"1.6"},
+    "status":{"enum":["EXPERT_EVIDENCE_ARBITRATION_ONLY","TOPIC_MODULE_REQUIRED"]},
+    "synthesis":{"type":"string"},
+    "paths":{"type":"array","items":{"type":"object","required":["path_id","kind","review_result","explanation_codes"],"properties":{
+      "path_id":{"type":"string"}, "kind":{"type":"string"},
+      "review_result":{"enum":["EXPERT_ATTESTED_SUPPORTED","EXPERT_ATTESTED_BLOCKED","UNRESOLVED"]},
+      "explanation_codes":{"type":"array","items":{"type":"string"}}
+    }}},
+    "can_issue_client_verdict":{"const":false},
+    "final_prediction":{"type":"null"},
+    "timing_prediction":{"type":"null"},
+    "limitations":{"type":"array","items":{"type":"string"}},
+    "source_chart_hash":{"type":["string","null"]}
+  },
+  "additionalProperties":true
+}

@@ -1,5 +1,6 @@
 import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
 import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
+import {renderSemanticEvidence} from './src/semantic-view.mjs';
 'use strict';
 (() => {
   const $ = id => document.getElementById(id);
@@ -10,7 +11,7 @@ import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
   const signRu = ['Овен','Телец','Близнецы','Рак','Лев','Дева','Весы','Скорпион','Стрелец','Козерог','Водолей','Рыбы'];
   const aspectGlyph = {CONJUNCTION:'☌',SEXTILE:'⚹',SQUARE:'□',TRINE:'△',OPPOSITION:'☍'};
   const aspectRu = {CONJUNCTION:'Соединение',SEXTILE:'Секстиль',SQUARE:'Квадрат',TRINE:'Трин',OPPOSITION:'Оппозиция'};
-  const intentRu = {EVENT:'Событие',CONTACT:'Контакт',PRESERVATION:'Сохранение',STATUS:'Состояние',QUALITY:'Качество',COMPARISON:'Сравнение',TIMING:'Срок',RETURN:'Возвращение',RECOVERY:'Поиск',LOCATION:'Местонахождение',PAST_FACT:'Факт в прошлом'};
+  const intentRu = {RELATIONSHIP:'Отношения',EVENT:'Событие',CONTACT:'Контакт',PRESERVATION:'Сохранение',STATUS:'Состояние',QUALITY:'Качество',COMPARISON:'Сравнение',TIMING:'Срок',RETURN:'Возвращение',RECOVERY:'Поиск',LOCATION:'Местонахождение',PAST_FACT:'Факт в прошлом'};
   const statusRu = {RESULT_READY:'Суждение готово',NEEDS_CLARIFICATION:'Нужно уточнение',NEEDS_EXPERT_REVIEW:'Требуется экспертный разбор',TOPIC_MODULE_REQUIRED:'Необходим тематический модуль',SEARCH_INCOMPLETE:'Поиск путей неполный',SAFETY_LIMITED:'Ограничение по безопасности',CALCULATION_ERROR:'Ошибка расчёта'};
   const statusHints = {DIRECT_GEOMETRY:'Точная геометрия',SIGN_CHANGE_REVIEW:'Проверить переход знака',INTERVENING_CONTACT_REVIEW:'Проверить вмешательство',INTERRUPTION_REVIEW:'Возможное препятствие'};
   const esc = val => String(val ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -50,15 +51,21 @@ import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
     const h=Number($('subjectHouse').value),k=Number($('turnedHouse').value);
     $('derivedNote').textContent=!h?'Предмет вопроса ещё не назначен':(k?`Производный ${k}-й от ${h}-го → радикальный дом ${((h+k-2)%12)+1}`:`Радикальный ${h}-й дом (без производного)`);
   }
+  const scenarioCodes={MEETING_WITH_NAMED_PERSON:'PERSONAL_MEETING',CONTACT_WITH_NAMED_PERSON:'PERSONAL_CONTACT',MESSAGE_FROM_NAMED_PERSON:'INBOUND_PERSONAL_MESSAGE',PHYSICAL_LETTER_OR_PARCEL:'DELIVERY_OF_ITEM',VISITOR_ARRIVAL_AT_HOME:'VISITOR_ARRIVAL',REPLY_TO_SENT_MESSAGE:'REPLY_TO_SENT_MESSAGE',CONTACT_RESUMPTION:'CONTACT_RESUMPTION',RECONCILIATION:'RECONCILIATION',RETURN_TO_SHARED_HOME:'RETURN_TO_SHARED_HOME',RETURN_TO_RELATIONSHIP:'RETURN_TO_RELATIONSHIP',LOST_OR_MISSING_PERSON:'LOST_OR_MISSING_PERSON'};
   function syncContactForm(clearApproval=false){
     const enabled=$('intent').value==='CONTACT';
     $('contactOptions').hidden=!enabled;
+    const relationship=$('intent').value==='RELATIONSHIP';
+    $('relationshipOptions').hidden=!relationship;
+    ['relationshipScenario','relationshipPredicate'].forEach(id=>{$(id).required=relationship;});
+    $('thirdPartyCount').disabled=!relationship;
+    $('contactPredicateField').hidden=!scenarioCodes[$('contactKind').value];
     const personal=['MEETING_WITH_NAMED_PERSON','CONTACT_WITH_NAMED_PERSON','MESSAGE_FROM_NAMED_PERSON'].includes($('contactKind').value);
     $('personContactFields').hidden=!personal;
     $('contactKind').required=enabled;
     $('contactHorizon').required=enabled;
     $('contactHorizon').disabled=!enabled;
-    if(clearApproval)$('approveContactRoles').checked=false;
+    if(clearApproval){$('approveContactRoles').checked=false;$('approveRelationshipRoles').checked=false;}
     $('contactScenarioNote').textContent=!$('contactKind').value?'Сначала выберите сценарий. Сообщение от человека и доставка посылки разбираются по разным правилам.':personal?'Поддерживается только человек без специальной социальной роли при подтверждённом I/VII. Сообщение не назначается автоматически III дому.':'Для этой темы нужен отдельный модуль. Карта сохранится, но поиск контактов по I/VII не запустится.';
   }
   function getPayload() {
@@ -88,17 +95,20 @@ import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
     if(!$('latitude').value||!$('longitude').value)throw Error('Введите широту и долготу места построения.');
     if(!Number.isFinite(p.latitude_deg)||!Number.isFinite(p.longitude_deg))throw Error('Координаты должны быть числами.');
     if(p.intent_kind==='CONTACT')p.contact_options={question_kind:$('contactKind').value,relationship_kind:$('relationshipKind').value,approve_l1_l7:$('approveContactRoles').checked,horizon_days:Number($('contactHorizon').value)};
+    if(p.intent_kind==='CONTACT'&&scenarioCodes[$('contactKind').value])p.scenario_options={intent_code:scenarioCodes[$('contactKind').value],event_predicate:$('contactPredicate').value};
+    if(p.intent_kind==='RELATIONSHIP')p.relationship_options={scenario_code:$('relationshipScenario').value,event_predicate:$('relationshipPredicate').value,relationship_kind:$('relationshipRole').value,relationship_state:$('relationshipState').value,third_party_count:Number($('thirdPartyCount').value),outcome_description:$('outcomeDescription').value,approve_l1_l7:$('approveRelationshipRoles').checked};
     return p;
   }
   function recordResult(input,result) {
-    let group=records.find(x=>x.question_id===input.question_id);
-    if(!group){group={question_id:input.question_id,revisions:[]};records.unshift(group)}
+    const draft=structuredClone(records);
+    let group=draft.find(x=>x.question_id===input.question_id);
+    if(!group){group={question_id:input.question_id,revisions:[]};draft.unshift(group);}
     if(group.revisions.some(x=>x.input.revision===input.revision))throw Error('Ревизия уже существует; перезагрузите карту.');
     const item={input,result,saved_at:new Date().toISOString()};
     group.revisions.push(item);
-    active=item;
-    persist();
-    revisionSource=null;
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(draft));}
+    catch{throw Error('Не удалось сохранить расчёт: хранилище недоступно или заполнено. Прежние записи не изменены.');}
+    records=draft;active=item;revisionSource=null;
   }
   async function createChart(ev) {
     ev.preventDefault();hideToast();
@@ -202,7 +212,7 @@ import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
     const paths=ps.paths.length?ps.paths.map(x=>{const c=x.contacts[0];return `<div class="path-item"><span class="pill">${esc(statusHints[x.geometry_status]||x.geometry_status)}</span><p><b>${esc(ru[c.planet_a])} ${aspectGlyph[c.aspect]} ${esc(ru[c.planet_b])}</b><span> · ${esc(aspectRu[c.aspect])}</span></p><small>${esc(dateRU(c.contact_utc))} · канал DIRECT</small>${(x.review_reasons||[]).length?`<p>${x.review_reasons.map(esc).join('; ')}</p>`:''}</div>`}).join(''):'<div class="info-box">Подтверждённые будущие прямые аспекты основной пары в установленном горизонте не обнаружены или поиск не запущен. Это не означает «нет».</div>';
     const unknown=j.unknowns.map(v=>`<li>${esc(v)}</li>`).join('');
     const roleReasons=roles.review_reasons.length?`<div class="info-box"><b>Нужно проверить роли:</b><ul class="unknown-list">${roles.review_reasons.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:'';
-    $('interpretationContent').innerHTML=`<div class="page-top"><div><div class="sub">ДОКАЗАТЕЛЬНЫЙ РАЗБОР</div><h2>Протокол суждения</h2></div><button type="button" class="mini-action" data-action="download-record">↓ JSON</button></div><p class="question-title">${esc(p.raw_text)}</p><div class="status-band ${j.processing_status==='SAFETY_LIMITED'?'risk':''}"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="section-mini">Клиентская формулировка</div><p class="interpret-lead">${esc(j.client_text)}</p><div class="two-cols"><div class="metric"><label>Возможность события</label><strong style="font-size:16px">Не установлена</strong><small>${esc(j.judgment_status)}</small></div><div class="metric"><label>Оценка результата</label><strong style="font-size:16px">Не определена</strong><small>Расчётные признаки ≠ итоговое суждение</small></div></div>${r.contact_evidence?renderContactEvidence(r.contact_evidence,r.chart.moment_utc,esc,dateRU):`<div class="section-mini">Пути совершенствования</div><div class="small-note">Горизонт: 30 суток. Проверены прямые контакты выбранных сигнификаторов. Для лунной последовательности и косвенных кандидатов выберите тип «Контакт / встреча» и поддерживаемый сценарий.</div><div class="path-list">${paths}</div>`}${roleReasons}${renderMethodEvidence(r)}<div class="section-mini">Экспертные свидетельства</div><div class="evidence-list">${evidence}</div><div class="section-mini">Неизвестное / ограничения</div><ul class="unknown-list">${unknown}</ul><div class="info-box">${esc(j.expert_text)}</div><p class="small-note">Хэш исходных данных: <span style="overflow-wrap:anywhere">${esc(r.chart.source_chart_hash)}</span><br>Версия: ${esc(j.calculation_version)}<br>Профиль: ${esc(j.method_profile)}</p><div class="action-row"><button type="button" class="secondary-button" data-tab="chart">← К карте</button><button type="button" class="secondary-button" data-action="download-record">Сохранить разбор</button></div>`;
+    $('interpretationContent').innerHTML=`<div class="page-top"><div><div class="sub">ДОКАЗАТЕЛЬНЫЙ РАЗБОР</div><h2>Протокол суждения</h2></div><button type="button" class="mini-action" data-action="download-record">↓ JSON</button></div><p class="question-title">${esc(p.raw_text)}</p><div class="status-band ${j.processing_status==='SAFETY_LIMITED'?'risk':''}"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="section-mini">Клиентская формулировка</div><p class="interpret-lead">${esc(j.client_text)}</p><div class="two-cols"><div class="metric"><label>Возможность события</label><strong style="font-size:16px">Не установлена</strong><small>${esc(j.judgment_status)}</small></div><div class="metric"><label>Оценка результата</label><strong style="font-size:16px">Не определена</strong><small>Расчётные признаки ≠ итоговое суждение</small></div></div>${r.contact_evidence?renderContactEvidence(r.contact_evidence,r.chart.moment_utc,esc,dateRU):`<div class="section-mini">Пути совершенствования</div><div class="small-note">Горизонт: 30 суток. Проверены прямые контакты выбранных сигнификаторов. Для лунной последовательности и косвенных кандидатов выберите тип «Контакт / встреча» и поддерживаемый сценарий.</div><div class="path-list">${paths}</div>`}${roleReasons}${renderSemanticEvidence(r,esc,dateRU,active.input)}${renderMethodEvidence(r)}<div class="section-mini">Экспертные свидетельства</div><div class="evidence-list">${evidence}</div><div class="section-mini">Неизвестное / ограничения</div><ul class="unknown-list">${unknown}</ul><div class="info-box">${esc(j.expert_text)}</div><p class="small-note">Хэш исходных данных: <span style="overflow-wrap:anywhere">${esc(r.chart.source_chart_hash)}</span><br>Версия: ${esc(j.calculation_version)}<br>Профиль: ${esc(j.method_profile)}</p><div class="action-row"><button type="button" class="secondary-button" data-tab="chart">← К карте</button><button type="button" class="secondary-button" data-action="download-record">Сохранить разбор</button></div>`;
   }
   function renderAll(){renderChart();renderInterpretation();drawArchive()}
 
@@ -240,6 +250,12 @@ import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
     $('turnedHouse').value=input.house_path?.[1]||'';
     $('lockRoles').checked=input.roles_locked;
     $('contactKind').value=input.contact_options?.question_kind||'';
+    $('contactPredicate').value=input.scenario_options?.event_predicate||'UNKNOWN';
+    const rel=input.relationship_options;
+    $('relationshipScenario').value=rel?.scenario_code||'';$('relationshipPredicate').value=rel?.event_predicate||'';
+    $('relationshipRole').value=rel?.relationship_kind||'UNKNOWN';$('relationshipState').value=rel?.relationship_state||'UNKNOWN';
+    $('thirdPartyCount').value=rel?.third_party_count??0;$('outcomeDescription').value=rel?.outcome_description||'';
+    $('approveRelationshipRoles').checked=rel?.approve_l1_l7===true;
     $('relationshipKind').value=input.contact_options?.relationship_kind||'';
     $('approveContactRoles').checked=input.contact_options?.approve_l1_l7===true;
     $('contactHorizon').value=input.contact_options?.horizon_days??14;
@@ -308,12 +324,31 @@ import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
     }catch(e){alert(`Ошибка экспорта: ${e.message}`);}
     finally{archiveState(false);}
   }
+  async function savePathReview(button){
+    if(archiveBusy||calculating||!active?.result?.arbitration)return;
+    const form=button.closest('.path-review'),pid=form?.dataset.pathId;
+    if(!form||!active.result.arbitration.paths.some(p=>p.path_id===pid)||!form.reportValidity())return;
+    const value=name=>form.querySelector(`[name="${name}"]`)?.value;
+    const check=name=>form.querySelector(`[name="${name}"]`)?.checked===true;
+    const review={path_id:pid,assessment:value('assessment'),reviewer_id:value('reviewer_id'),rationale:value('rationale'),blind_to_outcome:check('blind_to_outcome'),receptions_considered:check('receptions_considered'),capacity_considered:check('capacity_considered'),
+      interventions:[...form.querySelectorAll('.intervention-review')].map(el=>({event_id:el.dataset.eventId,effect:el.querySelector('[name="effect"]').value,role:el.querySelector('[name="role"]').value,rationale:el.querySelector('[name="intervention_rationale"]').value})),ingress_assessment:value('ingress_assessment')||'NOT_APPLICABLE',station_assessment:value('station_assessment')||'NOT_APPLICABLE',context_role:value('context_role')||''};
+    const input=structuredClone(active.input),group=records.find(g=>g.question_id===input.question_id);
+    input.revision=Math.max(...group.revisions.map(r=>r.input.revision))+1;
+    input.path_reviews=[...(input.path_reviews||[]).filter(r=>r.path_id!==pid),review];
+    calculating=true;button.disabled=true;
+    try{
+      const result=await window.horaryBuild(input);
+      recordResult(input,result);newQuestion();renderAll();go('interpretation');
+    }catch(e){alert(`Разметка не сохранена: ${e.message}`);}
+    finally{calculating=false;button.disabled=false;}
+  }
   function delegation(event){
     const t=event.target.closest('button');if(!t)return;
     if(t.dataset.tab){go(t.dataset.tab);return}
     const a=t.dataset.action;
     if(a==='download-record'&&active)downloadJson({format:'horary-iphone-record-v1',...active},`horary-${active.input.question_id}-r${active.input.revision}.json`);
     if(a==='revise')revise();
+    if(a==='review-path')savePathReview(t);
     if(a==='open'){
       const group=records.find(x=>x.question_id===t.dataset.id);
       const item=group?.revisions?.find(x=>x.input.revision===Number(t.dataset.revision));
@@ -328,7 +363,8 @@ import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
   $('intent').addEventListener('change',()=>syncContactForm(true));
   $('contactKind').addEventListener('change',()=>syncContactForm(true));
   $('relationshipKind').addEventListener('change',()=>syncContactForm(true));
-  ['subjectHouse','turnedHouse','relay','ownerId','speakerId'].forEach(id=>$(id).addEventListener('change',()=>{$('approveContactRoles').checked=false;}));
+  ['relationshipScenario','relationshipRole','relationshipState','relationshipPredicate','thirdPartyCount'].forEach(id=>$(id).addEventListener('change',()=>{$('approveRelationshipRoles').checked=false;}));
+  ['subjectHouse','turnedHouse','relay','ownerId','speakerId'].forEach(id=>$(id).addEventListener('change',()=>{$('approveContactRoles').checked=false;$('approveRelationshipRoles').checked=false;}));
   $('subjectHouse').addEventListener('change',updateDerived);
   $('turnedHouse').addEventListener('change',updateDerived);
   $('questionForm').addEventListener('submit',createChart);

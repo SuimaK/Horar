@@ -1,0 +1,19 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "title":"Horary relationship question evidence v1.8 (not a forecast)",
+ "type":"object","additionalProperties":false,
+ "required":["schema_version","question_id","chart_id","scenario_code","event_predicate","relationship_kind","relationship_state","evidence_refs"],
+ "properties":{
+  "schema_version":{"const":"1.8"},
+  "question_id":{"type":"string","minLength":3,"maxLength":120},
+  "chart_id":{"type":"string","minLength":3,"maxLength":120},
+  "scenario_code":{"enum":["FEELINGS","MUTUALITY","RELATIONSHIP_START","RELATIONSHIP_CONTINUATION","SEPARATION","RECONCILIATION","RETURN_TO_RELATIONSHIP","RELATIONSHIP_QUALITY"]},
+  "event_predicate":{"enum":["ATTITUDE_SYMBOLIC","MUTUAL_ATTITUDE_SYMBOLIC","RELATIONSHIP_STARTED","RELATIONSHIP_MAINTAINED","RELATIONSHIP_ENDED","RELATIONSHIP_RESUMED","RELATIONSHIP_QUALITY_ASSESSED"]},
+  "relationship_kind":{"enum":["SPOUSE","EX_SPOUSE","ROMANTIC_PARTNER","EX_ROMANTIC_PARTNER","POTENTIAL_PARTNER","FRIEND","NEIGHBOR","UNKNOWN"]},
+  "relationship_state":{"enum":["NEVER_STARTED","CURRENT","SEPARATED","UNKNOWN"]},
+  "third_party_count":{"type":"integer","minimum":0,"maximum":20},
+  "evidence_refs":{"type":"array","uniqueItems":true,"maxItems":100,"items":{"type":"string","minLength":2}},
+  "v17_route":{"type":["object","null"],"additionalProperties":false,"required":["intent_code","status"],"properties":{"intent_code":{"type":"string"},"status":{"type":"string"}}},
+  "outcome_criterion":{"type":["object","null"],"additionalProperties":false,"required":["defined","expert_reviewed"],"properties":{"defined":{"type":"boolean"},"expert_reviewed":{"type":"boolean"},"description":{"type":"string","maxLength":1000}}}
+ }
+}

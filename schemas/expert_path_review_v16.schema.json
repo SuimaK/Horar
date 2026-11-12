@@ -1,0 +1,23 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "title":"Explicit specialist interpretation of one v1.6 event path",
+ "type":"object",
+ "required":["path_id","assessment","reviewer_id","rationale","blind_to_outcome","receptions_considered","capacity_considered","interventions"],
+ "properties":{
+   "path_id":{"type":"string","minLength":1},
+   "assessment":{"enum":["SUPPORTS_PATH","BLOCKS_PATH","INDETERMINATE"]},
+   "reviewer_id":{"type":"string","minLength":1},
+   "rationale":{"type":"string","minLength":20},
+   "blind_to_outcome":{"type":"boolean"},
+   "receptions_considered":{"type":"boolean"},
+   "capacity_considered":{"type":"boolean"},
+   "interventions":{"type":"array","items":{"type":"object","additionalProperties":false,
+     "required":["event_id","effect","role","rationale"],
+     "properties":{"event_id":{"type":"string"},"effect":{"enum":["PROHIBITS","ASSISTS","IRRELEVANT","INDETERMINATE"]},
+     "role":{"type":"string","minLength":3},"rationale":{"type":"string","minLength":12}}}},
+   "ingress_assessment":{"enum":["PREVENTS","CONTEXT_CHANGE_POSSIBLY_SUPPORTS","DOES_NOT_AFFECT","INDETERMINATE","NOT_APPLICABLE"]},
+   "station_assessment":{"enum":["PREVENTS","DOES_NOT_PREVENT","INDETERMINATE","NOT_APPLICABLE"]},
+   "context_role":{"type":"string"}
+ },
+ "additionalProperties":false
+}

@@ -24,3 +24,5 @@
 .actor-evidence h4{margin:4px 0}.actor-evidence p{font-size:14px;margin:6px 0}
 .lunar-event{padding:8px 0}.lunar-event p{margin:6px 0}.lunar-sequence{padding-left:22px}
 .lunar-sequence li{margin:12px 0}.method-evidence small{display:block;line-height:1.5;color:#726b60;margin-top:5px}
+
+.intervention-review{border:1px solid #ded4c1;border-radius:10px;padding:12px;margin:12px 0;min-width:0}.intervention-review legend{font-size:13px;padding:0 5px}.path-review small{overflow-wrap:anywhere}.path-review textarea{min-height:82px}

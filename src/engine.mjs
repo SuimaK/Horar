@@ -6,12 +6,14 @@ import {solarSect, adaptDignityChart, adaptAccidentalChart, calculateDignities, 
 import {assembleRoleEvidence,liveGate} from './assembly.mjs';
 import {contactGate,evaluateContact} from './contact-semantics.mjs';
 import {questionScope,SENSITIVE_TOPICS} from './question-scope.mjs';
-export const ENGINE = 'horary-browser-2.2.1/moshier-wasm-v11-v15';
+import {prepareSemantics,relationshipFromCalculation,ROUTE_REASONS} from './semantic-flow.mjs';
+import {arbitrateEvidence} from './path-arbitration.mjs';
+export const ENGINE = 'horary-browser-2.3.0/moshier-wasm-v11-v18';
 const NAMES = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn'];
 const LORDS = ['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const TARGETS = [[0,'CONJUNCTION'],[60,'SEXTILE'],[90,'SQUARE'],[120,'TRINE'],[180,'OPPOSITION'],[240,'TRINE'],[270,'SQUARE'],[300,'SEXTILE']];
 const SPECIAL = new Set(['RETURN','RECOVERY','LOCATION']);
-const INTENTS = new Set(['EVENT','CONTACT','PRESERVATION','STATUS','QUALITY','COMPARISON','TIMING','RETURN','RECOVERY','LOCATION','PAST_FACT']);
+const INTENTS = new Set(['EVENT','CONTACT','RELATIONSHIP','PRESERVATION','STATUS','QUALITY','COMPARISON','TIMING','RETURN','RECOVERY','LOCATION','PAST_FACT']);
 const MS_DAY = 86400000;
 const iso = ms => new Date(ms).toISOString().slice(0,19)+'Z';
 const mod = n => (n%360+360)%360;
@@ -114,9 +116,9 @@ function makeAstronomy(api,constants){
 function question(v){
   const actors=[{actor_id:v.owner,relation_to_owner:'self'}];
   if(v.speaker!==v.owner)actors.push({actor_id:v.speaker,relation_to_owner:'speaker/relay'});
-  return {schema_version:'1.0',question_id:v.qid,revision:v.revision,raw_text:v.input.raw_text,
+  return {schema_version:v.intent==='RELATIONSHIP'?'1.8-browser':'1.0',question_id:v.qid,revision:v.revision,raw_text:v.input.raw_text,
     recorded_at_utc:v.recorded,question_owner_id:v.owner,relay_mode:v.relay,
-    intent:{kind:v.intent,classification_status:'CONFIRMED',notes:'Тип выбран пользователем; семантическая классификация не выполнена'},
+    intent:{kind:v.intent,classification_status:'CONFIRMED',notes:'Тип выбран пользователем; смысловая классификация текста не выполняется'},
     actors,chart_time_policy:'user_confirmed_convention',moment_utc:v.moment_utc,
     location_source:v.coordinate_source,roles_locked:v.roles_locked,method_profile:v.profile,context:v.context,question_provenance:v.provenance};
 }
@@ -248,7 +250,7 @@ function judgment(v,chart,roles,paths,rulesHash,ids){
   return {schema_version:'1.0',question_id:v.qid,method_profile:v.profile,processing_status:status,judgment_status:'NOT_APPLICABLE',roles_locked:v.roles_locked,event_assessment:why,outcome_quality:'UNKNOWN',benefit_for_querent:'UNKNOWN',timing:null,key_evidence:key,counterevidence:[],conditions:[],unknowns,calculation_version:ENGINE,rule_set_hash:rulesHash,source_chart_hash:chart.source_chart_hash,search_coverage:paths.search_coverage,limitations:['Астрология не является научно подтверждённым методом прогноза.','Выводы YES/NO/TIMING заблокированы до методической приёмки.'],human_review:true,client_text:`${why} Карта и сигнификаторы рассчитаны технически; положительный или отрицательный прогноз не сформирован.`,expert_text:`Профиль: frawley_early. Семь традиционных планет; Региомонтанус; Moshier WASM. Статус ролей: ${roles.status}; прямых кандидатов: ${paths.paths.length}; покрытие: ${paths.search_coverage}. Текущая версия не является принятым смысловым интерпретатором.`};
 }
 export async function build(data,api,constants,rules){
-  const v=validate(data),astro=makeAstronomy(api,constants);
+  const v=validate(data),semantic=prepareSemantics(v),astro=makeAstronomy(api,constants);
   const now=new Date(v.ms),jd=api.dateToJulianDay(now);
   if(!Number.isFinite(jd))throw Error('Не удалось вычислить юлианскую дату');
   const {cusps,asc,mc}=astro.houses(jd,v.lat,v.lon),pos=astro.positions(jd);
@@ -258,7 +260,10 @@ export async function build(data,api,constants,rules){
   const chart={schema_version:'1.0',chart_id:`${v.qid}:r${v.revision}`,question_id:v.qid,moment_utc:v.moment_utc,latitude_deg:v.lat,longitude_deg:v.lon,location_source:v.coordinate_source,house_system:'REGIOMONTANUS',zodiac:'TROPICAL',ephemeris:{library:'Swiss Ephemeris/Moshier WebAssembly',version:String(api.version()),calculation_settings:settings},planets,cusps:cusps.map((x,i)=>({house:i+1,longitude_deg:rnd(x,9)})),data_kind:'REAL_EPHEMERIS',source_chart_hash:hash,calculation_utc:iso(Date.now()),notes:'Moshier в браузере, геоцентрически; экспертные трактовки не рассчитаны.'};
   if(!verifyChartTrace(chart,astro,jd))throw Error('Повторный расчёт карты не совпал с исходным снимком');
   const ruleHash=await canonicalHash(rules),ids=new Set(rules.rules.map(x=>x.rule_id));
-  const roles=rolesFor(v,chart),gate=contactGate(v.input,roles);
+  const roles=rolesFor(v,chart);
+  let gate=contactGate(v.input,roles);
+  if(semantic.route&&semantic.route.status!=='READY_FOR_V16_EVIDENCE_ONLY')gate={status:semantic.route.status==='OUTSIDE_AUTOMATION_SCOPE'?'SAFETY_LIMITED':semantic.route.status,reason:ROUTE_REASONS[semantic.route.reason_codes[0]]||'Сценарий требует уточнения или отдельного тематического модуля.'};
+  if(semantic.relationshipCase)gate={status:'TOPIC_MODULE_REQUIRED',reason:'Ветка отношений рассматривает отдельные направленные свидетельства; геометрия встречи не подменяет событие в отношениях.'};
   const paths=pathSearch(v,chart,roles,astro,jd,gate),j=judgment(v,chart,roles,paths,ruleHash,ids);
   // Versions 1.1 and 1.2 are *additional evidence*, not amendments of ChartSnapshot 1.0.
   // The source hash and chart ID must be preserved across both independent modules.
@@ -268,13 +273,13 @@ export async function build(data,api,constants,rules){
   const joined=essential?mergeEvidence(essential,accidental):null;
   // The role/domain binding has strict preconditions; no inference from an unconfirmed role.
   const role_receptions=essential&&roles.roles_locked&&roles.status==='CONFIRMED'
-    ?roleReceptionEvidence(essential,roles,gate?.status==='READY'?'RELATIONSHIP':'OTHER'):null;
+    ?roleReceptionEvidence(essential,roles,gate?.status==='READY'||semantic.relationshipCase?'RELATIONSHIP':'OTHER'):null;
   const role_assembly=role_receptions?.analysis_status==='EVIDENCE_ONLY_NO_VERDICT'
     ?assembleRoleEvidence(essential,accidental,roles,role_receptions):null;
   const live_gate=liveGate({question_kind:v.intent,roles_locked:roles.roles_locked,
     safety_tier:j.processing_status==='SAFETY_LIMITED'?'HIGH':'STANDARD',
     trace_recomputed_from_chart:true,all_channels_covered:false,semantic_perfection_review_complete:false});
-  const contact_evidence=evaluateContact({input:v.input,chart,roles,astro,jd,search:contactCandidates,
+  const contact_evidence=v.intent==='RELATIONSHIP'?null:evaluateContact({input:v.input,chart,roles,astro,jd,search:contactCandidates,
     gate:j.processing_status==='SAFETY_LIMITED'&&gate?{status:'SAFETY_LIMITED',reason:j.event_assessment}:gate});
   if(contact_evidence){
     j.processing_status=contact_evidence.status;
@@ -291,7 +296,12 @@ export async function build(data,api,constants,rules){
   }
   j.unknowns.unshift('Акцидентальные факторы v1.2 рассчитаны, но не являются полной оценкой силы сигнификатора.');
   j.expert_text+=` Модули 1.1/1.2: достоинства ${essential?'рассчитаны':'ожидают секты'}, акцидентальные факторы рассчитаны; синтез события отсутствует.`;
-  return {question:question(v),chart,roles,path_search:paths,judgment:j,current_aspects:currentAspects(chart),contact_evidence,
+  if(data.path_reviews!==undefined&&!Array.isArray(data.path_reviews))throw Error('Разметка путей должна быть массивом.');
+  if(data.path_reviews?.length&&(!semantic.route||semantic.route.status!=='READY_FOR_V16_EVIDENCE_ONLY'||!contact_evidence?.analysis))throw Error('Разметка допустима только для заново рассчитанных путей поддерживаемого сценария.');
+  const arbitration=semantic.route?.status==='READY_FOR_V16_EVIDENCE_ONLY'&&contact_evidence?.analysis?
+    await arbitrateEvidence(contact_evidence,{astro,jd,roleAssembly:role_assembly,reviews:data.path_reviews||[]}):null;
+  const result={question:question(v),chart,roles,path_search:paths,judgment:j,current_aspects:currentAspects(chart),contact_evidence,
+    scenario_route:semantic.route,arbitration,
     evidence:{sect_info,essential,accidental,joined,role_receptions,role_assembly,live_gate,
       numerical_trace:{schema_version:'1.4',trace_recomputed_from_chart:true,source_chart_hash:hash,
         source_versions:{chart:'1.4',dignity:'1.1',accidental:'1.2',semantic:'1.3'},
@@ -300,4 +310,11 @@ export async function build(data,api,constants,rules){
         'Версия Фроули 2014 не сверена с таблицами Олешко 1999',
         'Условные сценарии v1.3 не являются численной проверкой итогового прогноза']},
     meta:{location_label:v.location_label,zone_name:v.zone_name,moment_local:v.moment_local,question_provenance:v.provenance,question_scope:questionScope(v.input),ascendant_deg:rnd(asc,9),mc_deg:rnd(mc,9),rules_hash:ruleHash}};
+  if(semantic.relationshipCase&&j.processing_status!=='SAFETY_LIMITED'){
+    Object.assign(result,relationshipFromCalculation(semantic.relationshipCase,data,result));
+    j.processing_status=result.relationship_evidence.status==='NEEDS_CLARIFICATION'?'NEEDS_CLARIFICATION':result.relationship_evidence.status==='NEEDS_ROLE_APPROVAL'?'NEEDS_CLARIFICATION':result.relationship_evidence.status==='NEEDS_METHOD_REVIEW'?'TOPIC_MODULE_REQUIRED':'NEEDS_EXPERT_REVIEW';
+    j.event_assessment='Показаны раздельные символические свидетельства об отношении сторон и состоянии сигнификаторов. Событие и реальные чувства не установлены.';
+    j.client_text=j.event_assessment;
+  }else{result.relationship_evidence=null;result.relationship_context=null;}
+  return result;
 }

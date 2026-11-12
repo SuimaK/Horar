@@ -1,0 +1,18 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "title":"Horary scenario route result v1.7 — NOT a prediction",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","question_id","intent_code","event_predicate","status","reason_codes","legacy_v16_request","can_issue_client_verdict","final_prediction","timing_prediction","limitations"],
+  "properties":{
+    "schema_version":{"const":"1.7"},"question_id":{"type":"string"},"intent_code":{"type":"string"},"event_predicate":{"type":"string"},
+    "status":{"enum":["READY_FOR_V16_EVIDENCE_ONLY","NEEDS_CLARIFICATION","NEEDS_EXPERT_REVIEW","TOPIC_MODULE_REQUIRED","OUTSIDE_AUTOMATION_SCOPE"]},
+    "reason_codes":{"type":"array","minItems":1,"uniqueItems":true,"items":{"type":"string"}},
+    "legacy_v16_request":{"type":["object","null"]},
+    "can_issue_client_verdict":{"const":false},"final_prediction":{"type":"null"},"timing_prediction":{"type":"null"},
+    "limitations":{"type":"array","minItems":1,"items":{"type":"string"}}
+  },
+  "allOf":[
+    {"if":{"properties":{"status":{"const":"READY_FOR_V16_EVIDENCE_ONLY"}}},"then":{"properties":{"legacy_v16_request":{"type":"object"}}}},
+    {"if":{"properties":{"status":{"enum":["NEEDS_CLARIFICATION","NEEDS_EXPERT_REVIEW","TOPIC_MODULE_REQUIRED","OUTSIDE_AUTOMATION_SCOPE"]}}},"then":{"properties":{"legacy_v16_request":{"type":"null"}}}}
+  ]
+}

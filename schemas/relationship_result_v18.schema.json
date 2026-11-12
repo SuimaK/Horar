@@ -1,0 +1,15 @@
+{
+ "$schema":"https://json-schema.org/draft/2020-12/schema",
+ "title":"Relationship evidence result v1.8 — non-predictive output",
+ "type":"object","additionalProperties":false,
+ "required":["schema_version","question_id","chart_id","scenario_code","status","reason_codes","evidence_summary","can_issue_client_verdict","final_prediction","timing_prediction","limitations"],
+ "properties":{
+  "schema_version":{"const":"1.8"},
+  "question_id":{"type":"string"},"chart_id":{"type":"string"},"scenario_code":{"type":"string"},
+  "status":{"enum":["NEEDS_CLARIFICATION","NEEDS_EXPERT_REVIEW","NEEDS_ROLE_APPROVAL","NEEDS_METHOD_REVIEW","UNTRUSTED_EVIDENCE","EVIDENCE_INCOMPLETE","EVIDENCE_REVIEW_ONLY"]},
+  "reason_codes":{"type":"array","minItems":1,"items":{"type":"string"}},
+  "evidence_summary":{"type":"array","items":{"type":"object"}},
+  "can_issue_client_verdict":{"const":false},"final_prediction":{"type":"null"},"timing_prediction":{"type":"null"},
+  "limitations":{"type":"array","minItems":1,"items":{"type":"string"}}
+ }
+}
