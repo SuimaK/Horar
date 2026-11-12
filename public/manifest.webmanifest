@@ -1,0 +1,15 @@
+{
+  "name": "Хорар — мастерская карт",
+  "short_name": "Хорар",
+  "description": "Хорарные карты без сервера: семь планет, дома Региомонтануса, экспертные свидетельства",
+  "lang": "ru",
+  "display": "standalone",
+  "start_url": "./",
+  "scope": "./",
+  "background_color": "#fffdfa",
+  "theme_color": "#17182a",
+  "icons": [
+    {"src":"./icons/icon-192.png","sizes":"192x192","type":"image/png","purpose":"any maskable"},
+    {"src":"./icons/icon-512.png","sizes":"512x512","type":"image/png","purpose":"any maskable"}
+  ]
+}

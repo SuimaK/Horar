@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#17182a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Хорар">
+  <meta name="description" content="Хорарные карты: расчёт домов Региомонтануса, сигнификаторов и точных аспектов с журналом правил">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./styles.css">
+  <title>Хорар · карты и разбор</title>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <button class="brand-icon" id="newQuestionBtn" type="button" aria-label="Создать новый вопрос">✳</button>
+    <div class="brand"><span>HORARY</span><small>Астрологическая мастерская</small></div>
+    <button class="icon-button" id="aboutBtn" type="button" aria-label="О приложении">ⓘ</button>
+  </header>
+  <main id="main" tabindex="-1">
+    <section id="screen-question" class="screen active">
+      <div class="intro">
+        <div class="eyebrow">НОВЫЙ ХОРАР · ПРОФИЛЬ ФРОУЛИ</div>
+        <h1>Каждый вопрос<br><em>имеет свой момент.</em></h1>
+        <p>Зафиксируйте формулировку, время и место — приложение построит карту и покажет проверяемые астрологические свидетельства.</p>
+      </div>
+      <div class="method-note"><span class="small-star">✧</span><span>Пока доступен технический и экспертный разбор. Автоматическое «да/нет» отключено до проверки методики. Все вычисления выполняются на этом устройстве.</span></div>
+      <form id="questionForm" autocomplete="off">
+        <div class="section-title"><span class="section-number">01</span><h2>Вопрос</h2></div>
+        <div class="field"><label for="questionText">Исходная формулировка <span class="required">*</span></label><textarea id="questionText" rows="3" placeholder="Например: Получу ли я предложение о работе?" maxlength="4000" required></textarea><span class="field-hint">После сохранения исходный текст останется неизменным.</span></div>
+        <div class="field"><label for="questionContext">Контекст вопроса</label><textarea id="questionContext" rows="2" placeholder="Кто участвует, что произошло, что именно требуется выяснить…" maxlength="8000"></textarea></div>
+        <div class="form-row"><div class="field"><label for="intent">Тип вопроса</label><select id="intent"><option value="EVENT">Событие</option><option value="CONTACT">Контакт / встреча</option><option value="PRESERVATION">Сохранение положения</option><option value="STATUS">Текущее состояние</option><option value="QUALITY">Качество / оценка</option><option value="COMPARISON">Сравнение вариантов</option><option value="TIMING">Срок события</option><option value="RETURN">Возвращение</option><option value="RECOVERY">Поиск / обнаружение</option><option value="LOCATION">Местонахождение</option><option value="PAST_FACT">Факт в прошлом</option></select></div><div class="field"><label for="relay">Кто спрашивает?</label><select id="relay"><option value="direct">От своего имени</option><option value="on_behalf">От имени другого</option><option value="about_other">О третьем лице</option><option value="unknown">Не определено</option></select></div></div>
+        <div class="form-row"><div class="field"><label for="ownerId">Владелец вопроса</label><input id="ownerId" placeholder="Я / псевдоним" value="я" maxlength="80"></div><div class="field"><label for="speakerId">Кто произносит вопрос?</label><input id="speakerId" placeholder="Я / посредник" value="я" maxlength="80"></div></div>
+        <div class="section-title space-top"><span class="section-number">02</span><h2>Момент и место</h2></div>
+        <div class="soft-hint">Для самостоятельного вопроса используем подтверждённый вами момент — это проектная конвенция.</div>
+        <div class="form-row"><div class="field grow"><label for="momentLocal">Местная дата и время <span class="required">*</span></label><input id="momentLocal" type="datetime-local" step="1" required></div><div class="field offset-field"><label for="offset">UTC ±</label><input id="offset" inputmode="text" placeholder="+03:00" pattern="[+-](0[0-9]|1[0-4]):[0-5][0-9]" required></div></div>
+        <div class="field-hint" style="margin:-6px 0 13px">При выборе прошлой даты проверьте смещение UTC с учётом летнего времени.</div>
+        <div class="field"><label for="zoneName">Часовой пояс / название города</label><input id="zoneName" placeholder="Например, Europe/Moscow"></div>
+        <div class="field"><label for="placeLabel">Место построения карты</label><input id="placeLabel" placeholder="Город астролога / ваш город"></div>
+        <div class="form-row"><div class="field"><label for="latitude">Широта, ° <span class="required">*</span></label><input id="latitude" type="number" min="-89" max="89" step="any" inputmode="decimal" placeholder="55.7558" required></div><div class="field"><label for="longitude">Долгота, ° <span class="required">*</span></label><input id="longitude" type="number" min="-180" max="180" step="any" inputmode="decimal" placeholder="37.6173" required></div></div>
+        <div class="control-line"><button class="text-button" id="nowBtn" type="button">◷ Сейчас</button><button class="text-button" id="locationBtn" type="button">⌖ Определить координаты</button></div>
+        <div class="section-title space-top"><span class="section-number">03</span><h2>Сигнификаторы</h2></div>
+        <div class="soft-hint">Выбор дома делается до анализа аспектов. Приложение не угадывает дом по тексту вопроса.</div>
+        <div class="form-row"><div class="field"><label for="subjectHouse">Дом предмета вопроса</label><select id="subjectHouse"><option value="">Не выбран</option><option value="1">I · Кверент</option><option value="2">II · Имущество / деньги</option><option value="3">III · Близкие, общение</option><option value="4">IV · Дом, недвижимость</option><option value="5">V · Дети, творчество</option><option value="6">VI · Работа по найму</option><option value="7">VII · Партнёр / другой</option><option value="8">VIII · Чужие деньги</option><option value="9">IX · Дальние поездки</option><option value="10">X · Карьера / статус</option><option value="11">XI · Друзья, поддержка</option><option value="12">XII · Скрытое / изоляция</option></select></div><div class="field"><label for="turnedHouse">Производный дом</label><select id="turnedHouse"><option value="">Нет</option><option value="1">I от выбранного</option><option value="2">II от выбранного</option><option value="3">III от выбранного</option><option value="4">IV от выбранного</option><option value="5">V от выбранного</option><option value="6">VI от выбранного</option><option value="7">VII от выбранного</option><option value="8">VIII от выбранного</option><option value="9">IX от выбранного</option><option value="10">X от выбранного</option><option value="11">XI от выбранного</option><option value="12">XII от выбранного</option></select></div></div>
+        <div class="derived-note" id="derivedNote">Предмет вопроса ещё не назначен</div>
+        <label class="check-row"><input id="lockRoles" type="checkbox"><span><strong>Подтверждаю назначение домов</strong><small>Понимаю, что методическое основание выбора требуется проверять отдельно.</small></span></label>
+        <button class="primary-button" type="submit" id="buildBtn"><span>Построить хорарную карту</span><span class="button-arrow">↗</span></button>
+        <div id="formError" class="form-error" role="alert" hidden></div><div style="text-align:center;margin-top:14px"><button class="text-button" id="resetBtn" type="button">Очистить форму и создать новый вопрос</button></div>
+      </form>
+      <div class="disclaimer">Хорарная астрология — традиционная практика, научная достоверность прогнозов которой не установлена.</div>
+    </section>
+    <section id="screen-chart" class="screen"><div id="chartContent" class="empty-screen"><div class="empty-icon">◎</div><h2>Ваша карта появится здесь</h2><p>Сначала зафиксируйте вопрос, время и место.</p><button type="button" data-tab="question" class="secondary-button">Новый вопрос</button></div></section>
+    <section id="screen-interpretation" class="screen"><div id="interpretationContent" class="empty-screen"><div class="empty-icon">✦</div><h2>Разбор ещё не построен</h2><p>Сохраните вопрос и получите журнал вычислений и ограничений.</p><button type="button" data-tab="question" class="secondary-button">Задать вопрос</button></div></section>
+    <section id="screen-archive" class="screen"><div id="archiveContent"></div></section>
+  </main>
+  <nav class="tabbar" aria-label="Главная навигация">
+    <button type="button" class="tab active" data-tab="question"><span class="tab-icon">✎</span><span>Вопрос</span></button>
+    <button type="button" class="tab" data-tab="chart"><span class="tab-icon">◎</span><span>Карта</span></button>
+    <button type="button" class="tab" data-tab="interpretation"><span class="tab-icon">✧</span><span>Разбор</span></button>
+    <button type="button" class="tab" data-tab="archive"><span class="tab-icon">▤</span><span>Архив</span></button>
+  </nav>
+</div>
+<dialog id="aboutDialog"><div class="dialog-wrap"><div class="dialog-top"><h2>О приложении</h2><button id="closeAbout" type="button" class="icon-button" aria-label="Закрыть">×</button></div><p><strong>Хорар · версия 2.1 (браузерная)</strong></p><p>Тропический зодиак, семь классических планет, дома Региомонтануса. Астрономический расчёт выполняется на устройстве: Swiss Ephemeris WebAssembly, встроенные эфемериды Moshier.</p><p>Роли назначаются до аспектного анализа. Движок ищет будущие прямые точные аспекты на 30 суток, но вычисляет эссенциальные достоинства и направленные рецепции (v1.1), а также акцидентальные признаки (v1.2), но не выполняет полный синтез совершенствования, сроков или итогового события.</p><p>Методический профиль: ранний Фроули; таблица достоинств — Олешко, 1999, с. 55. Исправленная редакция Фроули 2014 полностью не сверена. Автоматические «да/нет» намеренно отключены.</p><p>История сохраняется локально в браузере на этом устройстве. Для резервной копии используйте экспорт из архива. Для расчётов сервер не нужен; после первой загрузки рабочие файлы могут сохраняться для использования офлайн.</p><button type="button" class="secondary-button full" id="aboutDone">Понятно</button></div></dialog>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
