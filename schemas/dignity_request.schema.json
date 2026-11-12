@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/horary/v1.1/dignity_request.schema.json",
+  "title": "DignityReceptionRequest 1.1",
+  "description": "Derived from the existing ChartSnapshot 1.0 using an explicit sect and named dignity-table profile. This is a calculation-only contract, not a judgment contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "chart_id", "source_chart_hash", "sect", "dignity_table_profile", "planets"],
+  "properties": {
+    "schema_version": {"const": "1.1"},
+    "chart_id": {"type": "string", "minLength": 1},
+    "source_chart_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sect": {"enum": ["DAY", "NIGHT"]},
+    "dignity_table_profile": {"const": "OLESHKO_1999_P55"},
+    "planets": {
+      "type": "array", "minItems": 7, "maxItems": 7,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["name", "longitude_deg"],
+        "properties": {
+          "name": {"enum": ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn"]},
+          "longitude_deg": {"type": "number", "minimum": 0, "exclusiveMaximum": 360}
+        }
+      },
+      "allOf": [
+        {"contains": {"properties": {"name": {"const": "Sun"}}, "required": ["name"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "Moon"}}, "required": ["name"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "Mercury"}}, "required": ["name"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "Venus"}}, "required": ["name"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "Mars"}}, "required": ["name"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "Jupiter"}}, "required": ["name"]}, "minContains": 1, "maxContains": 1},
+        {"contains": {"properties": {"name": {"const": "Saturn"}}, "required": ["name"]}, "minContains": 1, "maxContains": 1}
+      ]
+    }
+  }
+}

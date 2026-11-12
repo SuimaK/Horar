@@ -1,0 +1,189 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/horary/v1.0/ChartSnapshot.schema.json",
+  "title": "ChartSnapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "chart_id",
+    "question_id",
+    "moment_utc",
+    "latitude_deg",
+    "longitude_deg",
+    "location_source",
+    "house_system",
+    "zodiac",
+    "ephemeris",
+    "planets",
+    "cusps",
+    "data_kind",
+    "source_chart_hash"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "chart_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "question_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "moment_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "latitude_deg": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "longitude_deg": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180
+    },
+    "location_source": {
+      "enum": [
+        "astrologer",
+        "questioner",
+        "configured"
+      ]
+    },
+    "house_system": {
+      "enum": [
+        "REGIOMONTANUS",
+        "PLACIDUS",
+        "TOPOCENTRIC",
+        "OTHER_EXPLICIT"
+      ]
+    },
+    "zodiac": {
+      "const": "TROPICAL"
+    },
+    "ephemeris": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "library",
+        "version",
+        "calculation_settings"
+      ],
+      "properties": {
+        "library": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "calculation_settings": {
+          "type": "object",
+          "additionalProperties": {
+            "type": [
+              "string",
+              "number",
+              "boolean",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "planets": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "longitude_deg",
+          "speed_deg_per_day",
+          "house"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": [
+              "Sun",
+              "Moon",
+              "Mercury",
+              "Venus",
+              "Mars",
+              "Jupiter",
+              "Saturn"
+            ]
+          },
+          "longitude_deg": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMaximum": 360
+          },
+          "latitude_deg": {
+            "type": "number"
+          },
+          "speed_deg_per_day": {
+            "type": "number"
+          },
+          "house": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          }
+        }
+      }
+    },
+    "cusps": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "house",
+          "longitude_deg"
+        ],
+        "properties": {
+          "house": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "longitude_deg": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMaximum": 360
+          }
+        }
+      }
+    },
+    "data_kind": {
+      "enum": [
+        "REAL_EPHEMERIS",
+        "HISTORICAL_REPRODUCTION",
+        "ARTIFICIAL_SAMPLE_NOT_REAL_CHART"
+      ]
+    },
+    "source_chart_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "calculation_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "$schema":"https://json-schema.org/draft/2020-12/schema",
+  "$id":"https://schemas.example.invalid/horary/v1.2/accidental_request.schema.json",
+  "title":"AccidentalConditionRequest 1.2",
+  "type":"object","additionalProperties":false,
+  "required":["schema_version","chart_id","source_chart_hash","accidental_profile","planets"],
+  "properties":{
+    "schema_version":{"const":"1.2"},
+    "chart_id":{"type":"string","minLength":1},
+    "source_chart_hash":{"type":"string","pattern":"^[0-9a-f]{64}$"},
+    "accidental_profile":{"const":"FRAWLEY_EARLY_ACCIDENTAL_V1_2_WITH_OLESHKO_SPEED_REFERENCE"},
+    "context":{"type":"object","additionalProperties":false,"properties":{"return_theme":{"type":"boolean"}}},
+    "planets":{
+      "type":"array","minItems":7,"maxItems":7,
+      "items":{"type":"object","additionalProperties":false,"required":["name","longitude_deg","speed_deg_per_day","house"],
+        "properties":{"name":{"enum":["Sun","Moon","Mercury","Venus","Mars","Jupiter","Saturn"]},
+        "longitude_deg":{"type":"number","minimum":0,"exclusiveMaximum":360},
+        "speed_deg_per_day":{"type":"number"},"house":{"type":"integer","minimum":1,"maximum":12}}
+      },
+      "allOf":[
+        {"contains":{"properties":{"name":{"const":"Sun"}},"required":["name"]},"minContains":1,"maxContains":1},
+        {"contains":{"properties":{"name":{"const":"Moon"}},"required":["name"]},"minContains":1,"maxContains":1},
+        {"contains":{"properties":{"name":{"const":"Mercury"}},"required":["name"]},"minContains":1,"maxContains":1},
+        {"contains":{"properties":{"name":{"const":"Venus"}},"required":["name"]},"minContains":1,"maxContains":1},
+        {"contains":{"properties":{"name":{"const":"Mars"}},"required":["name"]},"minContains":1,"maxContains":1},
+        {"contains":{"properties":{"name":{"const":"Jupiter"}},"required":["name"]},"minContains":1,"maxContains":1},
+        {"contains":{"properties":{"name":{"const":"Saturn"}},"required":["name"]},"minContains":1,"maxContains":1}
+      ]
+    }
+  }
+}

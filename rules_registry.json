@@ -1,0 +1,206 @@
+{
+  "schema_version": "1.0",
+  "description": "Контрольные правила; полный текст спецификации остаётся нормативным. Реестр намеренно не выдает себя за исчерпывающую оцифровку всех ранних правил.",
+  "rules": [
+    {
+      "schema_version": "1.0",
+      "rule_id": "Q-001",
+      "title": "Оригинальный текст не изменяется",
+      "statement": "Оригинальный текст не изменяется",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Хорарная_методика_Фроули_v0.2.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "Q-004",
+      "title": "Семь традиционных планет и базовый Региомонтанус",
+      "statement": "Семь традиционных планет и базовый Региомонтанус",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Хорарная_методика_Фроули_v0.2.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "C-001",
+      "title": "Классификация по смыслу вопроса",
+      "statement": "Классификация по смыслу вопроса",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Хорар_Фроули_Классификатор_v0.3.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "C-005",
+      "title": "Возврат вещи только через специализированный модуль",
+      "statement": "Возврат вещи только через специализированный модуль",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Синтез_суждения_исправленная_спецификация_v0.9.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "SIG-001",
+      "title": "Главный управитель по знаку на куспиде",
+      "statement": "Главный управитель по знаку на куспиде",
+      "authority": "FRAWLEY_EARLY_PENDING_2014",
+      "status": "PROVISIONAL",
+      "source_document": "Хорар_Фроули_Сигнификаторы_v0.5.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "SIG-004",
+      "title": "Производные дома с включительным счётом",
+      "statement": "Производные дома с включительным счётом",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Хорар_Фроули_Сигнификаторы_v0.5.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "SIG-006",
+      "title": "Совпадение управителей не всегда требует замены",
+      "statement": "Совпадение управителей не всегда требует замены",
+      "authority": "FRAWLEY_EARLY_PENDING_2014",
+      "status": "PROVISIONAL",
+      "source_document": "Хорар_Фроули_Сигнификаторы_v0.5.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "SIG-007",
+      "title": "Замены сигнификаторов не подбираются по выгодному результату",
+      "statement": "Замены сигнификаторов не подбираются по выгодному результату",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Хорар_Фроули_Сигнификаторы_v0.5.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "D-001",
+      "title": "Версионирование таблиц достоинств",
+      "statement": "Версионирование таблиц достоинств",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Хорарная_методика_Фроули_v0.2.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "D-002",
+      "title": "Термы Овна предварительного профиля",
+      "statement": "Термы Овна предварительного профиля",
+      "authority": "FRAWLEY_EARLY_PENDING_2014",
+      "status": "PROVISIONAL",
+      "source_document": "Хорарная_методика_Фроули_v0.2.md",
+      "implementation_priority": "P1"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "D-003",
+      "title": "Рецепции направлены от расположенной планеты к хозяину достоинства",
+      "statement": "Рецепции направлены от расположенной планеты к хозяину достоинства",
+      "authority": "FRAWLEY_EARLY_PENDING_2014",
+      "status": "PROVISIONAL",
+      "source_document": "Хорар_Фроули_Синтез_суждения_v0.7.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "G-001",
+      "title": "Будущий точный аспект, не один орбис",
+      "statement": "Будущий точный аспект, не один орбис",
+      "authority": "FRAWLEY_EARLY_PENDING_2014",
+      "status": "PROVISIONAL",
+      "source_document": "Хорар_Фроули_События_v0.6.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "G-005",
+      "title": "Предшествующий контакт передачи требует проверки",
+      "statement": "Предшествующий контакт передачи требует проверки",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Методическая_спецификация_косвенных_аспектов_v1.0.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "G-006",
+      "title": "Вмешательство и смена знака требуют анализа",
+      "statement": "Вмешательство и смена знака требуют анализа",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Методическая_спецификация_косвенных_аспектов_v1.0.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "G-009",
+      "title": "Отсутствие прямого аспекта не есть универсальное NO",
+      "statement": "Отсутствие прямого аспекта не есть универсальное NO",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Синтез_суждения_исправленная_спецификация_v0.9.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "J-001",
+      "title": "Перед суждением проверить полноту и роли",
+      "statement": "Перед суждением проверить полноту и роли",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Синтез_суждения_исправленная_спецификация_v0.9.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "J-007",
+      "title": "Неопределённость не заменяется вероятностным да",
+      "statement": "Неопределённость не заменяется вероятностным да",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Синтез_суждения_исправленная_спецификация_v0.9.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "T-002",
+      "title": "Каждая содержательная фраза с evidence_id",
+      "statement": "Каждая содержательная фраза с evidence_id",
+      "authority": "PROJECT_CONVENTION",
+      "status": "ADOPTED",
+      "source_document": "Синтез_суждения_исправленная_спецификация_v0.9.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "OPEN-01",
+      "title": "Проверка исправленной редакции Фроули 2014",
+      "statement": "Проверка исправленной редакции Фроули 2014",
+      "authority": "EXPERT_REVIEW",
+      "status": "EXPERT_REQUIRED",
+      "source_document": "Отчёт_исправлений_QA_v0.9.md",
+      "implementation_priority": "P0"
+    },
+    {
+      "schema_version": "1.0",
+      "rule_id": "OPEN-07",
+      "title": "Специальный модуль поиска и возвращения вещей",
+      "statement": "Специальный модуль поиска и возвращения вещей",
+      "authority": "EXPERT_REVIEW",
+      "status": "EXPERT_REQUIRED",
+      "source_document": "Методическая_спецификация_косвенных_аспектов_v1.0.md",
+      "implementation_priority": "P0"
+    }
+  ]
+}
