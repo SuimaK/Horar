@@ -1,0 +1,30 @@
+{
+  "profile_id": "FRAWLEY_EARLY_ACCIDENTAL_V1_2_WITH_OLESHKO_SPEED_REFERENCE",
+  "methodology": "John Frawley, The Horary Textbook (early edition): qualitative rules; revised 2014 not fully verified",
+  "comparison_source": "Yu. Yu. Oleshko, Horary Astrology (1999), pp. 55-57: Lilly points and mean direct speeds; point scoring not activated",
+  "frawley_revised_2014_verified": false,
+  "solar_thresholds_deg": {"cazimi": 0.2916666666666667, "combust": 8.5, "under_beams": 17.5},
+  "speed_comparison": {
+    "source": "OLESHKO_1999_P57",
+    "references_deg_per_day": {
+      "Moon": 13.183333333333334,
+      "Mercury": 1.3833333333333333,
+      "Venus": 1.2,
+      "Sun": 0.9855555555555555,
+      "Mars": 0.5166666666666667,
+      "Jupiter": 0.08333333333333333,
+      "Saturn": 0.03333333333333333
+    },
+    "fast_ratio_min": 1.20,
+    "slow_ratio_max": 0.80,
+    "candidate_station_ratio_max": 0.05,
+    "thresholds_are_project_convention_not_author_rule": true
+  },
+  "house_classes": {
+    "STRONG_ANGULAR": [1, 4, 7, 10],
+    "MIDDLE_OR_NEUTRAL": [2, 3, 5, 9, 11],
+    "WEAK": [6, 8, 12]
+  },
+  "house_joy": {"Sun":9, "Moon":3, "Mercury":1, "Venus":5, "Mars":6, "Jupiter":11, "Saturn":12},
+  "scope_exclusions": ["aspects_to_benefics_malefics", "besiegement", "nodes_and_fixed_stars", "solarity_orientality", "cusp_reassignment", "true_station_by_trajectory", "complete_judgment"]
+}
