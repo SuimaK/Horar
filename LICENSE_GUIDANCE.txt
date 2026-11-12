@@ -1,4 +1,0 @@
-This application dynamically links @swisseph/browser / Swiss Ephemeris under AGPL-3.0.
-Check AGPL compatibility and source publication requirements before deployment.
-Official AGPL: https://www.gnu.org/licenses/agpl-3.0.html
-Swiss Ephemeris: https://www.astro.com/swisseph/
