@@ -1,6 +1,7 @@
 import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
 import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
 import {renderSemanticEvidence} from './src/semantic-view.mjs';
+import {renderCareerEvidence} from './src/career-view.mjs';
 'use strict';
 (() => {
   const $ = id => document.getElementById(id);
@@ -11,7 +12,7 @@ import {renderSemanticEvidence} from './src/semantic-view.mjs';
   const signRu = ['Овен','Телец','Близнецы','Рак','Лев','Дева','Весы','Скорпион','Стрелец','Козерог','Водолей','Рыбы'];
   const aspectGlyph = {CONJUNCTION:'☌',SEXTILE:'⚹',SQUARE:'□',TRINE:'△',OPPOSITION:'☍'};
   const aspectRu = {CONJUNCTION:'Соединение',SEXTILE:'Секстиль',SQUARE:'Квадрат',TRINE:'Трин',OPPOSITION:'Оппозиция'};
-  const intentRu = {RELATIONSHIP:'Отношения',EVENT:'Событие',CONTACT:'Контакт',PRESERVATION:'Сохранение',STATUS:'Состояние',QUALITY:'Качество',COMPARISON:'Сравнение',TIMING:'Срок',RETURN:'Возвращение',RECOVERY:'Поиск',LOCATION:'Местонахождение',PAST_FACT:'Факт в прошлом'};
+  const intentRu = {CAREER:'Работа и карьера',RELATIONSHIP:'Отношения',EVENT:'Событие',CONTACT:'Контакт',PRESERVATION:'Сохранение',STATUS:'Состояние',QUALITY:'Качество',COMPARISON:'Сравнение',TIMING:'Срок',RETURN:'Возвращение',RECOVERY:'Поиск',LOCATION:'Местонахождение',PAST_FACT:'Факт в прошлом'};
   const statusRu = {RESULT_READY:'Суждение готово',NEEDS_CLARIFICATION:'Нужно уточнение',NEEDS_EXPERT_REVIEW:'Требуется экспертный разбор',TOPIC_MODULE_REQUIRED:'Необходим тематический модуль',SEARCH_INCOMPLETE:'Поиск путей неполный',SAFETY_LIMITED:'Ограничение по безопасности',CALCULATION_ERROR:'Ошибка расчёта'};
   const statusHints = {DIRECT_GEOMETRY:'Точная геометрия',SIGN_CHANGE_REVIEW:'Проверить переход знака',INTERVENING_CONTACT_REVIEW:'Проверить вмешательство',INTERRUPTION_REVIEW:'Возможное препятствие'};
   const esc = val => String(val ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -57,6 +58,10 @@ import {renderSemanticEvidence} from './src/semantic-view.mjs';
     $('contactOptions').hidden=!enabled;
     const relationship=$('intent').value==='RELATIONSHIP';
     $('relationshipOptions').hidden=!relationship;
+    const career=$('intent').value==='CAREER';
+    $('careerOptions').hidden=!career;
+    ['careerScenario','careerPredicate'].forEach(id=>{$(id).required=career;});
+    $('careerOutcome').required=career&&['GET_JOB','JOB_LOSS','CHANGE_JOB','PROMOTION','WAGE_PAYMENT'].includes($('careerScenario').value);
     ['relationshipScenario','relationshipPredicate'].forEach(id=>{$(id).required=relationship;});
     $('thirdPartyCount').disabled=!relationship;
     $('contactPredicateField').hidden=!scenarioCodes[$('contactKind').value];
@@ -65,7 +70,7 @@ import {renderSemanticEvidence} from './src/semantic-view.mjs';
     $('contactKind').required=enabled;
     $('contactHorizon').required=enabled;
     $('contactHorizon').disabled=!enabled;
-    if(clearApproval){$('approveContactRoles').checked=false;$('approveRelationshipRoles').checked=false;}
+    if(clearApproval){$('approveContactRoles').checked=false;$('approveRelationshipRoles').checked=false;$('acknowledgeCareerRoles').checked=false;}
     $('contactScenarioNote').textContent=!$('contactKind').value?'Сначала выберите сценарий. Сообщение от человека и доставка посылки разбираются по разным правилам.':personal?'Поддерживается только человек без специальной социальной роли при подтверждённом I/VII. Сообщение не назначается автоматически III дому.':'Для этой темы нужен отдельный модуль. Карта сохранится, но поиск контактов по I/VII не запустится.';
   }
   function getPayload() {
@@ -97,6 +102,7 @@ import {renderSemanticEvidence} from './src/semantic-view.mjs';
     if(p.intent_kind==='CONTACT')p.contact_options={question_kind:$('contactKind').value,relationship_kind:$('relationshipKind').value,approve_l1_l7:$('approveContactRoles').checked,horizon_days:Number($('contactHorizon').value)};
     if(p.intent_kind==='CONTACT'&&scenarioCodes[$('contactKind').value])p.scenario_options={intent_code:scenarioCodes[$('contactKind').value],event_predicate:$('contactPredicate').value};
     if(p.intent_kind==='RELATIONSHIP')p.relationship_options={scenario_code:$('relationshipScenario').value,event_predicate:$('relationshipPredicate').value,relationship_kind:$('relationshipRole').value,relationship_state:$('relationshipState').value,third_party_count:Number($('thirdPartyCount').value),outcome_description:$('outcomeDescription').value,approve_l1_l7:$('approveRelationshipRoles').checked};
+    if(p.intent_kind==='CAREER')p.career_options={scenario_code:$('careerScenario').value,event_predicate:$('careerPredicate').value,perspective:$('careerPerspective').value,employment_state:$('employmentState').value,employment_relation:$('employmentRelation').value,money_context:$('moneyContext').value,outcome_description:$('careerOutcome').value,acknowledge_l1_l10:$('acknowledgeCareerRoles').checked};
     return p;
   }
   function recordResult(input,result) {
@@ -212,7 +218,7 @@ import {renderSemanticEvidence} from './src/semantic-view.mjs';
     const paths=ps.paths.length?ps.paths.map(x=>{const c=x.contacts[0];return `<div class="path-item"><span class="pill">${esc(statusHints[x.geometry_status]||x.geometry_status)}</span><p><b>${esc(ru[c.planet_a])} ${aspectGlyph[c.aspect]} ${esc(ru[c.planet_b])}</b><span> · ${esc(aspectRu[c.aspect])}</span></p><small>${esc(dateRU(c.contact_utc))} · канал DIRECT</small>${(x.review_reasons||[]).length?`<p>${x.review_reasons.map(esc).join('; ')}</p>`:''}</div>`}).join(''):'<div class="info-box">Подтверждённые будущие прямые аспекты основной пары в установленном горизонте не обнаружены или поиск не запущен. Это не означает «нет».</div>';
     const unknown=j.unknowns.map(v=>`<li>${esc(v)}</li>`).join('');
     const roleReasons=roles.review_reasons.length?`<div class="info-box"><b>Нужно проверить роли:</b><ul class="unknown-list">${roles.review_reasons.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:'';
-    $('interpretationContent').innerHTML=`<div class="page-top"><div><div class="sub">ДОКАЗАТЕЛЬНЫЙ РАЗБОР</div><h2>Протокол суждения</h2></div><button type="button" class="mini-action" data-action="download-record">↓ JSON</button></div><p class="question-title">${esc(p.raw_text)}</p><div class="status-band ${j.processing_status==='SAFETY_LIMITED'?'risk':''}"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="section-mini">Клиентская формулировка</div><p class="interpret-lead">${esc(j.client_text)}</p><div class="two-cols"><div class="metric"><label>Возможность события</label><strong style="font-size:16px">Не установлена</strong><small>${esc(j.judgment_status)}</small></div><div class="metric"><label>Оценка результата</label><strong style="font-size:16px">Не определена</strong><small>Расчётные признаки ≠ итоговое суждение</small></div></div>${r.contact_evidence?renderContactEvidence(r.contact_evidence,r.chart.moment_utc,esc,dateRU):`<div class="section-mini">Пути совершенствования</div><div class="small-note">Горизонт: 30 суток. Проверены прямые контакты выбранных сигнификаторов. Для лунной последовательности и косвенных кандидатов выберите тип «Контакт / встреча» и поддерживаемый сценарий.</div><div class="path-list">${paths}</div>`}${roleReasons}${renderSemanticEvidence(r,esc,dateRU,active.input)}${renderMethodEvidence(r)}<div class="section-mini">Экспертные свидетельства</div><div class="evidence-list">${evidence}</div><div class="section-mini">Неизвестное / ограничения</div><ul class="unknown-list">${unknown}</ul><div class="info-box">${esc(j.expert_text)}</div><p class="small-note">Хэш исходных данных: <span style="overflow-wrap:anywhere">${esc(r.chart.source_chart_hash)}</span><br>Версия: ${esc(j.calculation_version)}<br>Профиль: ${esc(j.method_profile)}</p><div class="action-row"><button type="button" class="secondary-button" data-tab="chart">← К карте</button><button type="button" class="secondary-button" data-action="download-record">Сохранить разбор</button></div>`;
+    $('interpretationContent').innerHTML=`<div class="page-top"><div><div class="sub">ДОКАЗАТЕЛЬНЫЙ РАЗБОР</div><h2>Протокол суждения</h2></div><button type="button" class="mini-action" data-action="download-record">↓ JSON</button></div><p class="question-title">${esc(p.raw_text)}</p><div class="status-band ${j.processing_status==='SAFETY_LIMITED'?'risk':''}"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="section-mini">Клиентская формулировка</div><p class="interpret-lead">${esc(j.client_text)}</p><div class="two-cols"><div class="metric"><label>Возможность события</label><strong style="font-size:16px">Не установлена</strong><small>${esc(j.judgment_status)}</small></div><div class="metric"><label>Оценка результата</label><strong style="font-size:16px">Не определена</strong><small>Расчётные признаки ≠ итоговое суждение</small></div></div>${r.contact_evidence?renderContactEvidence(r.contact_evidence,r.chart.moment_utc,esc,dateRU):p.intent_kind==='CAREER'?'':`<div class="section-mini">Пути совершенствования</div><div class="small-note">Горизонт: 30 суток. Проверены прямые контакты выбранных сигнификаторов. Для лунной последовательности и косвенных кандидатов выберите тип «Контакт / встреча» и поддерживаемый сценарий.</div><div class="path-list">${paths}</div>`}${roleReasons}${renderCareerEvidence(r,esc)}${renderSemanticEvidence(r,esc,dateRU,active.input)}${renderMethodEvidence(r)}<div class="section-mini">Экспертные свидетельства</div><div class="evidence-list">${evidence}</div><div class="section-mini">Неизвестное / ограничения</div><ul class="unknown-list">${unknown}</ul><div class="info-box">${esc(j.expert_text)}</div><p class="small-note">Хэш исходных данных: <span style="overflow-wrap:anywhere">${esc(r.chart.source_chart_hash)}</span><br>Версия: ${esc(j.calculation_version)}<br>Профиль: ${esc(j.method_profile)}</p><div class="action-row"><button type="button" class="secondary-button" data-tab="chart">← К карте</button><button type="button" class="secondary-button" data-action="download-record">Сохранить разбор</button></div>`;
   }
   function renderAll(){renderChart();renderInterpretation();drawArchive()}
 
@@ -249,6 +255,11 @@ import {renderSemanticEvidence} from './src/semantic-view.mjs';
     $('subjectHouse').value=input.house_path?.[0]||'';
     $('turnedHouse').value=input.house_path?.[1]||'';
     $('lockRoles').checked=input.roles_locked;
+    const career=input.career_options;
+    $('careerScenario').value=career?.scenario_code||'';$('careerPredicate').value=career?.event_predicate||'';
+    $('careerPerspective').value=career?.perspective||'SELF';$('employmentState').value=career?.employment_state||'UNKNOWN';
+    $('employmentRelation').value=career?.employment_relation||'UNKNOWN';$('moneyContext').value=career?.money_context||'UNKNOWN';
+    $('careerOutcome').value=career?.outcome_description||'';$('acknowledgeCareerRoles').checked=career?.acknowledge_l1_l10===true;
     $('contactKind').value=input.contact_options?.question_kind||'';
     $('contactPredicate').value=input.scenario_options?.event_predicate||'UNKNOWN';
     const rel=input.relationship_options;
@@ -363,8 +374,9 @@ import {renderSemanticEvidence} from './src/semantic-view.mjs';
   $('intent').addEventListener('change',()=>syncContactForm(true));
   $('contactKind').addEventListener('change',()=>syncContactForm(true));
   $('relationshipKind').addEventListener('change',()=>syncContactForm(true));
+  ['careerScenario','careerPredicate','careerPerspective','employmentState','employmentRelation','moneyContext'].forEach(id=>$(id).addEventListener('change',()=>{syncContactForm();$('acknowledgeCareerRoles').checked=false;}));
   ['relationshipScenario','relationshipRole','relationshipState','relationshipPredicate','thirdPartyCount'].forEach(id=>$(id).addEventListener('change',()=>{$('approveRelationshipRoles').checked=false;}));
-  ['subjectHouse','turnedHouse','relay','ownerId','speakerId'].forEach(id=>$(id).addEventListener('change',()=>{$('approveContactRoles').checked=false;$('approveRelationshipRoles').checked=false;}));
+  ['subjectHouse','turnedHouse','relay','ownerId','speakerId'].forEach(id=>$(id).addEventListener('change',()=>{$('approveContactRoles').checked=false;$('approveRelationshipRoles').checked=false;$('acknowledgeCareerRoles').checked=false;}));
   $('subjectHouse').addEventListener('change',updateDerived);
   $('turnedHouse').addEventListener('change',updateDerived);
   $('questionForm').addEventListener('submit',createChart);

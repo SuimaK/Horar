@@ -1,0 +1,1831 @@
+[
+  {
+    "id": "CAR19-OK-GET_JOB",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-ACCEPT_OFFER",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "ACCEPT_OFFER",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-KEEP_JOB",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "KEEP_JOB",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-JOB_LOSS",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "JOB_LOSS",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-CHANGE_JOB",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "CHANGE_JOB",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-PROMOTION",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "PROMOTION",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-COMPARE_JOBS",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "COMPARE_JOBS",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-BOSS_RELATION",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "BOSS_RELATION",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-SALARY_OUTLOOK",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "SALARY_OUTLOOK",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10,
+        "employer_money_house": 11,
+        "querent_money_house": 2
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-WAGE_PAYMENT",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "WAGE_PAYMENT",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10,
+        "employer_money_house": 11,
+        "querent_money_house": 2
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-OK-WORK_CONDITIONS",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "WORK_CONDITIONS",
+      "status": "EVIDENCE_REVIEW_ONLY",
+      "reason_codes": [
+        "NO_AUTOMATED_CAREER_VERDICT"
+      ],
+      "evidence_summary": [
+        {
+          "evidence_id": "path-1",
+          "kind": "PATH",
+          "source_module": "v1.6",
+          "path_id": "path-demo",
+          "expert_status": "UNRESOLVED"
+        },
+        {
+          "evidence_id": "cond-job",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "L10_ANGULAR",
+          "dimension": "CAREER"
+        },
+        {
+          "evidence_id": "rec-1",
+          "kind": "RECEPTION",
+          "source_module": "v1.1",
+          "from_role": "CAREER",
+          "toward_role": "QUERENT",
+          "polarity": "MIXED"
+        },
+        {
+          "evidence_id": "funds",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "EMPLOYER_FUNDS_CONDITION",
+          "dimension": "EMPLOYER_FUNDS"
+        },
+        {
+          "evidence_id": "current",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "CURRENT_JOB_CONDITION",
+          "dimension": "CURRENT_JOB"
+        },
+        {
+          "evidence_id": "alternative",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "NEXT_JOB_CONDITION",
+          "dimension": "ALTERNATIVE_JOB"
+        },
+        {
+          "evidence_id": "offer",
+          "kind": "CONDITION",
+          "source_module": "v1.2",
+          "condition_code": "OFFER_QUALITY_FACTORS",
+          "dimension": "JOB_QUALITY"
+        }
+      ],
+      "house_context": {
+        "career_house": 10
+      },
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-PREDICATE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_CLARIFICATION",
+      "reason_codes": [
+        "EVENT_PREDICATE_MISMATCH"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-V17_NOT_APPLICABLE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_METHOD_REVIEW",
+      "reason_codes": [
+        "V17_ROUTER_NOT_APPLICABLE_TO_CAREER"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-THIRD_PARTY",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_EXPERT_REVIEW",
+      "reason_codes": [
+        "THIRD_PARTY_TURNED_HOUSE_REQUIRED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-STATE_MISMATCH",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "KEEP_JOB",
+      "status": "NEEDS_CLARIFICATION",
+      "reason_codes": [
+        "EMPLOYMENT_STATE_MISMATCH"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-RELATION_UNKNOWN",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_CLARIFICATION",
+      "reason_codes": [
+        "EMPLOYMENT_RELATION_UNKNOWN"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-FREELANCE_NOT_PAYROLL",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "WAGE_PAYMENT",
+      "status": "NEEDS_EXPERT_REVIEW",
+      "reason_codes": [
+        "SERVICE_PROVIDER_OR_BUSINESS_RULES_REQUIRED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-UNAPPROVED",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_ROLE_APPROVAL",
+      "reason_codes": [
+        "ROLE_ASSIGNMENT_NOT_APPROVED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-CROSS_CHART_ROLES",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_ROLE_APPROVAL",
+      "reason_codes": [
+        "ROLE_CONTEXT_MISMATCH"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-WRONG_METHOD",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_METHOD_REVIEW",
+      "reason_codes": [
+        "METHOD_PROFILE_MISMATCH"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-PLANET_OUTSIDE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_ROLE_APPROVAL",
+      "reason_codes": [
+        "INVALID_CORE_SIGNIFICATOR"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-ROLE_COLLISION",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_EXPERT_REVIEW",
+      "reason_codes": [
+        "SHARED_SIGNIFICATOR_UNRESOLVED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-L6_AS_JOB",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_METHOD_REVIEW",
+      "reason_codes": [
+        "L10_REQUIRED_FOR_CAREER"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-ROLE_PROVENANCE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_ROLE_APPROVAL",
+      "reason_codes": [
+        "ROLE_PROVENANCE_NOT_LOCKED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-NO_CRITERION",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "NEEDS_METHOD_REVIEW",
+      "reason_codes": [
+        "EVENT_CRITERION_NOT_APPROVED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-CHANGE_ALT_UNAPPROVED",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "CHANGE_JOB",
+      "status": "NEEDS_EXPERT_REVIEW",
+      "reason_codes": [
+        "ALTERNATIVE_JOB_ROLE_OPEN"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-CHANGE_ALT_COLLISION",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "CHANGE_JOB",
+      "status": "NEEDS_EXPERT_REVIEW",
+      "reason_codes": [
+        "ALTERNATIVE_JOB_ROLE_COLLISION"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-COMPARE_ALT_METHOD",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "COMPARE_JOBS",
+      "status": "NEEDS_METHOD_REVIEW",
+      "reason_codes": [
+        "ALTERNATIVE_ASSIGNMENT_BASIS_OPEN"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-PROMOTION_OPEN",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "PROMOTION",
+      "status": "NEEDS_EXPERT_REVIEW",
+      "reason_codes": [
+        "PROMOTION_ROLE_OPEN"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-BOSS_OPEN",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "BOSS_RELATION",
+      "status": "NEEDS_EXPERT_REVIEW",
+      "reason_codes": [
+        "BOSS_ROLE_OPEN"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-SALARY_SOURCE_UNKNOWN",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "SALARY_OUTLOOK",
+      "status": "NEEDS_CLARIFICATION",
+      "reason_codes": [
+        "PAYMENT_SOURCE_UNKNOWN"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-CLIENT_PAYMENT_NOT_PAYROLL",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "WAGE_PAYMENT",
+      "status": "NEEDS_EXPERT_REVIEW",
+      "reason_codes": [
+        "CLIENT_OR_OWNER_PAYMENT_DIFFERENT_HOUSES"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-PAYROLL_WRONG_11",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "WAGE_PAYMENT",
+      "status": "NEEDS_METHOD_REVIEW",
+      "reason_codes": [
+        "PAYROLL_HOUSE_MAPPING_MISMATCH"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-PAYROLL_WRONG_2",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "SALARY_OUTLOOK",
+      "status": "NEEDS_METHOD_REVIEW",
+      "reason_codes": [
+        "PAYROLL_HOUSE_MAPPING_MISMATCH"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-SIXTH_FALSE_JOB",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "ACCEPT_OFFER",
+      "status": "NEEDS_METHOD_REVIEW",
+      "reason_codes": [
+        "L6_NOT_DEFAULT_JOB_SIGNIFICATOR"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-NO_EVIDENCE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "EVIDENCE_INCOMPLETE",
+      "reason_codes": [
+        "NO_REFERENCED_EVIDENCE"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-DUPLICATE_TRUSTED",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "DUPLICATE_OR_INVALID_TRUSTED_ID"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-CROSS_CHART_EVIDENCE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "UNVERIFIED_OR_CROSS_CHART_EVIDENCE"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-NONEXISTENT_EVIDENCE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "UNVERIFIED_OR_CROSS_CHART_EVIDENCE"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-BAD_PATH_SOURCE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "INVALID_PATH_SOURCE_OR_PREDICATE"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-FALSE_PATH_VERDICT",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "INVALID_PATH_SOURCE_OR_PREDICATE"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-SUPPORTED_NO_REVIEW",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "PATH_NO_EXPERT_REVIEW"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-BLOCKED_NO_OBSTACLE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "BLOCKED_PATH_WITHOUT_OBSTACLE"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-BLOCKED_UNKNOWN_OBSTACLE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "BLOCKED_PATH_OBSTACLE_REFERENCE_INVALID"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-BLOCKED_SELF_OBSTACLE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "BLOCKED_PATH_OBSTACLE_REFERENCE_INVALID"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-BAD_RECEPTION",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "BOSS_RELATION",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "INVALID_RECEPTION_DIRECTION"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-BAD_CONDITION_SOURCE",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "KEEP_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "INVALID_CONDITION_SOURCE"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-UNKNOWN_KIND",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "UNTRUSTED_EVIDENCE",
+      "reason_codes": [
+        "UNKNOWN_EVIDENCE_KIND"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-NO_PATH_GET_JOB",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "GET_JOB",
+      "status": "EVIDENCE_INCOMPLETE",
+      "reason_codes": [
+        "EVENT_PATH_REQUIRED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-NO_CONDITION_KEEP",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "KEEP_JOB",
+      "status": "EVIDENCE_INCOMPLETE",
+      "reason_codes": [
+        "CONDITION_OR_RECEPTION_REQUIRED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-NO_RECEPTION_BOSS",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "BOSS_RELATION",
+      "status": "EVIDENCE_INCOMPLETE",
+      "reason_codes": [
+        "BOSS_RECEPTION_REQUIRED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-NO_EMPLOYER_FUNDS",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "WAGE_PAYMENT",
+      "status": "EVIDENCE_INCOMPLETE",
+      "reason_codes": [
+        "EMPLOYER_MONEY_CONTEXT_REQUIRED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-NO_TWO_JOBS",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "COMPARE_JOBS",
+      "status": "EVIDENCE_INCOMPLETE",
+      "reason_codes": [
+        "BOTH_JOB_CONDITIONS_REQUIRED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  },
+  {
+    "id": "CAR19-NO_OFFER_QUALITY",
+    "output": {
+      "schema_version": "1.9",
+      "question_id": "q-career-demo",
+      "chart_id": "chart-career-demo",
+      "scenario_code": "ACCEPT_OFFER",
+      "status": "EVIDENCE_INCOMPLETE",
+      "reason_codes": [
+        "OFFER_QUALITY_EVIDENCE_REQUIRED"
+      ],
+      "evidence_summary": [],
+      "house_context": {},
+      "can_issue_client_verdict": false,
+      "final_prediction": null,
+      "timing_prediction": null,
+      "limitations": [
+        "EVIDENCE_ONLY_NOT_REAL_WORLD_PREDICTION",
+        "FRAWLEY_2014_NOT_FULLY_VERIFIED",
+        "TRUSTED_INPUTS_REQUIRE_INDEPENDENT_SERVER_VERIFICATION"
+      ]
+    }
+  }
+]

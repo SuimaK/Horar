@@ -7,6 +7,7 @@ import {loadSwiss,constants,rules,payload} from './helpers/live-demo.mjs';
 import {renderAssembly,renderContactEvidence} from '../src/contact-view.mjs';
 import {verifyArchive,verifyArchiveRecord} from '../src/archive.mjs';
 import {renderSemanticEvidence} from '../src/semantic-view.mjs';
+import {renderCareerEvidence} from '../src/career-view.mjs';
 const swe=await loadSwiss(),result=await build(payload,swe,constants,rules);
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const source=fs.readFileSync(new URL('../app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
@@ -14,7 +15,7 @@ function open(records=[]){
  const dom=new JSDOM(html,{url:'https://example.test/Horar/',runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window;w.structuredClone=structuredClone;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
  w.renderAssembly=renderAssembly;w.renderContactEvidence=renderContactEvidence;
- w.renderSemanticEvidence=renderSemanticEvidence;w.verifyArchive=verifyArchive;w.verifyArchiveRecord=verifyArchiveRecord;
+ w.renderCareerEvidence=renderCareerEvidence;w.renderSemanticEvidence=renderSemanticEvidence;w.verifyArchive=verifyArchive;w.verifyArchiveRecord=verifyArchiveRecord;
  w.horaryBuild=p=>build(p,swe,constants,rules);w.alert=()=>{};
  w.localStorage.setItem('horary-iphone-records-v1',JSON.stringify(records));
  w.eval(source);
@@ -186,5 +187,27 @@ test('new calculation is not committed if its storage write fails',async()=>{
  $('questionForm').dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
  await settle(()=>$('formError').textContent.includes('Не удалось сохранить расчёт'));
  assert.equal(w.localStorage.getItem('horary-iphone-records-v1'),before);assert.equal($('questionText').value,'Новый вопрос');
+ dom.window.close();
+});
+test('v1.9 UI preserves career scenario, X-house selection and payroll context in revisions',async()=>{
+ const {dom,w,$,change}=open();change('intent','CAREER');
+ assert.equal($('careerOptions').hidden,false);assert.equal($('relationshipOptions').hidden,true);assert.equal($('contactOptions').hidden,true);
+ change('careerScenario','SALARY_OUTLOOK');change('careerPredicate','SALARY_CONDITIONS_ASSESSED');change('employmentState','EMPLOYED');change('employmentRelation','EMPLOYEE');change('moneyContext','EMPLOYER_PAYROLL');change('subjectHouse','10');
+ $('lockRoles').checked=true;$('acknowledgeCareerRoles').checked=true;
+ $('questionText').value='Учебный пример условий зарплаты';$('latitude').value='51.5074';$('longitude').value='-0.1278';$('momentLocal').value='2025-01-20T12:00:00';$('offset').value='+00:00';
+ $('questionForm').dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
+ await settle(()=>$('interpretationContent').textContent.includes('РАБОТА И КАРЬЕРА · v1.9'));
+ assert.match($('interpretationContent').textContent,/Деньги работодателя · XI/);assert.match($('interpretationContent').textContent,/Личные деньги · II/);
+ assert.match($('interpretationContent').textContent,/Независимо утверждённый экспертный реестр ролей отсутствует/);
+ const saved=JSON.parse(w.localStorage.getItem('horary-iphone-records-v1'))[0].revisions[0];assert.equal(saved.result.career_evidence.status,'NEEDS_ROLE_APPROVAL');assert.equal(saved.result.career_evidence.final_prediction,null);
+ w.document.querySelector('[data-action="revise"]').click();assert.equal($('careerScenario').value,'SALARY_OUTLOOK');assert.equal($('moneyContext').value,'EMPLOYER_PAYROLL');assert.equal($('subjectHouse').value,'10');assert.equal($('acknowledgeCareerRoles').checked,true);
+ dom.window.close();
+});
+test('v1.9 UI rejects VI instead of silently replacing it with X',async()=>{
+ const {dom,w,$,change}=open();change('intent','CAREER');change('careerScenario','WORK_CONDITIONS');change('careerPredicate','WORK_CONDITIONS_ASSESSED');change('employmentState','EMPLOYED');change('employmentRelation','EMPLOYEE');change('subjectHouse','6');
+ $('questionText').value='Условия моей работы';$('latitude').value='51.5074';$('longitude').value='-0.1278';$('momentLocal').value='2025-01-20T12:00:00';$('offset').value='+00:00';
+ $('questionForm').dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
+ await settle(()=>$('formError').textContent.includes('выберите X дом'));
+ assert.equal($('subjectHouse').value,'6');assert.equal(JSON.parse(w.localStorage.getItem('horary-iphone-records-v1')).length,0);
  dom.window.close();
 });

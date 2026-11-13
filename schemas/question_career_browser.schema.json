@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.example.invalid/horary/browser/v2.4/CareerQuestionRecord.schema.json",
+  "title": "Browser career QuestionRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "question_id",
+    "revision",
+    "raw_text",
+    "recorded_at_utc",
+    "question_owner_id",
+    "relay_mode",
+    "intent",
+    "actors",
+    "chart_time_policy",
+    "roles_locked"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.9-browser"
+    },
+    "question_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "raw_text": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recorded_at_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "question_owner_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "relay_mode": {
+      "enum": [
+        "direct",
+        "on_behalf",
+        "about_other",
+        "unknown"
+      ]
+    },
+    "intent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "classification_status"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "EVENT",
+            "CONTACT",
+            "PRESERVATION",
+            "STATUS",
+            "QUALITY",
+            "COMPARISON",
+            "TIMING",
+            "RETURN",
+            "RECOVERY",
+            "LOCATION",
+            "PAST_FACT",
+            "CAREER"
+          ]
+        },
+        "classification_status": {
+          "enum": [
+            "CONFIRMED",
+            "AMBIGUOUS",
+            "NEEDS_CLARIFICATION"
+          ]
+        },
+        "notes": {
+          "type": "string"
+        }
+      }
+    },
+    "actors": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "actor_id",
+          "relation_to_owner"
+        ],
+        "properties": {
+          "actor_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "relation_to_owner": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "chart_time_policy": {
+      "enum": [
+        "astrologer_understood",
+        "user_confirmed_convention",
+        "event_time_separate",
+        "not_selected"
+      ]
+    },
+    "moment_utc": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "Z$"
+    },
+    "location_source": {
+      "enum": [
+        "astrologer",
+        "questioner",
+        "configured",
+        "not_selected"
+      ]
+    },
+    "roles_locked": {
+      "type": "boolean"
+    },
+    "context": {
+      "type": "string"
+    },
+    "method_profile": {
+      "enum": [
+        "frawley_early",
+        "oleshko_comparison"
+      ]
+    },
+    "question_provenance": {
+      "enum": [
+        "USER_CONFIRMED_MOMENT",
+        "DEMONSTRATION_NOT_ACTUAL_QUESTION",
+        "DOCUMENTED_ASTROLOGER_MOMENT"
+      ]
+    }
+  }
+}

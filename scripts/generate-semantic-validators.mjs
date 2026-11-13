@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import Ajv2020 from 'ajv/dist/2020.js';
 import standalone from 'ajv/dist/standalone/index.js';
 import {build} from 'esbuild';
-const schemas={validateIntentV17:'question_intent_v17.schema.json',validateRelationshipV18:'relationship_case_v18.schema.json',validateReviewV16:'expert_path_review_v16.schema.json'};
+const schemas={validateCareerV19:'career_case_v19.schema.json',validateIntentV17:'question_intent_v17.schema.json',validateRelationshipV18:'relationship_case_v18.schema.json',validateReviewV16:'expert_path_review_v16.schema.json'};
 const ajv=new Ajv2020({strict:false,allErrors:true,code:{source:true}});
 for(const [name,file] of Object.entries(schemas))ajv.addSchema(JSON.parse(fs.readFileSync(new URL('../schemas/'+file,import.meta.url))),name);
 const raw=new URL('./.semantic-validators.cjs',import.meta.url);

@@ -8,12 +8,13 @@ import {contactGate,evaluateContact} from './contact-semantics.mjs';
 import {questionScope,SENSITIVE_TOPICS} from './question-scope.mjs';
 import {prepareSemantics,relationshipFromCalculation,ROUTE_REASONS} from './semantic-flow.mjs';
 import {arbitrateEvidence} from './path-arbitration.mjs';
-export const ENGINE = 'horary-browser-2.3.0/moshier-wasm-v11-v18';
+import {prepareCareer,careerFromCalculation} from './career-flow.mjs';
+export const ENGINE = 'horary-browser-2.4.0/moshier-wasm-v11-v19';
 const NAMES = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn'];
 const LORDS = ['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const TARGETS = [[0,'CONJUNCTION'],[60,'SEXTILE'],[90,'SQUARE'],[120,'TRINE'],[180,'OPPOSITION'],[240,'TRINE'],[270,'SQUARE'],[300,'SEXTILE']];
 const SPECIAL = new Set(['RETURN','RECOVERY','LOCATION']);
-const INTENTS = new Set(['EVENT','CONTACT','RELATIONSHIP','PRESERVATION','STATUS','QUALITY','COMPARISON','TIMING','RETURN','RECOVERY','LOCATION','PAST_FACT']);
+const INTENTS = new Set(['EVENT','CONTACT','RELATIONSHIP','CAREER','PRESERVATION','STATUS','QUALITY','COMPARISON','TIMING','RETURN','RECOVERY','LOCATION','PAST_FACT']);
 const MS_DAY = 86400000;
 const iso = ms => new Date(ms).toISOString().slice(0,19)+'Z';
 const mod = n => (n%360+360)%360;
@@ -116,7 +117,7 @@ function makeAstronomy(api,constants){
 function question(v){
   const actors=[{actor_id:v.owner,relation_to_owner:'self'}];
   if(v.speaker!==v.owner)actors.push({actor_id:v.speaker,relation_to_owner:'speaker/relay'});
-  return {schema_version:v.intent==='RELATIONSHIP'?'1.8-browser':'1.0',question_id:v.qid,revision:v.revision,raw_text:v.input.raw_text,
+  return {schema_version:v.intent==='CAREER'?'1.9-browser':v.intent==='RELATIONSHIP'?'1.8-browser':'1.0',question_id:v.qid,revision:v.revision,raw_text:v.input.raw_text,
     recorded_at_utc:v.recorded,question_owner_id:v.owner,relay_mode:v.relay,
     intent:{kind:v.intent,classification_status:'CONFIRMED',notes:'Тип выбран пользователем; смысловая классификация текста не выполняется'},
     actors,chart_time_policy:'user_confirmed_convention',moment_utc:v.moment_utc,
@@ -250,7 +251,7 @@ function judgment(v,chart,roles,paths,rulesHash,ids){
   return {schema_version:'1.0',question_id:v.qid,method_profile:v.profile,processing_status:status,judgment_status:'NOT_APPLICABLE',roles_locked:v.roles_locked,event_assessment:why,outcome_quality:'UNKNOWN',benefit_for_querent:'UNKNOWN',timing:null,key_evidence:key,counterevidence:[],conditions:[],unknowns,calculation_version:ENGINE,rule_set_hash:rulesHash,source_chart_hash:chart.source_chart_hash,search_coverage:paths.search_coverage,limitations:['Астрология не является научно подтверждённым методом прогноза.','Выводы YES/NO/TIMING заблокированы до методической приёмки.'],human_review:true,client_text:`${why} Карта и сигнификаторы рассчитаны технически; положительный или отрицательный прогноз не сформирован.`,expert_text:`Профиль: frawley_early. Семь традиционных планет; Региомонтанус; Moshier WASM. Статус ролей: ${roles.status}; прямых кандидатов: ${paths.paths.length}; покрытие: ${paths.search_coverage}. Текущая версия не является принятым смысловым интерпретатором.`};
 }
 export async function build(data,api,constants,rules){
-  const v=validate(data),semantic=prepareSemantics(v),astro=makeAstronomy(api,constants);
+  const v=validate(data),careerCase=prepareCareer(v),semantic=prepareSemantics(v),astro=makeAstronomy(api,constants);
   const now=new Date(v.ms),jd=api.dateToJulianDay(now);
   if(!Number.isFinite(jd))throw Error('Не удалось вычислить юлианскую дату');
   const {cusps,asc,mc}=astro.houses(jd,v.lat,v.lon),pos=astro.positions(jd);
@@ -264,6 +265,7 @@ export async function build(data,api,constants,rules){
   let gate=contactGate(v.input,roles);
   if(semantic.route&&semantic.route.status!=='READY_FOR_V16_EVIDENCE_ONLY')gate={status:semantic.route.status==='OUTSIDE_AUTOMATION_SCOPE'?'SAFETY_LIMITED':semantic.route.status,reason:ROUTE_REASONS[semantic.route.reason_codes[0]]||'Сценарий требует уточнения или отдельного тематического модуля.'};
   if(semantic.relationshipCase)gate={status:'TOPIC_MODULE_REQUIRED',reason:'Ветка отношений рассматривает отдельные направленные свидетельства; геометрия встречи не подменяет событие в отношениях.'};
+  if(careerCase)gate={status:'NEEDS_EXPERT_REVIEW',reason:'Для карьерного разбора нужны независимо утверждённые роли и критерии. Пока доступна только предварительная расчётная информация.'};
   const paths=pathSearch(v,chart,roles,astro,jd,gate),j=judgment(v,chart,roles,paths,ruleHash,ids);
   // Versions 1.1 and 1.2 are *additional evidence*, not amendments of ChartSnapshot 1.0.
   // The source hash and chart ID must be preserved across both independent modules.
@@ -279,7 +281,7 @@ export async function build(data,api,constants,rules){
   const live_gate=liveGate({question_kind:v.intent,roles_locked:roles.roles_locked,
     safety_tier:j.processing_status==='SAFETY_LIMITED'?'HIGH':'STANDARD',
     trace_recomputed_from_chart:true,all_channels_covered:false,semantic_perfection_review_complete:false});
-  const contact_evidence=v.intent==='RELATIONSHIP'?null:evaluateContact({input:v.input,chart,roles,astro,jd,search:contactCandidates,
+  const contact_evidence=['RELATIONSHIP','CAREER'].includes(v.intent)?null:evaluateContact({input:v.input,chart,roles,astro,jd,search:contactCandidates,
     gate:j.processing_status==='SAFETY_LIMITED'&&gate?{status:'SAFETY_LIMITED',reason:j.event_assessment}:gate});
   if(contact_evidence){
     j.processing_status=contact_evidence.status;
@@ -316,5 +318,11 @@ export async function build(data,api,constants,rules){
     j.event_assessment='Показаны раздельные символические свидетельства об отношении сторон и состоянии сигнификаторов. Событие и реальные чувства не установлены.';
     j.client_text=j.event_assessment;
   }else{result.relationship_evidence=null;result.relationship_context=null;}
+  if(careerCase&&j.processing_status!=='SAFETY_LIMITED'){
+    Object.assign(result,careerFromCalculation(careerCase,data,result));
+    j.processing_status=result.career_evidence.status==='NEEDS_CLARIFICATION'?'NEEDS_CLARIFICATION':'NEEDS_EXPERT_REVIEW';
+    j.event_assessment='Карьерный сценарий зафиксирован. Экспертно утверждённый реестр ролей отсутствует; показаны только предварительные вычисленные сведения.';
+    j.client_text=j.event_assessment;
+  }else{result.career_evidence=null;result.career_context=null;}
   return result;
 }
