@@ -10,6 +10,7 @@ import {prepareSemantics,relationshipFromCalculation,ROUTE_REASONS} from './sema
 import {arbitrateEvidence} from './path-arbitration.mjs';
 import {prepareCareer,careerFromCalculation} from './career-flow.mjs';
 import {calculateMethodCorrection,validateLatitude} from './method-corrections.mjs';
+import {buildSemanticReadingV21} from './interpretation-v21.mjs';
 import {trajectoryEvents,relativeEvents,directRoots,cachedAstronomy} from './corrective-geometry.mjs';
 export const ENGINE = 'horary-browser-2.5.0/moshier-wasm-method-2.0.1';
 const NAMES = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn'];
@@ -304,5 +305,7 @@ export async function build(data,api,constants,rules){
     j.client_text=j.event_assessment;
   }else{result.career_evidence=null;result.career_context=null;}
   if(sect_info.sect==='UNRESOLVED')j.unknowns.unshift('Достоинства и рецепции, не зависящие от секты, сохранены в MethodCorrectionEvidence 2.0.1; варианты триплицитета отмечены отдельно.');
+  // Additive, bounded semantic reading: never alters the chart or legacy contracts.
+  result.evidence.interpretation_v21=buildSemanticReadingV21(result,data);
   return result;
 }

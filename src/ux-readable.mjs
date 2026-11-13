@@ -62,7 +62,27 @@ export function readableWheel(result,{showAspects=false}={}){
  }
  return out+'</svg>';
 }
+function renderSemanticPreview21(data,escape){
+ const labels={ROLES_REQUIRED:'Нужен выбор и подтверждение домов',
+  TOPIC_METHOD_REQUIRED:'Для темы требуется отдельная методическая проверка',
+  EVENT_PATHS_REVIEW_ONLY:'Свидетельства события собраны для проверки',
+  EVIDENCE_REVIEW_ONLY:'Расчётные свидетельства без итогового суждения'};
+ const cards=(data.cards||[]).map(x=>
+  '<section class="reading-item reading-'+escape(x.key)+'"><h4>'+escape(x.title)+'</h4><p>'+escape(x.text)+'</p></section>').join('');
+ return '<section class="plain-reading" aria-label="Пошаговый разбор хорарной карты">'+
+ '<h3>Что показывает карта</h3><p class="reading-intro">'+
+ 'Пошаговый разбор рассчитанных свидетельств по традиционной методике. '+
+ 'Астрология не имеет установленной научной предсказательной достоверности.</p>'+
+ '<p class="reading-status">'+escape(labels[data.status]||'Сведения требуют проверки')+'</p>'+
+ '<div class="reading-points">'+cards+'</div>'+
+ '<p class="reading-topic">Этот анализ объясняет положение сигнификаторов, рецепции и пути совершенствования. '+
+ 'Он не подтверждает действительное отношение людей, наступление события или сроки.</p>'+
+ '<div class="reading-conclusion"><strong>Предварительное заключение</strong><p>'+
+ 'Обоснованный итоговый прогноз не сформирован: геометрические кандидаты требуют смысловой проверки, '+
+ 'а неполный поиск нельзя толковать как отрицательный ответ.</p></div></section>';
+}
 export function readableInterpretation(result,input,escape=defaultEscape){
+ if(result?.evidence?.interpretation_v21)return renderSemanticPreview21(result.evidence.interpretation_v21,escape);
  const roles=Array.isArray(result?.roles?.assignments)?result.roles.assignments:[];
  const correction=result?.evidence?.method_correction;
  const paragraphs=[];
