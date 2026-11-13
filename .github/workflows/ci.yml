@@ -1,0 +1,27 @@
+name: Horar integration acceptance
+
+on:
+  pull_request:
+  push:
+    branches: [main, "qa/**", "fix/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - name: Install reproducible dependencies
+        run: npm ci
+      - name: Run every JS regression / acceptance test
+        run: npm test
+      - name: Production build
+        run: npm run build
