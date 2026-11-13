@@ -9,6 +9,8 @@ import {verifyArchive,verifyArchiveRecord} from '../src/archive.mjs';
 import {renderSemanticEvidence} from '../src/semantic-view.mjs';
 import {renderCorrectionEvidence} from '../src/correction-view.mjs';
 import {renderCareerEvidence} from '../src/career-view.mjs';
+import {readableWheel,readableInterpretation} from '../src/ux-readable.mjs';
+import {findCities,findCityForLiveGps,offsetForLocalMoment,selectLocationCoordinates} from '../src/city-lookup.mjs';
 const swe=await loadSwiss(),result=await build(payload,swe,constants,rules);
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const source=fs.readFileSync(new URL('../app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
@@ -17,6 +19,8 @@ function open(records=[]){
  const w=dom.window;w.structuredClone=structuredClone;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
  w.renderAssembly=renderAssembly;w.renderContactEvidence=renderContactEvidence;
  w.renderCorrectionEvidence=renderCorrectionEvidence;w.renderCareerEvidence=renderCareerEvidence;w.renderSemanticEvidence=renderSemanticEvidence;w.verifyArchive=verifyArchive;w.verifyArchiveRecord=verifyArchiveRecord;
+ w.readableWheel=readableWheel;w.readableInterpretation=readableInterpretation;
+ w.findCities=findCities;w.findCityForLiveGps=findCityForLiveGps;w.offsetForLocalMoment=offsetForLocalMoment;w.selectLocationCoordinates=selectLocationCoordinates;
  w.horaryBuild=p=>build(p,swe,constants,rules);w.alert=()=>{};
  w.localStorage.setItem('horary-iphone-records-v1',JSON.stringify(records));
  w.eval(source);
