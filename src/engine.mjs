@@ -192,7 +192,7 @@ export function contactCandidates(astro,jd0,days=30,STEP=.125){
             const after=j===k?astro.position(jd0+root,name):samples[j+1][name];
             ingress ||= sign(before.longitude_deg)!==sign(after.longitude_deg);
             station ||= before.speed_deg_per_day*after.speed_deg_per_day<0 ||
-              (j===k&&Math.abs(after.speed_deg_per_day)<1e-7);
+              (j===k&&Math.abs(after.speed_deg_per_day)<1e-7&&Math.abs(before.speed_deg_per_day)>=1e-7);
           }
           contacts.push({a,b,aspect,days:rnd(root,8),lon_a:rnd(pa.longitude_deg,6),lon_b:rnd(pb.longitude_deg,6),sign_change:ingress,station_review:station});
         }
