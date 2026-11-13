@@ -21,6 +21,7 @@ export function prepareCareer(v){
 }
 export function careerFromCalculation(c,input,result){
   const {chart,roles,evidence}=result;
+  const correction=evidence.method_correction,essential=correction?.essential||evidence.essential,accidentals=correction?.accidentals||evidence.accidental.planets;
   if(c.question_id!==chart.question_id||c.chart_id!==chart.chart_id)throw Error('Карьерный вопрос и карта не совпадают.');
   for(const e of [evidence.essential,evidence.accidental])if(e&&(e.chart_id!==chart.chart_id||e.source_chart_hash!==chart.source_chart_hash))throw Error('Карьерные свидетельства относятся к другой карте.');
   const house=n=>{
@@ -43,10 +44,10 @@ export function careerFromCalculation(c,input,result){
   const source=[],add=e=>source.push({...e,id:`local19:${chart.source_chart_hash.slice(0,16)}:${source.length+1}`,question_id:chart.question_id,chart_id:chart.chart_id,source_chart_hash:chart.source_chart_hash});
   if(localConfirmed&&querent.lord!==career.lord){
     const actorByPlanet=new Map([[querent.lord,'QUERENT'],[career.lord,'CAREER']]);
-    if(c.scenario_code!=='BOSS_RELATION')for(const e of evidence.essential?.directional_receptions||[])if(actorByPlanet.has(e.from_planet)&&actorByPlanet.has(e.to_planet))add({kind:'RECEPTION',source_module:'v1.1',from_role:actorByPlanet.get(e.from_planet),toward_role:actorByPlanet.get(e.to_planet),polarity:e.polarity,dignity_kind:e.dignity_kind});
+    if(c.scenario_code!=='BOSS_RELATION')for(const e of essential?.directional_receptions||[])if(actorByPlanet.has(e.from_planet)&&actorByPlanet.has(e.to_planet))add({kind:'RECEPTION',source_module:correction?'v2.0.1':'v1.1',evidence_certainty:e.evidence_certainty||'CERTAIN',from_role:actorByPlanet.get(e.from_planet),toward_role:actorByPlanet.get(e.to_planet),polarity:e.polarity,dignity_kind:e.dignity_kind});
     for(const [role,h] of Object.entries(candidates)){
-      const a=evidence.accidental.planets.find(x=>x.planet===h.lord),d=evidence.essential?.placements.find(x=>x.planet===h.lord);
-      add({kind:'CONDITION',source_module:'v1.2',essential_source_module:'v1.1',actor_role:role,planet:h.lord,dimension:role==='CAREER'?(c.employment_state==='EMPLOYED'?'CURRENT_JOB':'JOB_QUALITY'):role,house:a.house,house_class:a.house_class,motion:a.motion.direction,solar_state:a.solar.state,own_dignities:d?.own_essential_dignities||[],own_debilities:d?.own_essential_debilities||[]});
+      const a=accidentals.find(x=>x.planet===h.lord),d=essential?.placements.find(x=>x.planet===h.lord);
+      add({kind:'CONDITION',source_module:correction?'v2.0.1':'v1.2',essential_source_module:correction?'v2.0.1':'v1.1',actor_role:role,planet:h.lord,dimension:role==='CAREER'?(c.employment_state==='EMPLOYED'?'CURRENT_JOB':'JOB_QUALITY'):role,house:a.house,house_class:a.house_class,motion:a.motion.direction,solar_state:a.solar.state,own_dignities:d?.own_essential_dignities||[],own_debilities:d?.own_essential_debilities||[]});
     }
   }
   // No authenticated expert role registry exists in this browser-only app.

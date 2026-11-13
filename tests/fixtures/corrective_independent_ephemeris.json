@@ -1,0 +1,104 @@
+{
+  "source": "Independent pyswisseph 2.10.03 Moshier; Python bracketing, no JS engine import",
+  "root_tolerance_seconds": 2,
+  "chronology_cases": [
+    {
+      "case": "INGRESS_AFTER",
+      "start_jd": 2460683.346363992,
+      "a": "Moon",
+      "b": "Mercury",
+      "aspect_target": 240,
+      "aspect_day_offset": 0.020833333488553762,
+      "event": {
+        "planet": "Moon",
+        "type": "INGRESS",
+        "jd": 2460683.4244720917,
+        "day_offset": 0.07810809975489974
+      },
+      "sign_change_before_perfection": false,
+      "station_before_perfection": false,
+      "before_events": []
+    },
+    {
+      "case": "INGRESS_BEFORE",
+      "start_jd": 2460679.1188779487,
+      "a": "Moon",
+      "b": "Venus",
+      "aspect_target": 0,
+      "aspect_day_offset": 0.06216084724292159,
+      "event": {
+        "planet": "Moon",
+        "type": "INGRESS",
+        "jd": 2460679.139711282,
+        "day_offset": 0.020833333488553762
+      },
+      "sign_change_before_perfection": true,
+      "station_before_perfection": false,
+      "before_events": [
+        {
+          "planet": "Moon",
+          "type": "INGRESS",
+          "jd": 2460679.139711282
+        }
+      ]
+    },
+    {
+      "case": "INGRESS_AFTER",
+      "start_jd": 2460694.5634033154,
+      "a": "Sun",
+      "b": "Moon",
+      "aspect_target": 240,
+      "aspect_day_offset": 0.020833333488553762,
+      "event": {
+        "planet": "Moon",
+        "type": "INGRESS",
+        "jd": 2460694.64790539,
+        "day_offset": 0.08450207440182567
+      },
+      "sign_change_before_perfection": false,
+      "station_before_perfection": false,
+      "before_events": []
+    },
+    {
+      "case": "INGRESS_AFTER",
+      "start_jd": 2460724.4540941776,
+      "a": "Sun",
+      "b": "Moon",
+      "aspect_target": 240,
+      "aspect_day_offset": 0.020833333488553762,
+      "event": {
+        "planet": "Moon",
+        "type": "INGRESS",
+        "jd": 2460724.513060063,
+        "day_offset": 0.058965885546058416
+      },
+      "sign_change_before_perfection": false,
+      "station_before_perfection": false,
+      "before_events": []
+    }
+  ],
+  "antiscion": {
+    "start_jd": 2460676.5,
+    "a": "Moon",
+    "b": "Venus",
+    "fixed_antiscion_longitude_deg": 212.28789915922152,
+    "exact_day_offset": 20.87425645068288,
+    "body_separation_at_exact": 136.4335221445952
+  },
+  "sunrise": {
+    "jd": 2460676.8423232213,
+    "latitude_deg": 51.5074,
+    "longitude_deg": -0.1278,
+    "altitude_deg": -3.900988801526649e-08
+  },
+  "cusp": {
+    "jd": 2460676.5,
+    "latitude_deg": 51.5074,
+    "longitude_deg": -0.1278,
+    "planet": "Saturn",
+    "planet_longitude_deg": 344.52410575437875,
+    "raw_house": 5,
+    "effective_house": 6,
+    "next_cusp_deg": 345.77879085271917
+  }
+}

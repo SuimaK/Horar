@@ -9,7 +9,9 @@ import {questionScope,SENSITIVE_TOPICS} from './question-scope.mjs';
 import {prepareSemantics,relationshipFromCalculation,ROUTE_REASONS} from './semantic-flow.mjs';
 import {arbitrateEvidence} from './path-arbitration.mjs';
 import {prepareCareer,careerFromCalculation} from './career-flow.mjs';
-export const ENGINE = 'horary-browser-2.4.0/moshier-wasm-v11-v19';
+import {calculateMethodCorrection,validateLatitude} from './method-corrections.mjs';
+import {trajectoryEvents,relativeEvents,directRoots,cachedAstronomy} from './corrective-geometry.mjs';
+export const ENGINE = 'horary-browser-2.5.0/moshier-wasm-method-2.0.1';
 const NAMES = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn'];
 const LORDS = ['Mars','Venus','Mercury','Moon','Sun','Mercury','Venus','Mars','Jupiter','Saturn','Saturn','Jupiter'];
 const TARGETS = [[0,'CONJUNCTION'],[60,'SEXTILE'],[90,'SQUARE'],[120,'TRINE'],[180,'OPPOSITION'],[240,'TRINE'],[270,'SQUARE'],[300,'SEXTILE']];
@@ -56,7 +58,8 @@ export function validate(data){
   if(roundTrip!==localPart)throw Error('Несуществующая календарная дата или время');
   if(data.moment_utc!==undefined&&(typeof data.moment_utc!=='string'||!data.moment_utc.endsWith('Z')||Date.parse(data.moment_utc)!==ms))throw Error('UTC-время не совпадает с местным моментом');
   const lat=data.latitude_deg,lon=data.longitude_deg;
-  if(typeof lat!=='number'||typeof lon!=='number'||!Number.isFinite(lat)||!Number.isFinite(lon)||Math.abs(lat)>89||Math.abs(lon)>180)throw Error('Введите широту −89…89 и долготу −180…180 конечными числами');
+  validateLatitude(lat);
+  if(typeof lon!=='number'||!Number.isFinite(lon)||Math.abs(lon)>180)throw Error('Введите координаты конечными числами: долгота −180…180');
   if(data.house_system!=='REGIOMONTANUS')throw Error('Поддерживается только система Региомонтануса');
   if(data.method_profile!=='frawley_early')throw Error('Недоступный методический профиль');
   if(!INTENTS.has(data.intent_kind||'EVENT'))throw Error('Неизвестный тип вопроса');
@@ -109,7 +112,7 @@ function makeAstronomy(api,constants){
     const h=api.calculateHouses(jd,lat,lon,constants.regiomontanus);
     if(!Array.isArray(h.cusps)||h.cusps.length!==13)throw Error('Нужны 12 куспидов домов');
     const cusps=h.cusps.slice(1).map(mod);
-    if(cusps.some((c,i)=>!(mod(cusps[(i+1)%12]-c)>0&&mod(cusps[(i+1)%12]-c)<180)))throw Error('Некорректная сетка домов для выбранной широты');
+    if(cusps.some((c,i)=>!Number.isFinite(c)||!(mod(cusps[(i+1)%12]-c)>0&&mod(cusps[(i+1)%12]-c)<180))||Math.abs(cusps.reduce((sum,c,i)=>sum+mod(cusps[(i+1)%12]-c),0)-360)>1e-7||![h.ascendant,h.mc].every(Number.isFinite))throw Error('Некорректная сетка домов для выбранной широты');
     return {cusps,asc:mod(h.ascendant),mc:mod(h.mc)};
   }
   return {position,positions,houses};
@@ -150,53 +153,26 @@ function currentAspects(chart){
   }
   return out.sort((a,b)=>a.orb_deg-b.orb_deg);
 }
-const unwrap=(value,ref)=>ref+mod(value-ref+180)-180;
 export function contactCandidates(astro,jd0,days=30,STEP=.125){
-  const ticks=Array.from({length:Math.round(days/STEP)+1},(_,i)=>i*STEP);
-  const samples=ticks.map(t=>astro.positions(jd0+t)),contacts=[];
+  if(!Number.isFinite(days)||days<=0||days>365)throw Error('Технический предел поиска — 365 суток');
+  const cached=cachedAstronomy(astro),contacts=[],events=trajectoryEvents(cached,jd0,NAMES,0,days);
   for(let ia=0;ia<NAMES.length;ia++)for(let ib=ia+1;ib<NAMES.length;ib++){
-    const a=NAMES[ia],b=NAMES[ib];let prev=mod(samples[0][b].longitude_deg-samples[0][a].longitude_deg);
-    for(let k=0;k<ticks.length-1;k++){
-      const x1=ticks[k],x2=ticks[k+1];
-      const cur=unwrap(mod(samples[k+1][b].longitude_deg-samples[k+1][a].longitude_deg),prev);
-      const lo=Math.min(prev,cur),hi=Math.max(prev,cur);
-      if(hi-lo>=180)throw Error('Слишком крупный шаг аспектного поиска');
-      for(const [target,aspect] of TARGETS){
-        const n1=Math.floor((lo-target)/360)-1,n2=Math.ceil((hi-target)/360)+1;
-        for(let n=n1;n<=n2;n++){
-          const goal=target+360*n;
-          if(goal<lo-1e-9||goal>hi+1e-9||Math.abs(cur-prev)<1e-11)continue;
-          let left=x1,right=x2,fl=prev-goal,root;
-          if(Math.abs(fl)<1e-8)root=left;
-          else{
-            for(let iteration=0;iteration<24;iteration++){
-              const mid=(left+right)/2;
-              const am=astro.position(jd0+mid,a).longitude_deg;
-              const bm=astro.position(jd0+mid,b).longitude_deg;
-              const fm=unwrap(mod(bm-am),prev)-goal;
-              if(fm*fl<=0)right=mid;
-              else{left=mid;fl=fm;}
-            }
-            root=(left+right)/2;
-          }
-          if(root<=1e-6)continue;
-          const pa=astro.position(jd0+root,a),pb=astro.position(jd0+root,b);
-          if(!signCompatible(pa.longitude_deg,pb.longitude_deg,aspect))continue;
-          if([pa.longitude_deg,pb.longitude_deg].some(l=>l%30<1e-5||30-l%30<1e-5))continue;
-          if(contacts.some(x=>x.a===a&&x.b===b&&x.aspect===aspect&&Math.abs(x.days-root)<.0001))continue;
-          let ingress=false,station=false;
-          for(let j=0;j<=k;j++)for(const name of [a,b]){
-            ingress ||= sign(samples[j][name].longitude_deg)!==sign(samples[j+1][name].longitude_deg);
-            station ||= samples[j][name].speed_deg_per_day*samples[j+1][name].speed_deg_per_day<0;
-          }
-          contacts.push({a,b,aspect,days:rnd(root,8),lon_a:rnd(pa.longitude_deg,6),lon_b:rnd(pb.longitude_deg,6),sign_change:ingress,station_review:station});
-        }
-      }
-      prev=cur;
+    const a=NAMES[ia],b=NAMES[ib];
+    for(const c of directRoots(cached,jd0,a,b,0,days)){
+      const root=c.day_offset;if(root<=1e-6)continue;
+      const pa=cached.position(jd0+root,a),pb=cached.position(jd0+root,b);
+      // Legacy 1.5 omits sign-boundary contacts; the additive 2.0.1 channel
+      // retains them explicitly as coincident/after-ingress review candidates.
+      if(!signCompatible(pa.longitude_deg,pb.longitude_deg,c.aspect))continue;
+      if([pa.longitude_deg,pb.longitude_deg].some(l=>l%30<1e-5||30-l%30<1e-5))continue;
+      const relevant=relativeEvents(events.filter(e=>[a,b].includes(e.planet)),root);
+      const prior=relevant.filter(e=>e.before_perfection===true),coincident=relevant.filter(e=>e.before_perfection===null);
+      contacts.push({a,b,aspect:c.aspect,days:rnd(root,8),lon_a:rnd(pa.longitude_deg,6),lon_b:rnd(pb.longitude_deg,6),sign_change:prior.some(e=>e.event_type==='INGRESS'),station_review:prior.some(e=>e.event_type==='STATION'),preceding_events:prior,coincident_events:coincident});
     }
   }
   return contacts.sort((a,b)=>a.days-b.days);
 }
+
 export function verifyChartTrace(chart,astro,jd){
   const h=astro.houses(jd,chart.latitude_deg,chart.longitude_deg),p=astro.positions(jd);
   const close=(a,b)=>Number.isFinite(a)&&Number.isFinite(b)&&Math.abs(a-b)<1e-7;
@@ -222,8 +198,8 @@ function pathSearch(v,chart,roles,astro,jd,gate){
   const direct=all.filter(c=>c.a===a&&c.b===b||c.a===b&&c.b===a);
   for(const [i,c] of direct.slice(0,50).entries()){
     const interfering=all.filter(x=>x.days<c.days-1e-6&&new Set([x.a,x.b,a,b]).size===3&&!(x.a===a&&x.b===b||x.a===b&&x.b===a));
-    const status=c.sign_change||c.station_review?'SIGN_CHANGE_REVIEW':interfering.length?'INTERVENING_CONTACT_REVIEW':'DIRECT_GEOMETRY';
-    p.paths.push({path_id:`path:${chart.chart_id}:${i+1}`,channel:'DIRECT',geometry_status:status,participants:[a,b],contacts:[{contact_utc:iso(v.ms+Math.round(c.days*MS_DAY)),aspect:c.aspect,planet_a:c.a,planet_b:c.b,sign_change_review:c.sign_change}],rule_ids:['G-001',interfering.length||c.sign_change?'G-006':'G-001'],review_reasons:[...(c.sign_change||c.station_review?['Смена знака/скорости до контакта']:[]),...(interfering.length?[`${interfering.length} других точных контактов с сигнификаторами до даты`]:[])]});
+    const status=c.coincident_events.length?'INTERRUPTION_REVIEW':c.sign_change?'SIGN_CHANGE_REVIEW':c.station_review?'SPEED_REVIEW':interfering.length?'INTERVENING_CONTACT_REVIEW':'DIRECT_GEOMETRY';
+    p.paths.push({path_id:`path:${chart.chart_id}:${i+1}`,channel:'DIRECT',geometry_status:status,participants:[a,b],contacts:[{contact_utc:iso(v.ms+Math.round(c.days*MS_DAY)),aspect:c.aspect,planet_a:c.a,planet_b:c.b,sign_change_review:c.sign_change}],rule_ids:['G-001',interfering.length||c.sign_change?'G-006':'G-001'],review_reasons:[...(c.coincident_events.length?['COINCIDENT_EVENT_REVIEW: порядок события и аспекта не разрешён в пределах 2 секунд']:[]),...(c.sign_change||c.station_review?['Смена знака/скорости до контакта']:[]),...(interfering.length?[`${interfering.length} других точных контактов с сигнификаторами до даты`]:[])]});
   }
   return p;
 }
@@ -307,11 +283,14 @@ export async function build(data,api,constants,rules){
     evidence:{sect_info,essential,accidental,joined,role_receptions,role_assembly,live_gate,
       numerical_trace:{schema_version:'1.4',trace_recomputed_from_chart:true,source_chart_hash:hash,
         source_versions:{chart:'1.4',dignity:'1.1',accidental:'1.2',semantic:'1.3'},
-        sampling_hours:3,all_channels_covered:false,can_issue_client_verdict:false,final_prediction:null,timing_prediction:null},
+        sampling_hours:null,sampling_method:'ADAPTIVE_MIDPOINT_SPEED_CURVATURE',all_channels_covered:false,can_issue_client_verdict:false,final_prediction:null,timing_prediction:null},
       limits:['Нет проверки совершенствования с учётом всех каналов и препятствий',
         'Версия Фроули 2014 не сверена с таблицами Олешко 1999',
         'Условные сценарии v1.3 не являются численной проверкой итогового прогноза']},
     meta:{location_label:v.location_label,zone_name:v.zone_name,moment_local:v.moment_local,question_provenance:v.provenance,question_scope:questionScope(v.input),ascendant_deg:rnd(asc,9),mc_deg:rnd(mc,9),rules_hash:ruleHash}};
+  result.evidence.method_correction=await calculateMethodCorrection({chart,expectedHash:hash,expectedId:`${v.qid}:r${v.revision}`,sect_info,accidental,roles,astro,jd,
+    searchEnabled:j.processing_status!=='SAFETY_LIMITED'&&!SPECIAL.has(v.intent)&&(!gate||gate.status==='READY')&&!['CAREER','RELATIONSHIP'].includes(v.intent),
+    indirectEnabled:gate?.status==='READY',previewDays:v.input.contact_options?.horizon_days??30});
   if(semantic.relationshipCase&&j.processing_status!=='SAFETY_LIMITED'){
     Object.assign(result,relationshipFromCalculation(semantic.relationshipCase,data,result));
     j.processing_status=result.relationship_evidence.status==='NEEDS_CLARIFICATION'?'NEEDS_CLARIFICATION':result.relationship_evidence.status==='NEEDS_ROLE_APPROVAL'?'NEEDS_CLARIFICATION':result.relationship_evidence.status==='NEEDS_METHOD_REVIEW'?'TOPIC_MODULE_REQUIRED':'NEEDS_EXPERT_REVIEW';
@@ -324,5 +303,6 @@ export async function build(data,api,constants,rules){
     j.event_assessment='Карьерный сценарий зафиксирован. Экспертно утверждённый реестр ролей отсутствует; показаны только предварительные вычисленные сведения.';
     j.client_text=j.event_assessment;
   }else{result.career_evidence=null;result.career_context=null;}
+  if(sect_info.sect==='UNRESOLVED')j.unknowns.unshift('Достоинства и рецепции, не зависящие от секты, сохранены в MethodCorrectionEvidence 2.0.1; варианты триплицитета отмечены отдельно.');
   return result;
 }

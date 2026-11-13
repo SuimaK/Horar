@@ -7,6 +7,7 @@ import {loadSwiss,constants,rules,payload} from './helpers/live-demo.mjs';
 import {renderAssembly,renderContactEvidence} from '../src/contact-view.mjs';
 import {verifyArchive,verifyArchiveRecord} from '../src/archive.mjs';
 import {renderSemanticEvidence} from '../src/semantic-view.mjs';
+import {renderCorrectionEvidence} from '../src/correction-view.mjs';
 import {renderCareerEvidence} from '../src/career-view.mjs';
 const swe=await loadSwiss(),result=await build(payload,swe,constants,rules);
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
@@ -15,7 +16,7 @@ function open(records=[]){
  const dom=new JSDOM(html,{url:'https://example.test/Horar/',runScripts:'outside-only',pretendToBeVisual:true});
  const w=dom.window;w.structuredClone=structuredClone;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
  w.renderAssembly=renderAssembly;w.renderContactEvidence=renderContactEvidence;
- w.renderCareerEvidence=renderCareerEvidence;w.renderSemanticEvidence=renderSemanticEvidence;w.verifyArchive=verifyArchive;w.verifyArchiveRecord=verifyArchiveRecord;
+ w.renderCorrectionEvidence=renderCorrectionEvidence;w.renderCareerEvidence=renderCareerEvidence;w.renderSemanticEvidence=renderSemanticEvidence;w.verifyArchive=verifyArchive;w.verifyArchiveRecord=verifyArchiveRecord;
  w.horaryBuild=p=>build(p,swe,constants,rules);w.alert=()=>{};
  w.localStorage.setItem('horary-iphone-records-v1',JSON.stringify(records));
  w.eval(source);
@@ -37,6 +38,8 @@ test('contact form submits explicit scope, renders v1.3/v1.5, and preserves opti
  assert.deepEqual(JSON.parse(JSON.stringify(sent.contact_options)),payload.contact_options);
  assert.match($('interpretationContent').textContent,/Лунная последовательность/);
  assert.match($('interpretationContent').textContent,/Свидетельства по участникам/);
+ assert.match($('interpretationContent').textContent,/КОРРЕКЦИЯ МЕТОДА · 2.0.1/);assert.match($('chartContent').textContent,/DISPLAY_ORB_CONVENTION/);
+ assert.equal($('latitude').min,'-65');assert.equal($('latitude').max,'65');
  assert.match($('interpretationContent').textContent,/Передача света · 1/);
  const stored=JSON.parse(w.localStorage.getItem('horary-iphone-records-v1'));
  assert.equal(stored.length,1);assert.equal(stored[0].revisions[0].input.contact_options.horizon_days,14);

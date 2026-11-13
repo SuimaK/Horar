@@ -52,10 +52,25 @@ export function relationshipFromCalculation(c,input,result){
   const registry=[];
   const add=e=>{registry.push({...e,id:`ev18:${chart.source_chart_hash.slice(0,16)}:${registry.length+1}`,chart_id:chart.chart_id,question_id:chart.question_id});};
   if(evidence.role_receptions?.source_chart_hash!==undefined&&evidence.role_receptions.source_chart_hash!==chart.source_chart_hash)throw Error('Свидетельства другой карты');
-  for(const r of evidence.role_receptions?.reception_evidence_by_actor||[])for(const o of r.observations){
-    add({kind:'RECEPTION',source_module:'v1.1',from_role:byId.get(r.from_actor_id),toward_role:byId.get(r.to_actor_id),polarity:o.polarity,dignity_kind:o.dignity_kind});
+  const correction=evidence.method_correction;
+  if(correction){
+    // Compatibility records for the unchanged v1.8 protocol. Only certain
+    // receptions cross this adapter; ambiguity remains in 2.0.1 separately.
+    for(const r of correction.role_receptions)for(const o of r.evidence.filter(x=>x.evidence_certainty==='CERTAIN'))add({kind:'RECEPTION',source_module:'v1.1',calculation_adapter:'METHOD_2_0_1_CERTAIN_ONLY_TO_V18',from_role:byId.get(r.from_actor),toward_role:byId.get(r.to_actor),polarity:o.polarity,dignity_kind:o.dignity_kind});
+    for(const role of assignments){
+      const p=correction.accidentals.find(x=>x.planet===role.effective_significator),d=correction.essential.placements.find(x=>x.planet===role.effective_significator),flags=[];
+      if(p.house_class==='WEAK')flags.push('CADENT_OR_WEAK_HOUSE');
+      if(p.house_class==='STRONG_ANGULAR')flags.push('ANGULAR_CONTEXT');
+      if(p.motion.direction==='RETROGRADE')flags.push('RETROGRADE_CONTEXT_DEPENDENT');
+      if(p.motion.near_station_not_confirmed)flags.push('POSSIBLE_STATION_NOT_PROVEN');
+      if(['COMBUST','UNDER_BEAMS'].includes(p.solar.state))flags.push(p.solar.state);
+      if(d.own_essential_debilities.length)flags.push('ESSENTIAL_DEBILITY');
+      for(const code of flags)add({kind:'CONDITION',source_module:'v1.3',calculation_adapter:'METHOD_2_0_1_CONDITIONS_TO_V18',condition_code:code,actor_role:byId.get(role.actor_id)});
+    }
+  }else{
+    for(const r of evidence.role_receptions?.reception_evidence_by_actor||[])for(const o of r.observations)add({kind:'RECEPTION',source_module:'v1.1',from_role:byId.get(r.from_actor_id),toward_role:byId.get(r.to_actor_id),polarity:o.polarity,dignity_kind:o.dignity_kind});
+    for(const a of evidence.role_assembly?.actors||[])for(const code of a.context_flags)add({kind:'CONDITION',source_module:'v1.3',condition_code:code,actor_role:byId.get(a.actor_id)});
   }
-  for(const a of evidence.role_assembly?.actors||[])for(const code of a.context_flags)add({kind:'CONDITION',source_module:'v1.3',condition_code:code,actor_role:byId.get(a.actor_id)});
   const locked=approved?freeze({approved:true,question_id:chart.question_id,chart_id:chart.chart_id,relationship_kind:c.relationship_kind,querent:assignments[0].effective_significator,quesited:assignments[1].effective_significator}):null;
   // No registry, approval or source record is accepted from the imported result.
   const trusted=freeze(registry),request={...c,evidence_refs:trusted.map(e=>e.id)};

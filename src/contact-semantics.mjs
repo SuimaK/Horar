@@ -167,6 +167,6 @@ export function evaluateContact({input,chart,roles,astro,jd,search,gate}){
   const analysis=analyzeContacts({astro,jd,a,b,past,future,ingress,stations:stationEvents(astro,jd,[a,b],days),horizon:days});
   return {...base,status:'NEEDS_EXPERT_REVIEW',data_kind:'REAL_EPHEMERIS',source_chart_hash:chart.source_chart_hash,source_chart_verified:true,
     method_profile:{primary:'FRAWLEY_EARLY_PROVISIONAL',supplement:'OLESHKO_1999_SEPARATE',implementation:'PROJECT_V15_BROWSER_PORT'},
-    source_coverage:{historical_lookback_days:4,future_horizon_days:days,sampling_hours:3,tangential_roots_may_be_missed:true,transmission_collection_semantics_validated:false,'2014_revision_audited':false},analysis,
+    source_coverage:{historical_lookback_days:4,future_horizon_days:days,sampling_hours:null,sampling_method:'ADAPTIVE_MIDPOINT_SPEED_CURVATURE',legacy_sampling_hours:3,tangential_roots_may_be_missed:true,transmission_collection_semantics_validated:false,'2014_revision_audited':false},analysis,
     text_interpretation:'Рассчитаны аспекты и геометрические кандидаты. Рецепции, смысл посредничества и действительные препятствия требуют экспертной проверки. Прогноз события и срок не сформированы.'};
 }

@@ -1,0 +1,805 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://horar.local/schemas/method-correction-2.0.1",
+  "title": "Additive MethodCorrectionEvidence 2.0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "2.0.1"
+    },
+    "chart_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_chart_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "calculation_profile": {
+      "const": "frawley_early"
+    },
+    "source_profile_status": {
+      "const": "EARLY_REVIEW_REFERENCES_2014_PENDING"
+    },
+    "dignity_status": {
+      "enum": [
+        "DETERMINED",
+        "PARTIALLY_DETERMINED"
+      ]
+    },
+    "accidental_completeness": {
+      "const": "PARTIAL"
+    },
+    "source_chart_verified": {
+      "const": true
+    },
+    "can_issue_event_verdict": {
+      "const": false
+    },
+    "final_prediction": {
+      "type": "null"
+    },
+    "timing_prediction": {
+      "type": "null"
+    },
+    "sect_resolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "solar_altitude_deg",
+        "boundary_deg",
+        "atmospheric_refraction_used",
+        "source"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "DAY",
+            "NIGHT",
+            "UNRESOLVED"
+          ]
+        },
+        "solar_altitude_deg": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "boundary_deg": {
+          "const": 0.5
+        },
+        "atmospheric_refraction_used": {
+          "const": false
+        },
+        "source": {
+          "const": "PROJECT"
+        }
+      }
+    },
+    "checked_channels": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "DIRECT",
+          "ANTISCION",
+          "TRANSLATION",
+          "COLLECTION"
+        ]
+      }
+    },
+    "unchecked_channels": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "DIRECT",
+          "ANTISCION",
+          "TRANSLATION",
+          "COLLECTION"
+        ]
+      }
+    },
+    "unresolved_rule_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "uncalculated_features": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "display_aspects": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "orb_deg",
+        "label",
+        "drives_perfection"
+      ],
+      "properties": {
+        "orb_deg": {
+          "const": 6
+        },
+        "label": {
+          "const": "DISPLAY_ORB_CONVENTION"
+        },
+        "drives_perfection": {
+          "const": false
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "minProperties": 14,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "level",
+          "source"
+        ],
+        "properties": {
+          "level": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "search_scope": {
+      "type": "object",
+      "required": [
+        "coverage",
+        "status",
+        "stop_reason",
+        "earliest_ingress",
+        "searched_until",
+        "max_search_days",
+        "unchecked_channels",
+        "can_issue_NO",
+        "can_issue_event_verdict"
+      ],
+      "properties": {
+        "coverage": {
+          "const": "SEARCH_INCOMPLETE"
+        },
+        "status": {
+          "const": "SEARCH_INCOMPLETE"
+        },
+        "stop_reason": {
+          "enum": [
+            "PERFECTION_FOUND",
+            "SIGN_BOUNDARY",
+            "TECHNICAL_CAP",
+            "NUMERICAL_FAILURE",
+            "UNSEARCHED_CHANNEL"
+          ]
+        },
+        "earliest_ingress": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "searched_until": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 365
+        },
+        "max_search_days": {
+          "const": 365
+        },
+        "unchecked_channels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "can_issue_NO": {
+          "const": false
+        },
+        "can_issue_event_verdict": {
+          "const": false
+        },
+        "error_code": {
+          "const": "NUMERICAL_FAILURE"
+        }
+      },
+      "additionalProperties": false
+    },
+    "essential": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "chart_id",
+        "source_chart_hash",
+        "sect",
+        "placements",
+        "directional_receptions",
+        "judgment_status"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "2.0.1"
+        },
+        "chart_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_chart_hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sect": {
+          "enum": [
+            "DAY",
+            "NIGHT",
+            "UNRESOLVED"
+          ]
+        },
+        "placements": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "required": [
+              "planet",
+              "longitude_deg",
+              "sign",
+              "degree_in_sign",
+              "owners",
+              "own_essential_dignities",
+              "own_essential_debilities",
+              "no_positive_dignity",
+              "peregrine_frawley",
+              "receptions"
+            ],
+            "properties": {
+              "planet": {
+                "enum": [
+                  "Sun",
+                  "Moon",
+                  "Mercury",
+                  "Venus",
+                  "Mars",
+                  "Jupiter",
+                  "Saturn"
+                ]
+              },
+              "longitude_deg": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMaximum": 360
+              },
+              "sign": {
+                "type": "string"
+              },
+              "degree_in_sign": {
+                "type": "number",
+                "minimum": 0,
+                "exclusiveMaximum": 30
+              },
+              "owners": {
+                "type": "object",
+                "required": [
+                  "domicile",
+                  "exaltation",
+                  "triplicity",
+                  "term",
+                  "face",
+                  "detriment",
+                  "fall"
+                ],
+                "properties": {
+                  "domicile": {
+                    "enum": [
+                      "Sun",
+                      "Moon",
+                      "Mercury",
+                      "Venus",
+                      "Mars",
+                      "Jupiter",
+                      "Saturn"
+                    ]
+                  },
+                  "term": {
+                    "enum": [
+                      "Sun",
+                      "Moon",
+                      "Mercury",
+                      "Venus",
+                      "Mars",
+                      "Jupiter",
+                      "Saturn"
+                    ]
+                  },
+                  "face": {
+                    "enum": [
+                      "Sun",
+                      "Moon",
+                      "Mercury",
+                      "Venus",
+                      "Mars",
+                      "Jupiter",
+                      "Saturn"
+                    ]
+                  },
+                  "detriment": {
+                    "enum": [
+                      "Sun",
+                      "Moon",
+                      "Mercury",
+                      "Venus",
+                      "Mars",
+                      "Jupiter",
+                      "Saturn"
+                    ]
+                  },
+                  "exaltation": {
+                    "anyOf": [
+                      {
+                        "enum": [
+                          "Sun",
+                          "Moon",
+                          "Mercury",
+                          "Venus",
+                          "Mars",
+                          "Jupiter",
+                          "Saturn"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "fall": {
+                    "anyOf": [
+                      {
+                        "enum": [
+                          "Sun",
+                          "Moon",
+                          "Mercury",
+                          "Venus",
+                          "Mars",
+                          "Jupiter",
+                          "Saturn"
+                        ]
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "triplicity": {
+                    "type": "object",
+                    "required": [
+                      "status",
+                      "possible_owners"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                      "status": {
+                        "enum": [
+                          "RESOLVED",
+                          "INVARIANT",
+                          "AMBIGUOUS"
+                        ]
+                      },
+                      "possible_owners": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 2,
+                        "uniqueItems": true,
+                        "items": {
+                          "enum": [
+                            "Sun",
+                            "Moon",
+                            "Mercury",
+                            "Venus",
+                            "Mars",
+                            "Jupiter",
+                            "Saturn"
+                          ]
+                        }
+                      }
+                    }
+                  }
+                },
+                "additionalProperties": false
+              },
+              "own_essential_dignities": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "own_essential_debilities": {
+                "type": "array",
+                "uniqueItems": true,
+                "items": {
+                  "enum": [
+                    "detriment",
+                    "fall"
+                  ]
+                }
+              },
+              "no_positive_dignity": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "peregrine_frawley": {
+                "type": [
+                  "boolean",
+                  "null"
+                ]
+              },
+              "receptions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "from_planet",
+                    "to_planet",
+                    "dignity_kind",
+                    "polarity",
+                    "evidence_certainty"
+                  ],
+                  "properties": {
+                    "from_planet": {
+                      "enum": [
+                        "Sun",
+                        "Moon",
+                        "Mercury",
+                        "Venus",
+                        "Mars",
+                        "Jupiter",
+                        "Saturn"
+                      ]
+                    },
+                    "to_planet": {
+                      "anyOf": [
+                        {
+                          "enum": [
+                            "Sun",
+                            "Moon",
+                            "Mercury",
+                            "Venus",
+                            "Mars",
+                            "Jupiter",
+                            "Saturn"
+                          ]
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "dignity_kind": {
+                      "enum": [
+                        "domicile",
+                        "exaltation",
+                        "triplicity",
+                        "term",
+                        "face",
+                        "detriment",
+                        "fall"
+                      ]
+                    },
+                    "polarity": {
+                      "enum": [
+                        "POSITIVE",
+                        "NEGATIVE"
+                      ]
+                    },
+                    "evidence_certainty": {
+                      "enum": [
+                        "CERTAIN",
+                        "SECT_DEPENDENT",
+                        "NOT_APPLICABLE"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "directional_receptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "from_planet",
+              "to_planet",
+              "dignity_kind",
+              "polarity",
+              "evidence_certainty"
+            ],
+            "properties": {
+              "from_planet": {
+                "enum": [
+                  "Sun",
+                  "Moon",
+                  "Mercury",
+                  "Venus",
+                  "Mars",
+                  "Jupiter",
+                  "Saturn"
+                ]
+              },
+              "to_planet": {
+                "anyOf": [
+                  {
+                    "enum": [
+                      "Sun",
+                      "Moon",
+                      "Mercury",
+                      "Venus",
+                      "Mars",
+                      "Jupiter",
+                      "Saturn"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "dignity_kind": {
+                "enum": [
+                  "domicile",
+                  "exaltation",
+                  "triplicity",
+                  "term",
+                  "face",
+                  "detriment",
+                  "fall"
+                ]
+              },
+              "polarity": {
+                "enum": [
+                  "POSITIVE",
+                  "NEGATIVE"
+                ]
+              },
+              "evidence_certainty": {
+                "enum": [
+                  "CERTAIN",
+                  "SECT_DEPENDENT",
+                  "NOT_APPLICABLE"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "judgment_status": {
+          "const": "NOT_PERFORMED"
+        }
+      }
+    },
+    "house_placements": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": [
+          "planet",
+          "raw_house",
+          "effective_house",
+          "review_required",
+          "house_class_source_house",
+          "angularity_raw"
+        ],
+        "properties": {
+          "planet": {
+            "enum": [
+              "Sun",
+              "Moon",
+              "Mercury",
+              "Venus",
+              "Mars",
+              "Jupiter",
+              "Saturn"
+            ]
+          },
+          "raw_house": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "effective_house": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "house_class_source_house": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "review_required": {
+            "type": "boolean"
+          },
+          "angularity_raw": {
+            "enum": [
+              "ANGULAR",
+              "SUCCEDENT",
+              "CADENT"
+            ]
+          }
+        }
+      }
+    },
+    "accidentals": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": [
+          "planet",
+          "house",
+          "raw_house",
+          "house_class",
+          "speed_references",
+          "speed_heuristic"
+        ]
+      }
+    },
+    "role_receptions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "from_actor",
+          "to_actor",
+          "evidence"
+        ],
+        "properties": {
+          "from_actor": {
+            "type": "string"
+          },
+          "to_actor": {
+            "type": "string"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "from_planet",
+                "to_planet",
+                "dignity_kind",
+                "polarity",
+                "evidence_certainty"
+              ],
+              "properties": {
+                "from_planet": {
+                  "enum": [
+                    "Sun",
+                    "Moon",
+                    "Mercury",
+                    "Venus",
+                    "Mars",
+                    "Jupiter",
+                    "Saturn"
+                  ]
+                },
+                "to_planet": {
+                  "anyOf": [
+                    {
+                      "enum": [
+                        "Sun",
+                        "Moon",
+                        "Mercury",
+                        "Venus",
+                        "Mars",
+                        "Jupiter",
+                        "Saturn"
+                      ]
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "dignity_kind": {
+                  "enum": [
+                    "domicile",
+                    "exaltation",
+                    "triplicity",
+                    "term",
+                    "face",
+                    "detriment",
+                    "fall"
+                  ]
+                },
+                "polarity": {
+                  "enum": [
+                    "POSITIVE",
+                    "NEGATIVE"
+                  ]
+                },
+                "evidence_certainty": {
+                  "enum": [
+                    "CERTAIN",
+                    "SECT_DEPENDENT",
+                    "NOT_APPLICABLE"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "geometry": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "indirect": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "lunar": {
+      "type": [
+        "object",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "schema_version",
+    "chart_id",
+    "source_chart_hash",
+    "calculation_profile",
+    "source_profile_status",
+    "dignity_status",
+    "accidental_completeness",
+    "source_chart_verified",
+    "can_issue_event_verdict",
+    "final_prediction",
+    "timing_prediction",
+    "sect_resolution",
+    "checked_channels",
+    "unchecked_channels",
+    "unresolved_rule_ids",
+    "uncalculated_features",
+    "display_aspects",
+    "provenance",
+    "search_scope",
+    "essential",
+    "house_placements",
+    "accidentals",
+    "role_receptions",
+    "geometry",
+    "indirect",
+    "lunar"
+  ]
+}

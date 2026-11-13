@@ -1,0 +1,869 @@
+{
+  "schema_version": "2.0.1-testplan",
+  "purpose": "independent acceptance expectations; none has been run against target app",
+  "target": "Horar implementation of proposed corrective release v2.0.1",
+  "created_at": "2026-11-13",
+  "case_count": 47,
+  "cases": [
+    {
+      "test_id": "COR-01-T01",
+      "issue": "COR-01",
+      "priority": "P0",
+      "title": "Секта неопределенна, обитель не исчезает",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "sect": "UNRESOLVED",
+        "sun_altitude_deg": 0.01,
+        "planet": "Mars",
+        "longitude_deg": 0
+      },
+      "expected_assertions": {
+        "domicile_owner": "Mars",
+        "dignity_present": true,
+        "triplicity_not_imputed": true
+      },
+      "rationale": "Несвязанные с сектой данные вычисляются всегда",
+      "source_level": "CODE/F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-01-T02",
+      "issue": "COR-01",
+      "priority": "P0",
+      "title": "Секта неопределенна, триплицитет огня многозначен",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "sect": "UNRESOLVED",
+        "planet": "Venus",
+        "longitude_deg": 12,
+        "element": "FIRE"
+      },
+      "expected_assertions": {
+        "triplicity_status": "AMBIGUOUS",
+        "possible_owners": [
+          "Sun",
+          "Jupiter"
+        ]
+      },
+      "rationale": "В профиле дневной и ночной владельцы различаются",
+      "source_level": "O-1999",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-01-T03",
+      "issue": "COR-01",
+      "priority": "P0",
+      "title": "Секта неопределенна, триплицитет воды сохраняется",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "sect": "UNRESOLVED",
+        "planet": "Venus",
+        "longitude_deg": 102,
+        "element": "WATER"
+      },
+      "expected_assertions": {
+        "triplicity_status": "INVARIANT",
+        "possible_owners": [
+          "Mars"
+        ]
+      },
+      "rationale": "В водных знаках оба варианта Марс",
+      "source_level": "O-1999",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-01-T04",
+      "issue": "COR-01",
+      "priority": "P0",
+      "title": "Достоверные рецепции доступны частично",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "sect": "UNRESOLVED",
+        "roles_locked": true,
+        "domicile_reception": true,
+        "triplicity_reception_unknown": true
+      },
+      "expected_assertions": {
+        "domicile_reception_status": "CERTAIN",
+        "triplicity_reception_status": "SECT_DEPENDENT",
+        "auto_verdict": false
+      },
+      "rationale": "Пробел в одном достоинстве не обнуляет другие",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-01-T05",
+      "issue": "COR-01",
+      "priority": "P0",
+      "title": "Дневная/ночная секта сохраняют прежние значения",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "sect_values": [
+          "DAY",
+          "NIGHT"
+        ],
+        "planet": "Sun",
+        "longitude_deg": 14
+      },
+      "expected_assertions": {
+        "no_unnecessary_schema_break": true,
+        "existing_owners_unchanged": true
+      },
+      "rationale": "Обратная совместимость",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-02-T01",
+      "issue": "COR-02",
+      "priority": "P1",
+      "title": "65.0000 принимается",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "latitude_deg": 65.0
+      },
+      "expected_assertions": {
+        "accepted": true
+      },
+      "rationale": "Граница включительна",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-02-T02",
+      "issue": "COR-02",
+      "priority": "P1",
+      "title": "65.0001 отклоняется",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "latitude_deg": 65.0001
+      },
+      "expected_assertions": {
+        "error_code": "LATITUDE_OUTSIDE_VALIDATED_REGION"
+      },
+      "rationale": "Предел единый для UI/API",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-02-T03",
+      "issue": "COR-02",
+      "priority": "P1",
+      "title": "Отрицательная широта -65.0001 отклоняется",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "latitude_deg": -65.0001
+      },
+      "expected_assertions": {
+        "error_code": "LATITUDE_OUTSIDE_VALIDATED_REGION"
+      },
+      "rationale": "Симметрия диапазона",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-02-T04",
+      "issue": "COR-02",
+      "priority": "P1",
+      "title": "NaN недопустима",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "latitude_deg": "NaN"
+      },
+      "expected_assertions": {
+        "accepted": false
+      },
+      "rationale": "Нестандартное число не создаёт карту",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-03-T01",
+      "issue": "COR-03",
+      "priority": "P0",
+      "title": "Ингресс после совершенствования в том же шаге",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "step_hours": 3,
+        "exact_aspect_at_hours": 1,
+        "ingress_at_hours": 2
+      },
+      "expected_assertions": {
+        "sign_change_before_perfection": false
+      },
+      "rationale": "Событие позже корня не препятствует контакту",
+      "source_level": "CODE",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-03-T02",
+      "issue": "COR-03",
+      "priority": "P0",
+      "title": "Ингресс до совершенствования в том же шаге",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "step_hours": 3,
+        "ingress_at_hours": 1,
+        "exact_aspect_at_hours": 2
+      },
+      "expected_assertions": {
+        "sign_change_before_perfection": true
+      },
+      "rationale": "Событие раньше корня требует проверки",
+      "source_level": "CODE",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-03-T03",
+      "issue": "COR-03",
+      "priority": "P0",
+      "title": "Станция позже совершенствования",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "step_hours": 3,
+        "exact_aspect_at_hours": 1,
+        "station_at_hours": 2
+      },
+      "expected_assertions": {
+        "station_before_perfection": false
+      },
+      "rationale": "Рефранацию не подтверждать событиями будущего",
+      "source_level": "CODE",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-03-T04",
+      "issue": "COR-03",
+      "priority": "P0",
+      "title": "Станция раньше совершенствования",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "step_hours": 3,
+        "station_at_hours": 1,
+        "exact_aspect_at_hours": 2
+      },
+      "expected_assertions": {
+        "station_before_perfection": true,
+        "automatic_refranation": false
+      },
+      "rationale": "Даже ранняя станция не тождественна рефранации",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-03-T05",
+      "issue": "COR-03",
+      "priority": "P0",
+      "title": "Совпадение станции и аспекта",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "exact_aspect_at_seconds": 3600,
+        "station_at_seconds": 3600,
+        "tolerance_seconds": 2
+      },
+      "expected_assertions": {
+        "timing_relation": "COINCIDENT_EVENT_REVIEW"
+      },
+      "rationale": "Не выдумывать порядок для совпадающих событий",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-04-T01",
+      "issue": "COR-04",
+      "priority": "P1",
+      "title": "Обычный горизонт 30 суток достигнут",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "preview_days": 30,
+        "searched_direct_days": 30,
+        "candidate_found": false
+      },
+      "expected_assertions": {
+        "coverage": "SEARCH_INCOMPLETE",
+        "can_issue_NO": false
+      },
+      "rationale": "Технический предпросмотр не равен полному поиску",
+      "source_level": "CODE",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-04-T02",
+      "issue": "COR-04",
+      "priority": "P1",
+      "title": "Точное совершенствование через 85 суток без ингресса",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "days_to_exact": 85,
+        "days_to_first_ingress": 120,
+        "technical_max_days": 365
+      },
+      "expected_assertions": {
+        "include_candidate": true,
+        "calendar_preview_not_final": true
+      },
+      "rationale": "При отсутствии смены знака 30-дневная отсечка неверна",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-04-T03",
+      "issue": "COR-04",
+      "priority": "P1",
+      "title": "Технический предел до совершенствования",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "days_to_exact": 400,
+        "days_to_first_ingress": 410,
+        "technical_max_days": 365
+      },
+      "expected_assertions": {
+        "stop_reason": "TECHNICAL_CAP",
+        "coverage": "SEARCH_INCOMPLETE"
+      },
+      "rationale": "Год — ограничение ресурсов, не астрологическое нет",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-04-T04",
+      "issue": "COR-04",
+      "priority": "P1",
+      "title": "После смены знака допускается только отдельный анализ",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "days_to_first_ingress": 4,
+        "days_to_exact": 6
+      },
+      "expected_assertions": {
+        "path_status": "AFTER_INGRESS_REVIEW",
+        "automatic_perfection_of_original_state": false
+      },
+      "rationale": "Изменение обстоятельств",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-04-T05",
+      "issue": "COR-04",
+      "priority": "P1",
+      "title": "Не все каналы проанализированы",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "checked_channels": [
+          "DIRECT"
+        ],
+        "unchecked_channels": [
+          "TRANSLATION",
+          "COLLECTION",
+          "ANTISCION"
+        ]
+      },
+      "expected_assertions": {
+        "coverage": "SEARCH_INCOMPLETE",
+        "can_issue_NO": false
+      },
+      "rationale": "Неполное покрытие",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-05-T01",
+      "issue": "COR-05",
+      "priority": "P1",
+      "title": "Антисция двух градусов Рака",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "longitude_deg": 92
+      },
+      "expected_assertions": {
+        "antiscion_longitude_deg": 88
+      },
+      "rationale": "2° Рака зеркалится в 28° Близнецов",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-05-T02",
+      "issue": "COR-05",
+      "priority": "P1",
+      "title": "Антисция 22°35′ Тельца",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "longitude_deg": 52.583333333333336
+      },
+      "expected_assertions": {
+        "antiscion_longitude_deg": 127.41666666666667
+      },
+      "rationale": "Отражение в 7°25′ Льва",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-05-T03",
+      "issue": "COR-05",
+      "priority": "P1",
+      "title": "Антисция инволютивна",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "longitude_deg": 244.3
+      },
+      "expected_assertions": {
+        "double_antiscion_deg": 244.3
+      },
+      "rationale": "Двойное зеркальное отображение возвращает долготу",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-05-T04",
+      "issue": "COR-05",
+      "priority": "P1",
+      "title": "Оппозиция по антису",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "longitude_deg": 92
+      },
+      "expected_assertions": {
+        "opposition_to_antiscion_deg": 268
+      },
+      "rationale": "Контроль геометрии",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-05-T05",
+      "issue": "COR-05",
+      "priority": "P1",
+      "title": "Трин к антису не создаёт кандидат",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "body_aspect_to_antiscion": "TRINE"
+      },
+      "expected_assertions": {
+        "candidate_created": false
+      },
+      "rationale": "Фроули рассматривает соединение/оппозицию",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-05-T06",
+      "issue": "COR-05",
+      "priority": "P1",
+      "title": "Не дублировать зеркальную взаимность",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "antiscion_A_conj_B": true,
+        "antiscion_B_conj_A": true
+      },
+      "expected_assertions": {
+        "distinct_evidence_count": 1
+      },
+      "rationale": "Одна геометрическая связь",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-05-T07",
+      "issue": "COR-05",
+      "priority": "P1",
+      "title": "Антисция не меняет эссенциального положения",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "planet": "Jupiter",
+        "bodily_sign": "Cancer",
+        "antiscion_sign": "Gemini"
+      },
+      "expected_assertions": {
+        "use_dignity_at": "bodily_sign"
+      },
+      "rationale": "Телесное положение для достоинств",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-06-T01",
+      "issue": "COR-06",
+      "priority": "P2",
+      "title": "Девятый дом нейтрален по Фроули",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "effective_house": 9
+      },
+      "expected_assertions": {
+        "frawley_house_class": "MIDDLE_OR_NEUTRAL",
+        "raw_angularity": "CADENT"
+      },
+      "rationale": "Не смешивать силу и стандартную классификацию",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-06-T02",
+      "issue": "COR-06",
+      "priority": "P2",
+      "title": "Восьмой дом слаб по Фроули",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "effective_house": 8
+      },
+      "expected_assertions": {
+        "frawley_house_class": "WEAK",
+        "raw_angularity": "SUCCEDENT"
+      },
+      "rationale": "Исключение восьмого дома",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-07-T01",
+      "issue": "COR-07",
+      "priority": "P1",
+      "title": "Олешко: средняя скорость прямого хода Меркурия",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "source": "OLESHKO_1999_P57",
+        "planet": "Mercury"
+      },
+      "expected_assertions": {
+        "definition": "MEAN_DIRECT_MOTION",
+        "reference_deg_per_day": 1.3833333333333333
+      },
+      "rationale": "Не подменять нетто средним",
+      "source_level": "O-1999",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-07-T02",
+      "issue": "COR-07",
+      "priority": "P1",
+      "title": "Фроули: среднее результирующее движение Меркурия",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "source": "FRAWLEY_EARLY_P59",
+        "planet": "Mercury"
+      },
+      "expected_assertions": {
+        "definition": "NET_MEAN_FORWARD",
+        "reference_deg_per_day_approx": 0.9833333333333333
+      },
+      "rationale": "Разные определения величин",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-07-T03",
+      "issue": "COR-07",
+      "priority": "P1",
+      "title": "Порог 0.8 только конвенция",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "speed_ratio": 0.79,
+        "profile": "OLESHKO_1999_P57"
+      },
+      "expected_assertions": {
+        "ratio_interpretation": "SLOW_HEURISTIC",
+        "source_claim": "PROJECT"
+      },
+      "rationale": "Не приписывать автору порог",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-08-T01",
+      "issue": "COR-08",
+      "priority": "P1",
+      "title": "Переводчик разошёлся 5 суток назад, но нет ограничения датами",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "last_contact_days_ago": 5,
+        "separation_arc_deg": 0.4,
+        "next_contact_is_other_role": true
+      },
+      "expected_assertions": {
+        "not_reject_solely_by_days": true,
+        "review_required": true
+      },
+      "rationale": "Релевантность по геометрии/контексту",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-08-T02",
+      "issue": "COR-08",
+      "priority": "P1",
+      "title": "Два будущих контакта переводчика",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "translator_contacts": [
+          "A_future",
+          "B_future"
+        ]
+      },
+      "expected_assertions": {
+        "may_be_translation_candidate": true
+      },
+      "rationale": "Допустимый у Фроули путь",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-09-T01",
+      "issue": "COR-09",
+      "priority": "P2",
+      "title": "Собиратель принимает только одного",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "collector_receives_a": true,
+        "collector_receives_b": false,
+        "geometry_collection_valid": true
+      },
+      "expected_assertions": {
+        "collector_receives_both": false,
+        "automatic_reject": false,
+        "requires_context_review": true
+      },
+      "rationale": "Необходимого универсального порога нет",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-10-T01",
+      "issue": "COR-10",
+      "priority": "P1",
+      "title": "4.8° до куспида одного знака",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "raw_house": 4,
+        "planet_lon_deg": 35.2,
+        "next_cusp_lon_deg": 40.0
+      },
+      "expected_assertions": {
+        "effective_house": 5,
+        "raw_house_unchanged": true
+      },
+      "rationale": "Близость до следующего куспида; один знак",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-10-T02",
+      "issue": "COR-10",
+      "priority": "P1",
+      "title": "0.3° до куспида в другом знаке",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "raw_house": 4,
+        "planet_lon_deg": 29.9,
+        "next_cusp_lon_deg": 30.2
+      },
+      "expected_assertions": {
+        "effective_house": 4
+      },
+      "rationale": "Разные знаки запрещают перенос",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-10-T03",
+      "issue": "COR-10",
+      "priority": "P1",
+      "title": "Сразу за куспидом",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "raw_house": 5,
+        "planet_lon_deg": 41,
+        "next_cusp_lon_deg": 40
+      },
+      "expected_assertions": {
+        "effective_house": 5
+      },
+      "rationale": "Алгоритм не меняет уже наступивший дом",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-10-T04",
+      "issue": "COR-10",
+      "priority": "P1",
+      "title": "Перенос меняет акцидентальные показатели",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "raw_house": 8,
+        "effective_house": 9,
+        "planet": "Sun"
+      },
+      "expected_assertions": {
+        "house_class_source_house": 9,
+        "raw_house_retained": true
+      },
+      "rationale": "Эффективный дом участвует в доме силы",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-11-T01",
+      "issue": "COR-11",
+      "priority": "P2",
+      "title": "Нет аспектов до выхода Луны из знака",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "moon_exact_aspects_before_ingress": []
+      },
+      "expected_assertions": {
+        "voc_strict": true
+      },
+      "rationale": "Строгая пустота",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-11-T02",
+      "issue": "COR-11",
+      "priority": "P2",
+      "title": "Следующий аспект через 18° пути",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "moon_degrees_until_next_exact_aspect": 18,
+        "before_ingress": true
+      },
+      "expected_assertions": {
+        "voc_strict": false,
+        "voc_contextual_long_gap_review": true
+      },
+      "rationale": "Контекстная оценка Фроули",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-11-T03",
+      "issue": "COR-11",
+      "priority": "P2",
+      "title": "Исключения Лилли не включать по умолчанию",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "profile": "frawley_early",
+        "moon_sign": "Taurus"
+      },
+      "expected_assertions": {
+        "do_not_auto_override_voc": true
+      },
+      "rationale": "Отдельная школа/проверка",
+      "source_level": "REVIEW",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-13-T01",
+      "issue": "COR-13",
+      "priority": "P2",
+      "title": "Единый графический орбис не методический",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "current_aspect_display_orb_deg": 6
+      },
+      "expected_assertions": {
+        "ui_label": "DISPLAY_ORB_CONVENTION",
+        "drives_perfection": false
+      },
+      "rationale": "Визуализация не является выводом",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-14-T01",
+      "issue": "COR-14",
+      "priority": "P1",
+      "title": "Изгнание исключает перегрин Фроули",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "planet": "Venus",
+        "own_positive_dignities": [],
+        "in_detriment": true,
+        "in_fall": false
+      },
+      "expected_assertions": {
+        "no_positive_dignity": true,
+        "peregrine_frawley": false
+      },
+      "rationale": "Не объединять отсутствие позитивной силы и изгнание",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-14-T02",
+      "issue": "COR-14",
+      "priority": "P1",
+      "title": "Падение исключает перегрин Фроули",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "planet": "Moon",
+        "own_positive_dignities": [],
+        "in_detriment": false,
+        "in_fall": true
+      },
+      "expected_assertions": {
+        "peregrine_frawley": false
+      },
+      "rationale": "Определение Фроули",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-14-T03",
+      "issue": "COR-14",
+      "priority": "P1",
+      "title": "Нет достоинств и нет слабостей",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "planet": "Mars",
+        "own_positive_dignities": [],
+        "in_detriment": false,
+        "in_fall": false
+      },
+      "expected_assertions": {
+        "peregrine_frawley": true
+      },
+      "rationale": "Позитивное условие перегрина",
+      "source_level": "F-EARLY",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-ALL-T01",
+      "issue": "COR-ALL",
+      "priority": "P0",
+      "title": "Ни неполнота, ни аспект не выдают автоматический прогноз",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "search_scope": "SEARCH_INCOMPLETE",
+        "found_direct_candidate": true,
+        "expert_method_complete": false
+      },
+      "expected_assertions": {
+        "can_issue_event_verdict": false,
+        "timing_prediction": null
+      },
+      "rationale": "Релизный блокиратор",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    },
+    {
+      "test_id": "COR-ALL-T02",
+      "issue": "COR-ALL",
+      "priority": "P0",
+      "title": "Хеш карты не совпал",
+      "test_mode": "synthetic",
+      "input_fixture": {
+        "source_chart_hash": "wrong-hash",
+        "chart_id": "q:r1"
+      },
+      "expected_assertions": {
+        "accepted_for_synthesis": false
+      },
+      "rationale": "Защита происхождения свидетельств",
+      "source_level": "PROJECT",
+      "status": "NOT_RUN_AGAINST_APP"
+    }
+  ]
+}

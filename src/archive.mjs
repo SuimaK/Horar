@@ -14,7 +14,7 @@ function checkResultClaims(result,hash){
     for(const [key,v] of Object.entries(value)){
       if(['source_chart_hash','input_hash'].includes(key)&&v!==hash)fail('Несовпадающий исходный хэш в архиве.');
       if(['final_prediction','timing_prediction','timing'].includes(key)&&v!==null)fail('Архив содержит запрещённый прогноз или срок.');
-      if(key==='can_issue_client_verdict'&&v!==false)fail('Архив разрешает запрещённый клиентский прогноз.');
+      if(['can_issue_client_verdict','can_issue_event_verdict','can_issue_NO'].includes(key)&&v!==false)fail('Архив разрешает запрещённый клиентский прогноз.');
       if(key==='judgment_status'&&!['NOT_APPLICABLE','NOT_PERFORMED'].includes(v))fail('Архив содержит запрещённое итоговое суждение.');
       visit(v,depth+1);
     }
@@ -49,6 +49,9 @@ export async function verifyArchiveRecord(item,calculate){
   checkResultClaims(r,r.chart.source_chart_hash);
   const result=await calculate(input);
   compareChartSnapshot(r.chart,result.chart);
+  // Keep the validated historical numerical snapshot byte-for-byte; all imported
+  // conclusions are still discarded and the additive current method is recomputed.
+  result.chart=structuredClone(r.chart);
   // Discard ALL imported prose, role flags, paths and evidence, including fields
   // whose strings claim that a forged result was previously "verified".
   return {input:{...input,moment_local:v.moment_local},result,
