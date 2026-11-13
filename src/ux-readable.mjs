@@ -2,6 +2,8 @@
 const names={Sun:'Солнце',Moon:'Луна',Mercury:'Меркурий',Venus:'Венера',Mars:'Марс',Jupiter:'Юпитер',Saturn:'Сатурн'};
 const symbols={Sun:'☉',Moon:'☽',Mercury:'☿',Venus:'♀',Mars:'♂',Jupiter:'♃',Saturn:'♄'};
 const zodiac=['♈','♉','♊','♋','♌','♍','♎','♏','♐','♑','♒','♓'];
+const signNames=['Овне','Тельце','Близнецах','Раке','Льве','Деве','Весах','Скорпионе','Стрельце','Козероге','Водолее','Рыбах'];
+const dignityNames={domicile:'обители',exaltation:'экзальтации',triplicity:'триплицитете',term:'терме',face:'фасе',detriment:'изгнании',fall:'падении'};
 const aspects={CONJUNCTION:'соединение',SEXTILE:'секстиль',SQUARE:'квадрат',TRINE:'трин',OPPOSITION:'оппозиция'};
 const mod=x=>(x%360+360)%360;
 const defaultEscape=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -64,13 +66,25 @@ export function readableInterpretation(result,input,escape=defaultEscape){
  const roles=Array.isArray(result?.roles?.assignments)?result.roles.assignments:[];
  const correction=result?.evidence?.method_correction;
  const paragraphs=[];
+ const positionStatement=planetName=>{
+  const planet=result?.chart?.planets?.find(p=>p.name===planetName);
+  if(!planet)return '';
+  const house=correction?.house_placements?.find(p=>p.planet===planetName)?.effective_house||planet.house;
+  const sign=signNames[Math.floor(mod(planet.longitude_deg)/30)];
+  const d=correction?.essential?.placements?.find(p=>p.planet===planetName);
+  const good=d?.own_essential_dignities?.filter(x=>x!=='triplicity'||d.owners?.triplicity?.status!=='AMBIGUOUS')||[];
+  const weak=d?.own_essential_debilities||[];
+  const own=good.length?' Есть собственное достоинство: '+good.map(x=>dignityNames[x]||x).join(', ')+'.':
+    weak.length?' Есть существенная слабость: '+weak.map(x=>dignityNames[x]||x).join(', ')+'.':'';
+  return ' Положение: <b>'+escape(sign)+', '+Number(house)+' дом</b>.'+(planet.speed_deg_per_day<0?' Планета ретроградна.':'')+escape(own);
+ };
  if(roles[0]){
   const p=roles[0];
-  paragraphs.push('В традиционной модели вы обозначены управителем I дома — <b>'+escape(names[p.effective_significator]||p.effective_significator)+'</b>.');
+  paragraphs.push('В традиционной модели вы обозначены управителем I дома — <b>'+escape(names[p.effective_significator]||p.effective_significator)+'</b>.'+positionStatement(p.effective_significator));
  }
  if(roles[1]){
   const p=roles[1];
-  paragraphs.push('Предмет вопроса отнесён к <b>'+Number(p.radical_house)+' дому</b>; его управитель — <b>'+escape(names[p.effective_significator]||p.effective_significator)+'</b>. Выбор дома требует методического обоснования.');
+  paragraphs.push('Предмет вопроса отнесён к <b>'+Number(p.radical_house)+' дому</b>; его управитель — <b>'+escape(names[p.effective_significator]||p.effective_significator)+'</b>.'+positionStatement(p.effective_significator)+' Выбор дома требует методического обоснования.');
  }else paragraphs.push('Предмет вопроса пока не закреплён за домом. Уточните тему и назначение сигнификатора.');
  const a=roles[0]?.effective_significator,b=roles[1]?.effective_significator;
  if(a&&b&&a!==b){
@@ -84,7 +98,16 @@ export function readableInterpretation(result,input,escape=defaultEscape){
   else paragraphs.push('В проверенном диапазоне точного прямого контакта не найдено. Другие каналы совершенствования остаются неполными.');
  }
  const certain=(correction?.role_receptions||[]).flatMap(x=>(x.evidence||[]).filter(e=>e.evidence_certainty==='CERTAIN'));
- if(certain.length)paragraphs.push('Между назначенными сигнификаторами обнаружены <b>рецепции</b> ('+certain.length+' подтверждённых по таблице свидетельств). Рецепции описывают символические связи, но не доказывают чувства или реальные намерения.');
+ if(certain.length){
+  const specific=(correction.role_receptions||[]).flatMap(rel=>(rel.evidence||[]).filter(e=>
+    e.evidence_certainty==='CERTAIN'&&e.polarity==='POSITIVE').map(e=>({
+    from:e.from_planet,to:e.to_planet,kind:e.dignity_kind
+  }))).slice(0,2);
+  const witness=specific.map(x=>escape(names[x.from]||x.from)+' находится в '+escape(dignityNames[x.kind]||x.kind)+' '+escape(names[x.to]||x.to)).join('; ');
+  paragraphs.push('В таблице обнаружены <b>направленные рецепции</b> ('+certain.length+' определённых свидетельств). '+
+    (witness?'Например: '+witness+'. ':'')+
+    'Рецепции — символические показатели; они не доказывают чувства, намерения или наступление события.');
+ }
  if(correction?.sect_resolution?.status==='UNRESOLVED')paragraphs.push('Солнце около горизонта: часть триплицитетов не определена, но достоинства, не зависящие от секты, рассчитаны.');
  let topic='Для итогового ответа требуется проверенный анализ совершенствования, препятствий и контекста вопроса.';
  if(input?.intent_kind==='RELATIONSHIP')topic='В вопросах об отношениях заинтересованность, событие и качество отношений нельзя смешивать. Рецепции не доказывают реальные чувства.';
