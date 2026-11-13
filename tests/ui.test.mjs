@@ -9,6 +9,8 @@ import {verifyArchive,verifyArchiveRecord} from '../src/archive.mjs';
 import {renderSemanticEvidence} from '../src/semantic-view.mjs';
 import {renderCorrectionEvidence} from '../src/correction-view.mjs';
 import {renderCareerEvidence} from '../src/career-view.mjs';
+import {readableWheel,readableInterpretation} from '../src/ux-readable.mjs';
+import {findCities,findCityForLiveGps,offsetForLocalMoment,selectLocationCoordinates} from '../src/city-lookup.mjs';
 const swe=await loadSwiss(),result=await build(payload,swe,constants,rules);
 const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
 const source=fs.readFileSync(new URL('../app.js',import.meta.url),'utf8').replace(/^import .*;\n/gm,'');
@@ -17,6 +19,8 @@ function open(records=[]){
  const w=dom.window;w.structuredClone=structuredClone;w.scrollTo=()=>{};w.HTMLElement.prototype.scrollIntoView=()=>{};
  w.renderAssembly=renderAssembly;w.renderContactEvidence=renderContactEvidence;
  w.renderCorrectionEvidence=renderCorrectionEvidence;w.renderCareerEvidence=renderCareerEvidence;w.renderSemanticEvidence=renderSemanticEvidence;w.verifyArchive=verifyArchive;w.verifyArchiveRecord=verifyArchiveRecord;
+ w.readableWheel=readableWheel;w.readableInterpretation=readableInterpretation;
+ w.findCities=findCities;w.findCityForLiveGps=findCityForLiveGps;w.offsetForLocalMoment=offsetForLocalMoment;w.selectLocationCoordinates=selectLocationCoordinates;
  w.horaryBuild=p=>build(p,swe,constants,rules);w.alert=()=>{};
  w.localStorage.setItem('horary-iphone-records-v1',JSON.stringify(records));
  w.eval(source);
@@ -213,4 +217,77 @@ test('v1.9 UI rejects VI instead of silently replacing it with X',async()=>{
  await settle(()=>$('formError').textContent.includes('выберите X дом'));
  assert.equal($('subjectHouse').value,'6');assert.equal(JSON.parse(w.localStorage.getItem('horary-iphone-records-v1')).length,0);
  dom.window.close();
+});
+
+test('v2.6 city selection fills coordinates and historical timezone offset',async()=>{
+  const {dom,w,$}=open();
+  w.findCities=async query=>{
+    assert.equal(query,'Берлин');return [{place_label:'Берлин, Германия',
+      latitude_deg:52.52,longitude_deg:13.405,timezone:'Europe/Berlin'}];
+  };
+  $('momentLocal').value='2026-01-20T12:00:00';
+  $('placeLabel').value='Берлин';
+  $('citySearchBtn').click();
+  await settle(()=>$('cityResults').querySelectorAll('button').length===1);
+  $('cityResults').querySelector('button').click();
+  assert.equal($('latitude').value,'52.52');
+  assert.equal($('longitude').value,'13.405');
+  assert.equal($('placeLabel').value,'Берлин, Германия');
+  assert.equal($('zoneName').value,'Europe/Berlin');
+  assert.equal($('offset').value,'+01:00');
+  assert.match($('cityStatus').textContent,/координаты выбраны/);
+  dom.window.close();
+});
+test('v2.6 GPS denial shows actionable fallback without modifying user input',async()=>{
+  const {dom,w,$}=open();
+  $('placeLabel').value='Предыдущий город';
+  w.confirm=()=>false;
+  Object.defineProperty(w.navigator,'geolocation',{configurable:true,value:{
+    getCurrentPosition(ok,fail){fail({code:1});}
+  }});
+  $('locationBtn').click();
+  await settle(()=>$('cityStatus').textContent.includes('запрещён'));
+  assert.equal($('placeLabel').value,'Предыдущий город');
+  assert.equal($('locationBtn').disabled,false);
+  dom.window.close();
+});
+test('v2.6 approved GPS city lookup is opt-in, location is retained on reverse failure',async()=>{
+  const {dom,w,$}=open();
+  let received=false;
+  w.confirm=()=>true;
+  Object.defineProperty(w.navigator,'geolocation',{configurable:true,value:{
+    getCurrentPosition(ok){ok({coords:{latitude:48.8566,longitude:2.3522}});}
+  }});
+  w.findCityForLiveGps=async(lat,lon)=>{
+    received=true;assert.equal(lat,48.8566);assert.equal(lon,2.3522);
+    return {place_label:'Париж, Франция'};
+  };
+  $('locationBtn').click();
+  await settle(()=>received&&$('placeLabel').value==='Париж, Франция');
+  assert.equal($('latitude').value,'48.8566');
+  assert.equal($('longitude').value,'2.3522');
+  assert.equal($('latitude').dataset.source,'questioner');
+  assert.equal($('locationBtn').disabled,false);
+  dom.window.close();
+});
+test('v2.6 readable screen defaults to succinct explanation and collapses expert tables',async()=>{
+  const {dom,w,$}=open();
+  $('questionText').value=payload.raw_text;
+  const records=[{question_id:payload.question_id,revisions:[{input:payload,result,saved_at:'2025-01-20T12:00:00Z'}]}];
+  dom.window.close();
+  const page=open(records);
+  page.w.document.querySelector('[data-action="open"]').click();
+  await settle(()=>page.$('chartContent').textContent.includes('Хорарный круг'));
+  assert.ok(page.$('chartContent').querySelector('svg.readable-wheel'));
+  assert.ok(page.$('chartContent').querySelector('details.expert-details:not([open])'));
+  assert.ok(page.$('interpretationContent').querySelector('.plain-reading'));
+  assert.ok(page.$('interpretationContent').querySelector('details.expert-details:not([open])'));
+  assert.match(page.$('interpretationContent').textContent,/Что показывает карта/);
+  page.w.document.querySelector('[data-action="toggle-aspects"]').click();
+  assert.equal(page.w.document.querySelector('[data-action="toggle-aspects"]').getAttribute('aria-pressed'),'true');
+  page.w.document.querySelector('[data-action="expand-chart"]').click();
+  assert.ok(page.$('chartZoomDialog')?.hasAttribute('open'));
+  page.w.document.querySelector('[data-action="close-zoom"]').click();
+  assert.equal(page.$('chartZoomDialog').hasAttribute('open'),false);
+  page.dom.window.close();
 });

@@ -3,6 +3,8 @@ import {renderContactEvidence,renderAssembly} from './src/contact-view.mjs';
 import {verifyArchive,verifyArchiveRecord} from './src/archive.mjs';
 import {renderSemanticEvidence} from './src/semantic-view.mjs';
 import {renderCareerEvidence} from './src/career-view.mjs';
+import {readableWheel,readableInterpretation} from './src/ux-readable.mjs';
+import {findCities,findCityForLiveGps,offsetForLocalMoment,selectLocationCoordinates} from './src/city-lookup.mjs';
 'use strict';
 (() => {
   const $ = id => document.getElementById(id);
@@ -25,6 +27,8 @@ import {renderCareerEvidence} from './src/career-view.mjs';
   let revisionSource = null;
   let archiveBusy = false;
   let calculating = false;
+  let showAspects = false;
+  let cityOptions = [];
 
   function readRecords() {
     try {const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(x)?x.filter(g=>g&&typeof g.question_id==='string'&&Array.isArray(g.revisions)).map(g=>({...g,revisions:g.revisions.filter(r=>r&&r.input&&typeof r.input.raw_text==='string')})):[]}catch{return []}
@@ -135,58 +139,14 @@ import {renderCareerEvidence} from './src/career-view.mjs';
     finally{calculating=false;btn.disabled=false;btn.innerHTML=old}
   }
 
-  function svgWheel(r) {
-    const chart=r.chart, ps=chart.planets, cusp=chart.cusps;
-    const asc=cusp[0].longitude_deg;
-    const pos=(longitude,radius)=>{const th=Math.PI-(longitude-asc)*Math.PI/180;return [200+radius*Math.cos(th),200+radius*Math.sin(th)]};
-    let out=`<svg class="chart-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Круговая хорарная карта: 12 домов Региомонтануса и семь традиционных планет">`;
-    out+=`<defs><radialGradient id="g" cx="50%" cy="50%"><stop offset="0" stop-color="#fffefa"/><stop offset="1" stop-color="#f5f0e6"/></radialGradient></defs>`;
-    out+=`<circle cx="200" cy="200" r="184" fill="url(#g)" stroke="#b99c6d" stroke-width="1.5"/>`;
-    out+=`<circle cx="200" cy="200" r="160" fill="none" stroke="#d6c8af" stroke-width="1"/>`;
-    out+=`<circle cx="200" cy="200" r="91" fill="#fffdf9" stroke="#d6c8af" stroke-width="1"/>`;
-    // zodiac boundaries and symbols
-    for(let i=0;i<12;i++){
-      const p1=pos(i*30,160),p2=pos(i*30,184),txt=pos(i*30+15,172);
-      out+=`<path d="M${p1[0].toFixed(2)},${p1[1].toFixed(2)} L${p2[0].toFixed(2)},${p2[1].toFixed(2)}" stroke="#c9b89a" stroke-width=".8"/>`;
-      out+=`<text x="${txt[0].toFixed(2)}" y="${(txt[1]+5).toFixed(2)}" text-anchor="middle" font-family="Georgia,serif" font-size="17" fill="#aa8c5e">${signs[i]}</text>`;
-    }
-    // house boundaries and house numbers
-    for(let i=0;i<12;i++){
-      const lon=cusp[i].longitude_deg,a=pos(lon,91),b=pos(lon,160);
-      out+=`<path d="M${a[0].toFixed(2)},${a[1].toFixed(2)} L${b[0].toFixed(2)},${b[1].toFixed(2)}" stroke="${i===0?'#a47747':'#d7d3ce'}" stroke-width="${i===0?2.2:1}"/>`;
-      const next=cusp[(i+1)%12].longitude_deg;const sector=(next-lon+360)%360;
-      const t=pos(lon+sector/2,103);
-      out+=`<text x="${t[0].toFixed(2)}" y="${(t[1]+3).toFixed(2)}" fill="#aa9c8d" font-size="10" font-family="Arial,sans-serif" text-anchor="middle">${i+1}</text>`;
-    }
-    // angular aspect lines, never interpreted as outcome
-    for(const asp of r.current_aspects||[]){
-      if(!asp.sign_compatible)continue;
-      const a=ps.find(x=>x.name===asp.planet_a),b=ps.find(x=>x.name===asp.planet_b);
-      if(!a||!b)continue;
-      const aa=pos(a.longitude_deg,86),bb=pos(b.longitude_deg,86);
-      out+=`<path d="M${aa[0].toFixed(1)},${aa[1].toFixed(1)} L${bb[0].toFixed(1)},${bb[1].toFixed(1)}" stroke="${['SQUARE','OPPOSITION'].includes(asp.aspect)?'#b89b9a':'#bda06f'}" stroke-opacity=".55" stroke-width="1.2"/>`;
-    }
-    const ordered=[...ps].sort((a,b)=>a.longitude_deg-b.longitude_deg);
-    const choices=[];
-    for(const p of ordered){
-      const angle=(p.longitude_deg-asc+360)%360;
-      const nearby=choices.some(x=>Math.abs(((angle-x+540)%360)-180)<10);
-      const radius=nearby?149:136;choices.push(angle);
-      const xy=pos(p.longitude_deg,radius);
-      out+=`<circle cx="${xy[0].toFixed(2)}" cy="${xy[1].toFixed(2)}" r="12" fill="#fffbf2" stroke="#ded3bf" stroke-width=".9"/>`;
-      out+=`<text x="${xy[0].toFixed(2)}" y="${(xy[1]+5.5).toFixed(2)}" fill="#453a45" font-size="19" font-family="Georgia,serif" text-anchor="middle">${glyph[p.name]}</text>`;
-      if(p.speed_deg_per_day<0)out+=`<text x="${(xy[0]+9).toFixed(2)}" y="${(xy[1]-6).toFixed(2)}" font-family="Arial" font-size="8" fill="#ad6f5a">R</text>`;
-    }
-    out+=`<circle cx="200" cy="200" r="40" fill="none" stroke="#e9e3d9"/><text x="200" y="197" text-anchor="middle" fill="#b29360" font-size="25" font-family="Georgia,serif">✳</text><text x="200" y="216" text-anchor="middle" font-size="7" letter-spacing="2" fill="#a2a0a7" font-family="Arial,sans-serif">HORARY</text></svg>`;
-    return out;
-  }
+  function svgWheel(r){return readableWheel(r,{showAspects});}
   function renderChart(){
     if(!active)return;
     const r=active.result,chart=r.chart,roles=r.roles.assignments,j=r.judgment,p=active.input;
     const desc=roles.map(a=>`<div class="metric"><label>${a.role_kind==='QUERENT'?'Кверент · I дом':`Предмет · ${a.radical_house} дом`}</label><strong>${glyph[a.base_lord]} ${esc(ru[a.base_lord])}</strong><small>${a.role_kind==='QUERENT'?'L1':'Управитель куспида'}</small></div>`).join('');
     const planets=chart.planets.map(p=>`<div class="planet-item"><span class="planet-name"><span class="planet-symbol">${glyph[p.name]}</span> ${esc(ru[p.name])}${p.speed_deg_per_day<0?'<sup class="mini-r">R</sup>':''}</span><span class="planet-position">${deg(p.longitude_deg)}<small>${p.house} дом · ${p.speed_deg_per_day.toFixed(3)}°/сут.</small></span></div>`).join('');
     const aspects=(r.current_aspects||[]).length?r.current_aspects.slice(0,15).map(a=>`<div class="aspect-item"><strong>${esc(ru[a.planet_a])} <span class="aspect-glyph">${aspectGlyph[a.aspect]}</span> ${esc(ru[a.planet_b])}</strong><small>${Number(a.orb_deg).toFixed(2)}° · ${a.motion==='APPLYING'?'сходящийся':'расходящийся'}${a.sign_compatible?'':' · вне знаковой связи'}</small></div>`).join(''):'<p class="small-note">В пределах 6° орбиса мажорные аспекты не найдены.</p>';
-    $('chartContent').innerHTML=`<div class="page-top"><div><div class="sub">КАРТА · РЕВИЗИЯ ${p.revision}</div><h2>Хорарный круг</h2></div><button type="button" class="mini-action" data-action="revise">↻ Ревизия</button></div><p class="question-title">${esc(p.raw_text)}</p>${r.question.question_provenance==='DEMONSTRATION_NOT_ACTUAL_QUESTION'?'<p class="info-box">Учебный пример — не реальный хорарный вопрос.</p>':''}<div class="meta-row"><span class="tag">${esc(intentRu[p.intent_kind])}</span><span class="tag">Региомонтанус</span><span class="tag">7 планет</span></div><div class="chart-card">${svgWheel(r)}<div class="chart-legend"><span><i class="legend-dot"></i> Границы домов</span><span>R — ретроградность</span></div></div><p class="inline-note">${esc(p.location_label||'Указанные координаты')} · ${esc(dateRU(chart.moment_utc))} · ${esc(p.moment_local.slice(-6))} местное смещение</p><div class="status-band"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="compact-head"><h3>Сигнификаторы</h3><small>${r.roles.status==='CONFIRMED'?'Роли подтверждены':'Требуют уточнения'}</small></div><div class="two-cols">${desc}</div><div class="compact-head"><h3>Планеты</h3><small>Тропический зодиак</small></div><div class="planet-list">${planets}</div><div class="compact-head"><h3>Аспекты в карте</h3><small>Условный орбис отображения ≤ 6°</small></div><div>${aspects}</div><div class="action-row"><button type="button" class="secondary-button" data-tab="interpretation">Смотреть разбор →</button><button type="button" class="secondary-button" data-action="download-record">Экспорт JSON</button></div><p class="small-note">Положения планет и куспидов технически рассчитаны; DISPLAY_ORB_CONVENTION: 6° — только визуализация, не орбисы Фроули и не выбор события.</p>`;
+    $('chartContent').innerHTML=`<div class="page-top"><div><div class="sub">КАРТА · РЕВИЗИЯ ${p.revision}</div><h2>Хорарный круг</h2></div><button type="button" class="mini-action" data-action="revise">↻ Ревизия</button></div><p class="question-title">${esc(p.raw_text)}</p>${r.question.question_provenance==='DEMONSTRATION_NOT_ACTUAL_QUESTION'?'<p class="info-box">Учебный пример — не реальный хорарный вопрос.</p>':''}<div class="meta-row"><span class="tag">${esc(intentRu[p.intent_kind])}</span><span class="tag">Региомонтанус</span><span class="tag">7 планет</span></div><div class="chart-card">${svgWheel(r)}<div class="chart-legend"><span><i class="legend-dot"></i> Точки — точные положения</span><span>R — ретроградность</span></div><div class="chart-tools"><button type="button" class="secondary-button" data-action="toggle-aspects" aria-pressed="${showAspects}">${showAspects?"Скрыть аспекты":"Показать аспекты"}</button><button type="button" class="secondary-button" data-action="expand-chart">Увеличить круг</button></div></div><p class="inline-note">${esc(p.location_label||'Указанные координаты')} · ${esc(dateRU(chart.moment_utc))} · ${esc(p.moment_local.slice(-6))} местное смещение</p><div class="status-band"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="compact-head"><h3>Сигнификаторы</h3><small>${r.roles.status==='CONFIRMED'?'Роли подтверждены':'Требуют уточнения'}</small></div><div class="two-cols">${desc}</div><details class="expert-details"><summary>Планеты и аспекты — подробная таблица</summary><div class="compact-head"><h3>Планеты</h3><small>Тропический зодиак</small></div><div class="planet-list">${planets}</div><div class="compact-head"><h3>Аспекты в карте</h3><small>Условный орбис отображения ≤ 6°</small></div><div>${aspects}</div></details><div class="action-row"><button type="button" class="secondary-button" data-tab="interpretation">Смотреть разбор →</button><button type="button" class="secondary-button" data-action="download-record">Экспорт JSON</button></div><p class="small-note">Положения планет и куспидов технически рассчитаны; DISPLAY_ORB_CONVENTION: 6° — только визуализация, не орбисы Фроули и не выбор события.</p>`;
   }
   function renderMethodEvidence(r){
     const e=r.evidence;
@@ -220,7 +180,7 @@ import {renderCareerEvidence} from './src/career-view.mjs';
     const paths=ps.paths.length?ps.paths.map(x=>{const c=x.contacts[0];return `<div class="path-item"><span class="pill">${esc(statusHints[x.geometry_status]||x.geometry_status)}</span><p><b>${esc(ru[c.planet_a])} ${aspectGlyph[c.aspect]} ${esc(ru[c.planet_b])}</b><span> · ${esc(aspectRu[c.aspect])}</span></p><small>${esc(dateRU(c.contact_utc))} · канал DIRECT</small>${(x.review_reasons||[]).length?`<p>${x.review_reasons.map(esc).join('; ')}</p>`:''}</div>`}).join(''):'<div class="info-box">Подтверждённые будущие прямые аспекты основной пары в установленном горизонте не обнаружены или поиск не запущен. Это не означает «нет».</div>';
     const unknown=j.unknowns.map(v=>`<li>${esc(v)}</li>`).join('');
     const roleReasons=roles.review_reasons.length?`<div class="info-box"><b>Нужно проверить роли:</b><ul class="unknown-list">${roles.review_reasons.map(s=>`<li>${esc(s)}</li>`).join('')}</ul></div>`:'';
-    $('interpretationContent').innerHTML=`<div class="page-top"><div><div class="sub">ДОКАЗАТЕЛЬНЫЙ РАЗБОР</div><h2>Протокол суждения</h2></div><button type="button" class="mini-action" data-action="download-record">↓ JSON</button></div><p class="question-title">${esc(p.raw_text)}</p><div class="status-band ${j.processing_status==='SAFETY_LIMITED'?'risk':''}"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="section-mini">Клиентская формулировка</div><p class="interpret-lead">${esc(j.client_text)}</p><div class="two-cols"><div class="metric"><label>Возможность события</label><strong style="font-size:16px">Не установлена</strong><small>${esc(j.judgment_status)}</small></div><div class="metric"><label>Оценка результата</label><strong style="font-size:16px">Не определена</strong><small>Расчётные признаки ≠ итоговое суждение</small></div></div>${r.contact_evidence?renderContactEvidence(r.contact_evidence,r.chart.moment_utc,esc,dateRU):p.intent_kind==='CAREER'?'':`<div class="section-mini">Пути совершенствования</div><div class="small-note">Горизонт: 30 суток. Проверены прямые контакты выбранных сигнификаторов. Для лунной последовательности и косвенных кандидатов выберите тип «Контакт / встреча» и поддерживаемый сценарий.</div><div class="path-list">${paths}</div>`}${roleReasons}${renderCareerEvidence(r,esc)}${renderSemanticEvidence(r,esc,dateRU,active.input)}${renderMethodEvidence(r)}<div class="section-mini">Экспертные свидетельства</div><div class="evidence-list">${evidence}</div><div class="section-mini">Неизвестное / ограничения</div><ul class="unknown-list">${unknown}</ul><div class="info-box">${esc(j.expert_text)}</div><p class="small-note">Хэш исходных данных: <span style="overflow-wrap:anywhere">${esc(r.chart.source_chart_hash)}</span><br>Версия: ${esc(j.calculation_version)}<br>Профиль: ${esc(j.method_profile)}</p><div class="action-row"><button type="button" class="secondary-button" data-tab="chart">← К карте</button><button type="button" class="secondary-button" data-action="download-record">Сохранить разбор</button></div>`;
+    $('interpretationContent').innerHTML=`<div class="page-top"><div><div class="sub">ЧТО ВИДНО НА КАРТЕ</div><h2>Разбор вопроса</h2></div><button type="button" class="mini-action" data-action="download-record">↓ JSON</button></div><p class="question-title">${esc(p.raw_text)}</p>${readableInterpretation(r,p,esc)}<details class="expert-details"><summary>Подробный астрологический протокол и справочники</summary><div class="status-band ${j.processing_status==='SAFETY_LIMITED'?'risk':''}"><strong>${esc(statusRu[j.processing_status]||j.processing_status)}</strong>${esc(j.event_assessment)}</div><div class="section-mini">Клиентская формулировка</div><p class="interpret-lead">${esc(j.client_text)}</p><div class="two-cols"><div class="metric"><label>Возможность события</label><strong style="font-size:16px">Не установлена</strong><small>${esc(j.judgment_status)}</small></div><div class="metric"><label>Оценка результата</label><strong style="font-size:16px">Не определена</strong><small>Расчётные признаки ≠ итоговое суждение</small></div></div>${r.contact_evidence?renderContactEvidence(r.contact_evidence,r.chart.moment_utc,esc,dateRU):p.intent_kind==='CAREER'?'':`<div class="section-mini">Пути совершенствования</div><div class="small-note">Горизонт: 30 суток. Проверены прямые контакты выбранных сигнификаторов. Для лунной последовательности и косвенных кандидатов выберите тип «Контакт / встреча» и поддерживаемый сценарий.</div><div class="path-list">${paths}</div>`}${roleReasons}${renderCareerEvidence(r,esc)}${renderSemanticEvidence(r,esc,dateRU,active.input)}${renderMethodEvidence(r)}<div class="section-mini">Экспертные свидетельства</div><div class="evidence-list">${evidence}</div><div class="section-mini">Неизвестное / ограничения</div><ul class="unknown-list">${unknown}</ul><div class="info-box">${esc(j.expert_text)}</div><p class="small-note">Хэш исходных данных: <span style="overflow-wrap:anywhere">${esc(r.chart.source_chart_hash)}</span><br>Версия: ${esc(j.calculation_version)}<br>Профиль: ${esc(j.method_profile)}</p></details><div class="action-row"><button type="button" class="secondary-button" data-tab="chart">← К карте</button><button type="button" class="secondary-button" data-action="download-record">Сохранить разбор</button></div>`;
   }
   function renderAll(){renderChart();renderInterpretation();drawArchive()}
 
@@ -285,6 +245,7 @@ import {renderCareerEvidence} from './src/career-view.mjs';
     revisionSource=null;$('questionForm').reset();$('questionText').readOnly=false;
     $('latitude').dataset.source='configured';$('longitude').dataset.source='configured';
     $('revisionMessage')?.remove();$('buildBtn').querySelector('span').textContent='Построить хорарную карту';
+    cityOptions=[];$('cityResults').replaceChildren();cityMessage('Введите город или разрешите определение GPS.');
     defaultTime();updateDerived();syncContactForm();hideToast();go('question');
   }
   function downloadJson(obj,filename){
@@ -359,6 +320,10 @@ import {renderCareerEvidence} from './src/career-view.mjs';
     const t=event.target.closest('button');if(!t)return;
     if(t.dataset.tab){go(t.dataset.tab);return}
     const a=t.dataset.action;
+    if(a==='toggle-aspects'){showAspects=!showAspects;renderChart();return;}
+    if(a==='expand-chart'){showZoomChart();return;}
+    if(a==='close-zoom'){const d=$('chartZoomDialog');if(typeof d?.close==='function')d.close();else d?.removeAttribute('open');return;}
+    if(a==='select-city'){applyCityChoice(Number(t.dataset.index));return;}
     if(a==='download-record'&&active)downloadJson({format:'horary-iphone-record-v1',...active},`horary-${active.input.question_id}-r${active.input.revision}.json`);
     if(a==='revise')revise();
     if(a==='review-path')savePathReview(t);
@@ -383,16 +348,92 @@ import {renderCareerEvidence} from './src/career-view.mjs';
   $('turnedHouse').addEventListener('change',updateDerived);
   $('questionForm').addEventListener('submit',createChart);
   $('nowBtn').addEventListener('click',defaultTime);
-  $('locationBtn').addEventListener('click',()=>{
-    if(!navigator.geolocation){toast('Геолокация в этом браузере недоступна. Введите координаты вручную.');return}
-    navigator.geolocation.getCurrentPosition(p=>{
-      $('latitude').value=p.coords.latitude.toFixed(6);
-      $('longitude').value=p.coords.longitude.toFixed(6);
-      $('latitude').dataset.source='questioner';$('longitude').dataset.source='questioner';
+  function cityMessage(message,error=false){
+    const el=$('cityStatus');if(!el)return;
+    el.textContent=message;el.classList.toggle('city-error',error);
+  }
+  function applyCityChoice(index){
+    const city=cityOptions[index];
+    if(!city)return;
+    try{
+      const coords=selectLocationCoordinates(city.latitude_deg,city.longitude_deg);
+      $('latitude').value=coords.latitude_deg;
+      $('longitude').value=coords.longitude_deg;
+      $('latitude').dataset.source='configured';$('longitude').dataset.source='configured';
+      $('placeLabel').value=city.place_label;
+      $('zoneName').value=city.timezone||$('zoneName').value;
+      const offset=offsetForLocalMoment($('momentLocal').value,city.timezone);
+      if(offset)$('offset').value=offset;
+      $('cityResults').replaceChildren();cityOptions=[];
+      cityMessage('Город и координаты выбраны. Проверьте время вопроса и смещение UTC для его даты.');
       hideToast();
-    },()=>toast('Не удалось получить координаты. Разрешите геолокацию для сайта или введите данные вручную.'),
-    {enableHighAccuracy:false,timeout:10000,maximumAge:300000});
-  });
+    }catch(err){cityMessage(err.message,true);}
+  }
+  async function searchCityByName(){
+    const city=$('placeLabel').value.trim();
+    if(!city){cityMessage('Введите название города, затем нажмите «Найти».',true);return;}
+    cityMessage('Ищу город…');$('citySearchBtn').disabled=true;
+    $('cityResults').replaceChildren();cityOptions=[];
+    try{
+      cityOptions=await findCities(city);
+      if(!cityOptions.length){cityMessage('Город не найден. Уточните название или введите координаты вручную.',true);return;}
+      const results=$('cityResults');
+      for(const [index,item] of cityOptions.entries()){
+        const btn=document.createElement('button');btn.type='button';btn.className='city-option';
+        btn.dataset.action='select-city';btn.dataset.index=String(index);
+        btn.textContent=item.place_label+' · '+item.latitude_deg.toFixed(3)+', '+item.longitude_deg.toFixed(3);
+        results.appendChild(btn);
+      }
+      cityMessage('Выберите нужный город из списка.');
+    }catch(error){cityMessage('Не удалось загрузить города. Проверьте интернет или укажите координаты вручную.',true);}
+    finally{$('citySearchBtn').disabled=false;}
+  }
+  function showZoomChart(){
+    if(!active)return;
+    let dialog=$('chartZoomDialog');
+    if(!dialog){
+      dialog=document.createElement('dialog');dialog.id='chartZoomDialog';dialog.className='chart-zoom-dialog';
+      document.body.appendChild(dialog);
+    }
+    dialog.innerHTML='<div class="zoom-toolbar"><strong>Карта крупно</strong><button type="button" class="secondary-button" data-action="close-zoom">Закрыть</button></div>'+svgWheel(active.result)+
+      '<p class="small-note">Точки обозначают точные координаты; подписи разведены, чтобы не перекрывались.</p>';
+    if(typeof dialog.showModal==='function')dialog.showModal();else dialog.setAttribute('open','');
+  }
+  async function gpsLocation(){
+    if(!navigator.geolocation){
+      cityMessage('Геолокация недоступна. Используйте поиск города по названию.',true);return;
+    }
+    const permitted=typeof window.confirm==='function'?window.confirm(
+      'Определить также название города? После получения GPS-координат они будут отправлены сервису BigDataCloud. Нажмите «Отмена», если нужны только координаты.'
+    ):false;
+    cityMessage('Запрашиваю доступ к местоположению…');
+    $('locationBtn').disabled=true;
+    navigator.geolocation.getCurrentPosition(async p=>{
+      try{
+        const coordinates=selectLocationCoordinates(p.coords.latitude,p.coords.longitude);
+        $('latitude').value=coordinates.latitude_deg;
+        $('longitude').value=coordinates.longitude_deg;
+        $('latitude').dataset.source='questioner';$('longitude').dataset.source='questioner';
+        cityMessage('Координаты определены. '+(permitted?'Ищу название города…':'Город можно выбрать через поиск выше.'));
+        hideToast();
+        if(permitted){
+          try{
+            const city=await findCityForLiveGps(p.coords.latitude,p.coords.longitude);
+            if(city.place_label)$('placeLabel').value=city.place_label;
+            cityMessage(city.place_label?'Координаты и город определены.':'Координаты определены; город найдите вручную.');
+          }catch{cityMessage('Координаты определены, но название города недоступно. Можно найти его вручную.',true);}
+        }
+      }catch(error){cityMessage(error.message,true);}
+      finally{$('locationBtn').disabled=false;}
+    },error=>{
+      const note=error?.code===1?'Доступ к геолокации запрещён. Разрешите его для сайта в настройках Safari или найдите город по названию.':
+        error?.code===3?'Местоположение не найдено вовремя. Попробуйте поиск города по названию.':
+        'Не удалось получить местоположение. Используйте поиск города по названию.';
+      cityMessage(note,true);$('locationBtn').disabled=false;
+    },{enableHighAccuracy:false,timeout:12000,maximumAge:300000});
+  }
+  $('citySearchBtn').addEventListener('click',searchCityByName);
+  $('locationBtn').addEventListener('click',gpsLocation);
   $('aboutBtn').addEventListener('click',()=>$('aboutDialog').showModal());
   $('closeAbout').addEventListener('click',()=>$('aboutDialog').close());
   $('aboutDone').addEventListener('click',()=>$('aboutDialog').close());
