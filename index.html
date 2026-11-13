@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#17182a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Хорар">
+  <meta name="description" content="Хорарные карты: расчёт домов Региомонтануса, сигнификаторов и точных аспектов с журналом правил">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="icon" type="image/png" href="./icons/icon-192.png">
+  <title>Хорар · карты и разбор</title>
+  <script type="module" crossorigin src="./assets/index-d1chRwKj.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-BD_NWQRK.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <button class="brand-icon" id="newQuestionBtn" type="button" aria-label="Создать новый вопрос">✳</button>
+    <div class="brand"><span>HORARY</span><small>Астрологическая мастерская</small></div>
+    <button class="icon-button" id="aboutBtn" type="button" aria-label="О приложении">ⓘ</button>
+  </header>
+  <main id="main" tabindex="-1">
+    <section id="screen-question" class="screen active">
+      <div class="intro">
+        <div class="eyebrow">НОВЫЙ ХОРАР · ПРОФИЛЬ ФРОУЛИ</div>
+        <h1>Каждый вопрос<br><em>имеет свой момент.</em></h1>
+        <p>Зафиксируйте формулировку, время и место — приложение построит карту и покажет проверяемые астрологические свидетельства.</p>
+      </div>
+      <div class="method-note"><span class="small-star">✧</span><span>Пока доступен технический и экспертный разбор. Автоматическое «да/нет» отключено до проверки методики. Все вычисления выполняются на этом устройстве.</span></div>
+      <form id="questionForm" autocomplete="off">
+        <div class="section-title"><span class="section-number">01</span><h2>Вопрос</h2></div>
+        <div class="field"><label for="questionText">Исходная формулировка <span class="required">*</span></label><textarea id="questionText" rows="3" placeholder="Например: Получу ли я предложение о работе?" maxlength="4000" required></textarea><span class="field-hint">После сохранения исходный текст останется неизменным.</span></div>
+        <div class="field"><label for="questionContext">Контекст вопроса</label><textarea id="questionContext" rows="2" placeholder="Кто участвует, что произошло, что именно требуется выяснить…" maxlength="8000"></textarea></div>
+        <div class="field"><label for="questionProvenance">Происхождение вопроса</label><select id="questionProvenance"><option value="USER_CONFIRMED_MOMENT">Самостоятельный вопрос, момент подтверждён мной</option><option value="DEMONSTRATION_NOT_ACTUAL_QUESTION">Учебный пример, не реальный хорарный вопрос</option><option value="DOCUMENTED_ASTROLOGER_MOMENT">Момент вопроса зафиксирован астрологом</option></select></div>
+        <div class="field"><label for="sensitiveTopic">Тема, требующая специальной оценки</label><select id="sensitiveTopic"><option value="STANDARD">Обычный вопрос</option><option value="MEDICAL">Здоровье, диагноз, лечение или операция</option><option value="LIFE_SAFETY">Жизнь и безопасность</option><option value="MISSING_PERSON">Пропавший человек</option><option value="CRIMINAL_LEGAL">Уголовное дело, арест или приговор</option></select></div>
+        <div class="form-row"><div class="field"><label for="intent">Тип вопроса</label><select id="intent"><option value="EVENT">Событие</option><option value="CONTACT">Контакт / встреча</option><option value="RELATIONSHIP">Отношения</option><option value="CAREER">Работа и карьера</option><option value="PRESERVATION">Сохранение положения</option><option value="STATUS">Текущее состояние</option><option value="QUALITY">Качество / оценка</option><option value="COMPARISON">Сравнение вариантов</option><option value="TIMING">Срок события</option><option value="RETURN">Возвращение</option><option value="RECOVERY">Поиск / обнаружение</option><option value="LOCATION">Местонахождение</option><option value="PAST_FACT">Факт в прошлом</option></select></div><div class="field"><label for="relay">Кто спрашивает?</label><select id="relay"><option value="direct">От своего имени</option><option value="on_behalf">От имени другого</option><option value="about_other">О третьем лице</option><option value="unknown">Не определено</option></select></div></div>
+        <div id="contactOptions" class="contact-options" hidden>
+          <div class="section-mini">СЦЕНАРИЙ КОНТАКТА · v1.7</div>
+          <div class="field"><label for="contactKind">О чём вопрос?</label><select id="contactKind">
+            <option value="">Выберите сценарий</option>
+            <option value="MEETING_WITH_NAMED_PERSON">Встреча с конкретным человеком</option>
+            <option value="CONTACT_WITH_NAMED_PERSON">Звонок / контакт с человеком</option>
+            <option value="MESSAGE_FROM_NAMED_PERSON">Сообщение от человека</option>
+            <option value="PHYSICAL_LETTER_OR_PARCEL">Доставка письма / посылки</option>
+            <option value="DID_THEY_RECEIVE_MY_LETTER">Получено ли уже отправленное письмо?</option>
+            <option value="VISITOR_ARRIVAL_AT_HOME">Прибытие посетителя домой</option>
+            <option value="REPLY_TO_SENT_MESSAGE">Ответ на уже отправленное сообщение</option><option value="CONTACT_RESUMPTION">Возобновление двустороннего общения</option><option value="RECONCILIATION">Примирение</option><option value="RETURN_TO_SHARED_HOME">Возвращение в общий дом</option><option value="RETURN_TO_RELATIONSHIP">Возвращение к отношениям</option><option value="LOST_OR_MISSING_PERSON">Пропавший человек</option>
+          </select></div>
+          <div class="field" id="contactPredicateField"><label for="contactPredicate">Что будет считаться событием?</label><select id="contactPredicate"><option value="UNKNOWN">Нужно уточнить</option><option value="MESSAGE_RECEIVED">Получено сообщение</option><option value="SAME_PLACE_IN_PERSON">Личная встреча в одном месте</option><option value="TWO_WAY_CONTACT_ESTABLISHED">Установлен двусторонний контакт</option><option value="RELATIONSHIP_RESUMED">Отношения возобновлены</option><option value="PHYSICAL_ARRIVAL">Физическое прибытие</option><option value="DELIVERY_RECEIVED">Доставка получена</option></select></div>
+          <div id="personContactFields">
+            <div class="field"><label for="relationshipKind">Кто этот человек для вас?</label><select id="relationshipKind">
+              <option value="">Отношение не определено</option>
+              <option value="UNRELATED_NAMED_PERSON">Конкретный человек без специальной социальной роли</option>
+              <option value="SPECIAL_RELATIONSHIP">Супруг, партнёр, родственник, начальник или другая специальная роль</option>
+            </select></div>
+            <label class="contact-approval"><input id="approveContactRoles" type="checkbox"><span>Подтверждаю применимость I/VII для этого вопроса. Ниже выберу VII дом без производного и подтвержу роли.</span></label>
+          </div>
+          <div class="field"><label for="contactHorizon">Окно поиска точных аспектов, суток</label><input id="contactHorizon" type="number" value="14" min="1" max="30" step="1"></div>
+          <p id="contactScenarioNote" class="small-note" aria-live="polite">Сначала выберите сценарий. Сообщение от человека и доставка посылки разбираются по разным правилам.</p>
+        </div>
+        <div id="relationshipOptions" class="contact-options" hidden>
+          <div class="section-mini">СЦЕНАРИЙ ОТНОШЕНИЙ · v1.8</div>
+          <div class="field"><label for="relationshipScenario">Что требуется разобрать?</label><select id="relationshipScenario"><option value="">Выберите сценарий</option><option value="FEELINGS">Символические свидетельства отношения другой стороны</option><option value="MUTUALITY">Взаимность: оба направления отдельно</option><option value="RELATIONSHIP_START">Начало отношений</option><option value="RELATIONSHIP_CONTINUATION">Продолжение текущего союза</option><option value="SEPARATION">Расставание</option><option value="RECONCILIATION">Примирение</option><option value="RETURN_TO_RELATIONSHIP">Возвращение к отношениям</option><option value="RELATIONSHIP_QUALITY">Условия и качество союза</option></select></div>
+          <div class="field"><label for="relationshipPredicate">Критерий вопроса</label><select id="relationshipPredicate"><option value="">Уточните критерий отдельно</option><option value="ATTITUDE_SYMBOLIC">Направленная символическая рецепция другой стороны</option><option value="MUTUAL_ATTITUDE_SYMBOLIC">Символические рецепции обеих сторон</option><option value="RELATIONSHIP_STARTED">Отношения начались</option><option value="RELATIONSHIP_MAINTAINED">Текущий союз продолжается</option><option value="RELATIONSHIP_ENDED">Отношения завершились</option><option value="RELATIONSHIP_RESUMED">Отношения возобновились</option><option value="RELATIONSHIP_QUALITY_ASSESSED">Раздельная оценка условий и рецепций</option></select></div>
+          <div class="form-row"><div class="field"><label for="relationshipRole">Социальная роль человека</label><select id="relationshipRole"><option value="UNKNOWN">Не определена</option><option value="SPOUSE">Супруг / супруга</option><option value="EX_SPOUSE">Бывший супруг / супруга</option><option value="ROMANTIC_PARTNER">Романтический партнёр</option><option value="EX_ROMANTIC_PARTNER">Бывший партнёр</option><option value="POTENTIAL_PARTNER">Потенциальный партнёр</option><option value="FRIEND">Друг / подруга</option><option value="NEIGHBOR">Сосед / соседка</option></select></div><div class="field"><label for="relationshipState">Состояние отношений</label><select id="relationshipState"><option value="UNKNOWN">Не определено</option><option value="NEVER_STARTED">Не начинались</option><option value="CURRENT">Текущий союз</option><option value="SEPARATED">Расстались</option></select></div></div>
+          <div class="field"><label for="thirdPartyCount">Других участников, требующих отдельных ролей</label><input id="thirdPartyCount" type="number" min="0" max="20" step="1" value="0"></div>
+          <div class="field"><label for="outcomeDescription">Что именно означает событие в вашем вопросе?</label><textarea id="outcomeDescription" rows="2" maxlength="1000" placeholder="Для событийного сценария сформулируйте наблюдаемый критерий заранее"></textarea></div>
+          <label class="contact-approval"><input id="approveRelationshipRoles" type="checkbox"><span>Подтверждаю применимость I/VII для выбранной роли. Ниже выберу VII дом без производного и зафиксирую роли.</span></label>
+          <p class="small-note">Сообщение, встреча и примирение — разные события. Символические рецепции не устанавливают реальные чувства. Ваше подтверждение ролей не удостоверяет личность эксперта.</p>
+        </div>
+        <div id="careerOptions" class="contact-options" hidden>
+          <div class="section-mini">РАБОТА И КАРЬЕРА · v1.9</div>
+          <div class="field"><label for="careerScenario">Что требуется разобрать?</label><select id="careerScenario"><option value="">Выберите сценарий</option><option value="GET_JOB">Получение работы</option><option value="ACCEPT_OFFER">Подходит ли предложение</option><option value="KEEP_JOB">Сохранение текущей работы</option><option value="JOB_LOSS">Потеря работы</option><option value="CHANGE_JOB">Смена работы</option><option value="PROMOTION">Повышение</option><option value="COMPARE_JOBS">Сравнение вариантов работы</option><option value="BOSS_RELATION">Отношения с начальником</option><option value="SALARY_OUTLOOK">Условия зарплаты</option><option value="WAGE_PAYMENT">Получение выплаты</option><option value="WORK_CONDITIONS">Условия работы</option></select></div>
+          <div class="field"><label for="careerPredicate">Критерий вопроса</label><select id="careerPredicate"><option value="">Уточните критерий отдельно</option><option value="JOB_OBTAINED">Работа получена</option><option value="OFFER_SUITABILITY_SYMBOLIC">Символические условия предложения</option><option value="CURRENT_JOB_MAINTAINED">Текущая работа сохраняется</option><option value="CURRENT_JOB_ENDED">Текущая работа завершилась</option><option value="JOB_CHANGED">Работа сменилась</option><option value="PROMOTION_GRANTED">Повышение предоставлено</option><option value="JOB_OPTIONS_COMPARED">Сравниваются условия двух работ</option><option value="BOSS_RELATION_ASSESSED">Рассматриваются отношения с начальником</option><option value="SALARY_CONDITIONS_ASSESSED">Рассматриваются условия зарплаты</option><option value="PAYMENT_RECEIVED">Выплата получена</option><option value="WORK_CONDITIONS_ASSESSED">Рассматриваются условия работы</option></select></div>
+          <div class="form-row"><div class="field"><label for="careerPerspective">О чьей работе вопрос?</label><select id="careerPerspective"><option value="SELF">О моей</option><option value="THIRD_PARTY">О работе другого человека</option></select></div><div class="field"><label for="employmentState">Исходное состояние</label><select id="employmentState"><option value="UNKNOWN">Не определено</option><option value="UNEMPLOYED">Сейчас без работы</option><option value="EMPLOYED">Сейчас работаю</option><option value="NOTICE_GIVEN">Есть уведомление об увольнении</option></select></div></div>
+          <div class="form-row"><div class="field"><label for="employmentRelation">Тип отношений с работой</label><select id="employmentRelation"><option value="UNKNOWN">Не определён</option><option value="EMPLOYEE">Сотрудник</option><option value="APPLICANT">Соискатель</option><option value="SERVICE_PROVIDER">Исполнитель услуг</option><option value="BUSINESS_OWNER">Владелец бизнеса</option><option value="EMPLOYER">Работодатель</option></select></div><div class="field"><label for="moneyContext">Источник денег</label><select id="moneyContext"><option value="UNKNOWN">Не определён / не относится к вопросу</option><option value="EMPLOYER_PAYROLL">Зарплата от работодателя</option><option value="CLIENT_INVOICE">Оплата от клиента</option><option value="OWN_RESOURCES">Мои собственные средства</option></select></div></div>
+          <div class="field"><label for="careerOutcome">Что именно будет считаться наступлением события?</label><textarea id="careerOutcome" rows="2" maxlength="1000" placeholder="Например: предложение получено, договор подписан или работа начата — это разные критерии"></textarea></div>
+          <label class="contact-approval"><input id="acknowledgeCareerRoles" type="checkbox"><span>Подтверждаю предварительный выбор I/X. Ниже выберу X дом без производного и зафиксирую роли. Это не экспертное утверждение.</span></label>
+          <p class="small-note">Работа рассматривается через X дом. Зарплата работодателя — XI, личные деньги — II. Утверждённого экспертного реестра в браузерной версии нет, поэтому итог события и срок недоступны.</p>
+        </div>
+        <div class="form-row"><div class="field"><label for="ownerId">Владелец вопроса</label><input id="ownerId" placeholder="Я / псевдоним" value="я" maxlength="80"></div><div class="field"><label for="speakerId">Кто произносит вопрос?</label><input id="speakerId" placeholder="Я / посредник" value="я" maxlength="80"></div></div>
+        <div class="section-title space-top"><span class="section-number">02</span><h2>Момент и место</h2></div>
+        <div class="soft-hint">Для самостоятельного вопроса используем подтверждённый вами момент — это проектная конвенция.</div>
+        <div class="form-row"><div class="field grow"><label for="momentLocal">Местная дата и время <span class="required">*</span></label><input id="momentLocal" type="datetime-local" step="1" required></div><div class="field offset-field"><label for="offset">UTC ±</label><input id="offset" inputmode="text" placeholder="+03:00" pattern="[+-](0[0-9]|1[0-4]):[0-5][0-9]" required></div></div>
+        <div class="field-hint" style="margin:-6px 0 13px">При выборе прошлой даты проверьте смещение UTC с учётом летнего времени.</div>
+        <div class="field"><label for="placeLabel">Город</label><input id="placeLabel" placeholder="Например: Москва, Париж, Берлин" autocomplete="address-level2"></div>
+        <div class="city-controls"><button class="secondary-button" id="citySearchBtn" type="button">Найти город и координаты</button><button class="secondary-button" id="locationBtn" type="button">⌖ Моё местоположение</button></div>
+        <p id="cityStatus" class="city-status" role="status" aria-live="polite">Найдите город по названию или разрешите доступ к местоположению.</p><div class="city-results" id="cityResults" role="group" aria-label="Найденные города"></div>
+        <p class="field-hint city-attribution">Поиск городов: <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo / GeoNames</a> (CC BY 4.0). При согласии на поиск города по GPS координаты передаются BigDataCloud. Вопрос и карта остаются на устройстве.</p>
+        <div class="field"><label for="zoneName">Часовой пояс</label><input id="zoneName" placeholder="Например, Europe/Moscow"><small class="field-hint">Смещение UTC проверяйте для даты вопроса, особенно при смене летнего времени.</small></div>
+        <div class="form-row"><div class="field"><label for="latitude">Широта, ° <span class="required">*</span></label><input id="latitude" type="number" min="-65" max="65" step="any" inputmode="decimal" placeholder="55.7558" required></div><div class="field"><label for="longitude">Долгота, ° <span class="required">*</span></label><input id="longitude" type="number" min="-180" max="180" step="any" inputmode="decimal" placeholder="37.6173" required></div></div>
+        <div class="control-line"><button class="text-button" id="nowBtn" type="button">◷ Сейчас</button></div>
+        <div class="section-title space-top"><span class="section-number">03</span><h2>Сигнификаторы</h2></div>
+        <div class="soft-hint">Выбор дома делается до анализа аспектов. Приложение не угадывает дом по тексту вопроса.</div>
+        <div class="form-row"><div class="field"><label for="subjectHouse">Дом предмета вопроса</label><select id="subjectHouse"><option value="">Не выбран</option><option value="1">I · Кверент</option><option value="2">II · Имущество / деньги</option><option value="3">III · Близкие, общение</option><option value="4">IV · Дом, недвижимость</option><option value="5">V · Дети, творчество</option><option value="6">VI · Условия / подчинённые по контексту</option><option value="7">VII · Партнёр / другой</option><option value="8">VIII · Чужие деньги</option><option value="9">IX · Дальние поездки</option><option value="10">X · Работа, должность, статус</option><option value="11">XI · Друзья, поддержка</option><option value="12">XII · Скрытое / изоляция</option></select></div><div class="field"><label for="turnedHouse">Производный дом</label><select id="turnedHouse"><option value="">Нет</option><option value="1">I от выбранного</option><option value="2">II от выбранного</option><option value="3">III от выбранного</option><option value="4">IV от выбранного</option><option value="5">V от выбранного</option><option value="6">VI от выбранного</option><option value="7">VII от выбранного</option><option value="8">VIII от выбранного</option><option value="9">IX от выбранного</option><option value="10">X от выбранного</option><option value="11">XI от выбранного</option><option value="12">XII от выбранного</option></select></div></div>
+        <div class="derived-note" id="derivedNote">Предмет вопроса ещё не назначен</div>
+        <label class="check-row"><input id="lockRoles" type="checkbox"><span><strong>Подтверждаю назначение домов</strong><small>Понимаю, что методическое основание выбора требуется проверять отдельно.</small></span></label>
+        <button class="primary-button" type="submit" id="buildBtn"><span>Построить хорарную карту</span><span class="button-arrow">↗</span></button>
+        <div id="formError" class="form-error" role="alert" hidden></div><div style="text-align:center;margin-top:14px"><button class="text-button" id="resetBtn" type="button">Очистить форму и создать новый вопрос</button></div>
+      </form>
+      <div class="disclaimer">Хорарная астрология — традиционная практика, научная достоверность прогнозов которой не установлена.</div>
+    </section>
+    <section id="screen-chart" class="screen"><div id="chartContent" class="empty-screen"><div class="empty-icon">◎</div><h2>Ваша карта появится здесь</h2><p>Сначала зафиксируйте вопрос, время и место.</p><button type="button" data-tab="question" class="secondary-button">Новый вопрос</button></div></section>
+    <section id="screen-interpretation" class="screen"><div id="interpretationContent" class="empty-screen"><div class="empty-icon">✦</div><h2>Разбор ещё не построен</h2><p>Сохраните вопрос и получите журнал вычислений и ограничений.</p><button type="button" data-tab="question" class="secondary-button">Задать вопрос</button></div></section>
+    <section id="screen-archive" class="screen"><div id="archiveContent"></div></section>
+  </main>
+  <nav class="tabbar" aria-label="Главная навигация">
+    <button type="button" class="tab active" data-tab="question"><span class="tab-icon">✎</span><span>Вопрос</span></button>
+    <button type="button" class="tab" data-tab="chart"><span class="tab-icon">◎</span><span>Карта</span></button>
+    <button type="button" class="tab" data-tab="interpretation"><span class="tab-icon">✧</span><span>Разбор</span></button>
+    <button type="button" class="tab" data-tab="archive"><span class="tab-icon">▤</span><span>Архив</span></button>
+  </nav>
+</div>
+<dialog id="aboutDialog"><div class="dialog-wrap"><div class="dialog-top"><h2>О приложении</h2><button id="closeAbout" type="button" class="icon-button" aria-label="Закрыть">×</button></div><p><strong>Хорар · версия 2.5 (браузерная)</strong></p><p>Тропический зодиак, семь классических планет, дома Региомонтануса. Астрономический расчёт выполняется на устройстве: Swiss Ephemeris WebAssembly, встроенные эфемериды Moshier.</p><p>Роли назначаются до аспектного анализа. Достоинства и рецепции v1.1, акцидентальные признаки v1.2 и свидетельства по участникам v1.3 объединены с повторной проверкой карты v1.4. Для встреч, звонков и сообщений v1.5 вычисляет лунную последовательность, станции и геометрические кандидаты передачи и собирания света. Предпросмотр v1.5 — до 30 суток. Коррекция 2.0.1 отдельно ищет до границы знака с техническим пределом 365 суток; это не срок события. Добавлены арбитр путей v1.6, явный маршрутизатор v1.7 и раздельные свидетельства отношений v1.8. В v1.9 добавлены отдельные карьерные сценарии и технические кандидаты I/X, XI/II. Коррекция 2.0.1 сохраняет частичные достоинства у горизонта, уточняет хронологию, добавляет антисции и трактуемый дом перед куспидом. Экспертный реестр ролей отсутствует: доступна только предварительная информация. Разметка автора не удостоверяет его личность; окончательного прогноза нет.</p><p>Методический профиль: ранний Фроули; таблица достоинств — Олешко, 1999, с. 55. Исправленная редакция Фроули 2014 полностью не сверена. Автоматические «да/нет» намеренно отключены.</p><p>История сохраняется локально в браузере на этом устройстве. Для резервной копии используйте экспорт из архива. Для расчётов сервер не нужен; после первой загрузки рабочие файлы могут сохраняться для использования офлайн.</p><button type="button" class="secondary-button full" id="aboutDone">Понятно</button></div></dialog>
+</body>
+</html>
