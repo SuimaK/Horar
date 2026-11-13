@@ -1,5 +1,5 @@
-# Horary browser 2.4
+# Horary browser 2.5
 
-Static browser build. Source: https://github.com/SuimaK/Horar/tree/8e8fabb17840bd01630b17b37acb1f5cb611617f
+Static browser build. Source: https://github.com/SuimaK/Horar/tree/2057147d6151b4c06133455f3939c638c4c3b72a
 
-Method v1.9 career scenarios provide preliminary evidence; authenticated expert role approval remains unavailable. No event prediction is produced.
+Method correction 2.0.1: partial sect, adaptive roots, chronology, fixed antiscia, effective houses, validated latitude. Candidate evidence only; no event verdict or timing forecast.
