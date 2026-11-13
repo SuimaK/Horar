@@ -24,7 +24,7 @@ const baseline=()=>{
  const correction={schema_version:'2.0.1',chart_id:chartId,source_chart_hash:hash,
   source_chart_verified:true,can_issue_event_verdict:false,final_prediction:null,timing_prediction:null,
   essential:{placements:names.map(mkD)},
-  house_placements:names.map((name,i)=>({planet:name,raw_house:i+1,effective_house:i+1})),
+  house_placements:chart.planets.map(p=>({planet:p.name,raw_house:p.house,effective_house:p.house})),
   sect_resolution:{status:'DAY'},
   role_receptions:[{from_actor:'querent',to_actor:'quesited',evidence:[
     {from_planet:'Mars',to_planet:'Venus',dignity_kind:'term',polarity:'POSITIVE',evidence_certainty:'CERTAIN'},
