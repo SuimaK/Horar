@@ -70,7 +70,7 @@ function renderSemanticPreview21(data,escape){
  const cards=(data.cards||[]).map(x=>
   '<section class="reading-item reading-'+escape(x.key)+'"><h4>'+escape(x.title)+'</h4><p>'+escape(x.text)+'</p></section>').join('');
  return '<section class="plain-reading" aria-label="Пошаговый разбор хорарной карты">'+
- '<h3>Что показывает хорар?</h3><p class="reading-intro">'+
+ '<h3>Что показывает карта</h3><p class="reading-intro">'+
  'Пошаговый разбор рассчитанных свидетельств по традиционной методике. '+
  'Астрология не имеет установленной научной предсказательной достоверности.</p>'+
  '<p class="reading-status">'+escape(labels[data.status]||'Сведения требуют проверки')+'</p>'+
