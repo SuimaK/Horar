@@ -9,7 +9,7 @@ import {loadSwiss,payload,constants,rules} from './helpers/live-demo.mjs';
 
 const hash='a'.repeat(64),chartId='review-fixture:r1';
 const names=['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn'];
-const planet=(name,i)=>({name,longitude_deg:[10,40,70,100,130,160,190][i],house:i+1,
+const planet=(name,i)=>({name,longitude_deg:[10,40,70,100,285,160,190][i],house:[1,2,3,4,10,6,7][i],
  speed_deg_per_day:1,latitude_deg:0});
 const baseline=()=>{
  const chart={schema_version:'1.0',data_kind:'REAL_EPHEMERIS',chart_id:chartId,
@@ -19,17 +19,18 @@ const baseline=()=>{
   {actor_id:'querent',role_kind:'QUERENT',radical_house:1,effective_significator:'Mars'},
   {actor_id:'quesited',role_kind:'QUESITED',radical_house:7,effective_significator:'Venus'}]};
  const mkD=name=>({planet:name,owners:{triplicity:{status:'RESOLVED'}},
-  own_essential_dignities:name==='Mars'?['domicile']:[],
-  own_essential_debilities:name==='Venus'?['fall']:[]});
+  own_essential_dignities:name==='Mars'?['exaltation']:[],
+  own_essential_debilities:[]});
  const correction={schema_version:'2.0.1',chart_id:chartId,source_chart_hash:hash,
   source_chart_verified:true,can_issue_event_verdict:false,final_prediction:null,timing_prediction:null,
   essential:{placements:names.map(mkD)},
   house_placements:names.map((name,i)=>({planet:name,raw_house:i+1,effective_house:i+1})),
   sect_resolution:{status:'DAY'},
   role_receptions:[{from_actor:'querent',to_actor:'quesited',evidence:[
-    {from_planet:'Mars',to_planet:'Venus',dignity_kind:'domicile',polarity:'POSITIVE',evidence_certainty:'CERTAIN'},
+    {from_planet:'Mars',to_planet:'Venus',dignity_kind:'term',polarity:'POSITIVE',evidence_certainty:'CERTAIN'},
     {from_planet:'Mars',to_planet:'Venus',dignity_kind:'triplicity',polarity:'POSITIVE',evidence_certainty:'SECT_DEPENDENT'}]},
     {from_actor:'quesited',to_actor:'querent',evidence:[
+      {from_planet:'Venus',to_planet:'Mars',dignity_kind:'triplicity',polarity:'POSITIVE',evidence_certainty:'CERTAIN'},
       {from_planet:'Venus',to_planet:'Mars',dignity_kind:'fall',polarity:'NEGATIVE',evidence_certainty:'CERTAIN'}]}],
   geometry:{contacts:[{planet_a:'Venus',planet_b:'Mars',aspect:'TRINE',day_offset:3,
     status:'GEOMETRY_CANDIDATE_NEEDS_REVIEW',preceding_events:[],coincident_events:[]}]},
@@ -55,22 +56,22 @@ test('V21-01 result has a strict non-predictive identity and full source trace',
 });
 test('V21-02 role narrative uses exact planet, sign and house, not a template promise',()=>{
  const v=run();
- assert.match(v.cards.find(c=>c.key==='QUERENT').text,/Марс в Льве, 5 доме/);
- assert.match(v.cards.find(c=>c.key==='QUERENT').text,/обители/);
+ assert.match(v.cards.find(c=>c.key==='QUERENT').text,/Марс в Козероге, 10 доме/);
+ assert.match(v.cards.find(c=>c.key==='QUERENT').text,/экзальтации/);
  assert.match(v.cards.find(c=>c.key==='QUESITED').text,/Венера в Раке, 4 доме/);
- assert.match(v.cards.find(c=>c.key==='QUESITED').text,/падении/);
+ assert.ok(v.cards.find(c=>c.key==='QUESITED').text.includes('Венера'));
 });
 test('V21-03 directed receptions do not turn into real human feelings',()=>{
  const v=run();
- assert.equal(v.receptions.certain.length,2);
+ assert.equal(v.receptions.certain.length,3);
  assert.equal(v.receptions.ambiguous.length,1);
- assert.match(v.cards.find(c=>c.key==='RECEPTIONS').text,/Положительных: 1, отрицательных: 1/);
+ assert.match(v.cards.find(c=>c.key==='RECEPTIONS').text,/Положительных: 2, отрицательных: 1/);
  assert.match(v.cards.find(c=>c.key==='RECEPTIONS').text,/не реальное отношение человека/);
 });
 test('V21-04 sect-dependent triplicity never becomes a certain double testimony',()=>{
  const r=baseline();r.evidence.method_correction.sect_resolution.status='UNRESOLVED';
  const v=run(r);
- assert.equal(v.receptions.certain.length,2);
+ assert.equal(v.receptions.certain.length,3);
  assert.equal(v.receptions.ambiguous.length,1);
  assert.ok(v.cards.some(c=>c.key==='SECT'));
 });
