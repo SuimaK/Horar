@@ -2,7 +2,7 @@
  * Technical/factual output only: judgment always requires human review.
  * Protocol shape intentionally remains compatible with server MVP 1.0.
  */
-import {solarSect, adaptDignityChart, adaptAccidentalChart, calculateDignities, calculateAccidentals, roleReceptionEvidence, mergeEvidence} from './evidence.mjs';
+import {solarSect, adaptDignityChart, adaptAccidentalChart, calculateDignities, calculateDignitiesPartial, calculateAccidentals, roleReceptionEvidence, mergeEvidence} from './evidence.mjs';
 import {assembleRoleEvidence,liveGate} from './assembly.mjs';
 import {contactGate,evaluateContact} from './contact-semantics.mjs';
 import {questionScope,SENSITIVE_TOPICS} from './question-scope.mjs';
@@ -184,10 +184,15 @@ export function contactCandidates(astro,jd0,days=30,STEP=.125){
           if(!signCompatible(pa.longitude_deg,pb.longitude_deg,aspect))continue;
           if([pa.longitude_deg,pb.longitude_deg].some(l=>l%30<1e-5||30-l%30<1e-5))continue;
           if(contacts.some(x=>x.a===a&&x.b===b&&x.aspect===aspect&&Math.abs(x.days-root)<.0001))continue;
+          // Examine only events strictly up to the refined exact aspect.
+          // The last three-hour sample may contain a later ingress/station.
           let ingress=false,station=false;
           for(let j=0;j<=k;j++)for(const name of [a,b]){
-            ingress ||= sign(samples[j][name].longitude_deg)!==sign(samples[j+1][name].longitude_deg);
-            station ||= samples[j][name].speed_deg_per_day*samples[j+1][name].speed_deg_per_day<0;
+            const before=samples[j][name];
+            const after=j===k?astro.position(jd0+root,name):samples[j+1][name];
+            ingress ||= sign(before.longitude_deg)!==sign(after.longitude_deg);
+            station ||= before.speed_deg_per_day*after.speed_deg_per_day<0 ||
+              (j===k&&Math.abs(after.speed_deg_per_day)<1e-7);
           }
           contacts.push({a,b,aspect,days:rnd(root,8),lon_a:rnd(pa.longitude_deg,6),lon_b:rnd(pb.longitude_deg,6),sign_change:ingress,station_review:station});
         }
@@ -272,6 +277,9 @@ export async function build(data,api,constants,rules){
   const sect_info=solarSect(jd,v.lat,v.lon,pos.Sun.longitude_deg,pos.Sun.latitude_deg);
   const accidental=await calculateAccidentals(adaptAccidentalChart(chart,{returnTheme:v.intent==='RETURN'}));
   const essential=sect_info.sect==='UNRESOLVED'?null:await calculateDignities(adaptDignityChart(chart,sect_info.sect));
+  // Keep immutable, sect-independent evidence even when DAY/NIGHT is unresolved.
+  // Strict 1.1 consumers continue to receive null rather than a changed schema.
+  const partial_essential=sect_info.sect==='UNRESOLVED'?await calculateDignitiesPartial(chart,'UNRESOLVED'):null;
   const joined=essential?mergeEvidence(essential,accidental):null;
   // The role/domain binding has strict preconditions; no inference from an unconfirmed role.
   const role_receptions=essential&&roles.roles_locked&&roles.status==='CONFIRMED'
@@ -294,7 +302,7 @@ export async function build(data,api,constants,rules){
     j.unknowns=j.unknowns.filter(x=>!x.startsWith('Не проверены рецепции, достоинства'));
     j.unknowns.unshift('Эссенциальные достоинства и рецепции рассчитаны как факты v1.1, но их роль в итоговом суждении не проверена.');
   } else {
-    j.unknowns.unshift('Солнце вблизи горизонта: секта и зависящие от неё достоинства требуют экспертного подтверждения.');
+    j.unknowns.unshift('Солнце вблизи горизонта: обитель, экзальтация, терм, фас, изгнание, падение и независимые рецепции рассчитаны в partial_essential; триплицитет секто-зависим и требует экспертной проверки.');
   }
   j.unknowns.unshift('Акцидентальные факторы v1.2 рассчитаны, но не являются полной оценкой силы сигнификатора.');
   j.expert_text+=` Модули 1.1/1.2: достоинства ${essential?'рассчитаны':'ожидают секты'}, акцидентальные факторы рассчитаны; синтез события отсутствует.`;
@@ -304,7 +312,7 @@ export async function build(data,api,constants,rules){
     await arbitrateEvidence(contact_evidence,{astro,jd,roleAssembly:role_assembly,reviews:data.path_reviews||[]}):null;
   const result={question:question(v),chart,roles,path_search:paths,judgment:j,current_aspects:currentAspects(chart),contact_evidence,
     scenario_route:semantic.route,arbitration,
-    evidence:{sect_info,essential,accidental,joined,role_receptions,role_assembly,live_gate,
+    evidence:{sect_info,essential,partial_essential,accidental,joined,role_receptions,role_assembly,live_gate,
       numerical_trace:{schema_version:'1.4',trace_recomputed_from_chart:true,source_chart_hash:hash,
         source_versions:{chart:'1.4',dignity:'1.1',accidental:'1.2',semantic:'1.3'},
         sampling_hours:3,all_channels_covered:false,can_issue_client_verdict:false,final_prediction:null,timing_prediction:null},
