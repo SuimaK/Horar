@@ -322,7 +322,7 @@ import {findCities,findCityForLiveGps,offsetForLocalMoment,selectLocationCoordin
     const a=t.dataset.action;
     if(a==='toggle-aspects'){showAspects=!showAspects;renderChart();return;}
     if(a==='expand-chart'){showZoomChart();return;}
-    if(a==='close-zoom'){$('chartZoomDialog')?.close();return;}
+    if(a==='close-zoom'){const d=$('chartZoomDialog');if(typeof d?.close==='function')d.close();else d?.removeAttribute('open');return;}
     if(a==='select-city'){applyCityChoice(Number(t.dataset.index));return;}
     if(a==='download-record'&&active)downloadJson({format:'horary-iphone-record-v1',...active},`horary-${active.input.question_id}-r${active.input.revision}.json`);
     if(a==='revise')revise();
