@@ -305,7 +305,7 @@ export async function build(data,api,constants,rules){
     j.unknowns.unshift('Солнце вблизи горизонта: обитель, экзальтация, терм, фас, изгнание, падение и независимые рецепции рассчитаны в partial_essential; триплицитет секто-зависим и требует экспертной проверки.');
   }
   j.unknowns.unshift('Акцидентальные факторы v1.2 рассчитаны, но не являются полной оценкой силы сигнификатора.');
-  j.expert_text+=` Модули 1.1/1.2: достоинства ${essential?'рассчитаны':'ожидают секты'}, акцидентальные факторы рассчитаны; синтез события отсутствует.`;
+  j.expert_text+=` Модули 1.1/1.2: достоинства ${essential?'рассчитаны по определённой секте':partial_essential?'частично рассчитаны; триплицитет секто-зависим':'не рассчитаны'}, акцидентальные факторы рассчитаны; синтез события отсутствует.`;
   if(data.path_reviews!==undefined&&!Array.isArray(data.path_reviews))throw Error('Разметка путей должна быть массивом.');
   if(data.path_reviews?.length&&(!semantic.route||semantic.route.status!=='READY_FOR_V16_EVIDENCE_ONLY'||!contact_evidence?.analysis))throw Error('Разметка допустима только для заново рассчитанных путей поддерживаемого сценария.');
   const arbitration=semantic.route?.status==='READY_FOR_V16_EVIDENCE_ONLY'&&contact_evidence?.analysis?
