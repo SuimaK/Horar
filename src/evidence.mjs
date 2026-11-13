@@ -69,6 +69,59 @@ export function dignityAt(lon,sect,p=dignityProfile){
     term,face:p.face_cycle[(3*index+Math.min(Math.floor(degree/10),2))%7],
     detriment:p.domiciles[opposite],fall:p.exaltations[opposite]}};
 }
+
+// Corrective 2.0.1: do not discard sect-independent dignities near the horizon.
+// The strict DignityEvidence 1.1 API remains unchanged for DAY/NIGHT consumers.
+export async function calculateDignitiesPartial(chart,sect='UNRESOLVED',p=dignityProfile){
+  validateDignityProfile(p);
+  if(chart?.schema_version!=='1.0'||!validIdentity(chart)||
+     !['DAY','NIGHT','UNRESOLVED'].includes(sect)||
+     !Array.isArray(chart.planets)||!sameNames(chart.planets)||
+     chart.planets.some(x=>!isNumber(x.longitude_deg)||x.longitude_deg<0||x.longitude_deg>=360))
+    throw Error('Неверный снимок карты или секта для частичных достоинств 2.0.1');
+  const placements=chart.planets.map(({name,longitude_deg})=>{
+    const day=dignityAt(longitude_deg,'DAY',p),night=dignityAt(longitude_deg,'NIGHT',p);
+    const candidates=sect==='DAY'?[day.owners.triplicity]:
+      sect==='NIGHT'?[night.owners.triplicity]:
+      [...new Set([day.owners.triplicity,night.owners.triplicity])];
+    const certain=candidates.length===1;
+    const owners={...day.owners,triplicity:certain?candidates[0]:null};
+    const own_essential_dignities=positive.filter(k=>owners[k]===name);
+    const own_essential_debilities=negative.filter(k=>owners[k]===name);
+    const triplicity_potential=!certain&&candidates.includes(name);
+    // A planet with no positive dignity may still be in detriment or fall.
+    const peregrine_frawley=triplicity_potential?null:
+      own_essential_dignities.length===0&&own_essential_debilities.length===0;
+    return {planet:name,longitude_deg,sign:day.sign,
+      degree_in_sign:day.degree_in_sign,dignity_owners:owners,
+      triplicity:{status:certain?(sect==='UNRESOLVED'?'INVARIANT':'RESOLVED'):'AMBIGUOUS',
+        owner:certain?candidates[0]:null,possible_owners:candidates},
+      own_essential_dignities,own_essential_debilities,
+      positive_dignity_unknown:triplicity_potential,peregrine_frawley};
+  });
+  const directional_receptions=[];
+  for(const row of placements){
+    for(const kind of [...positive,...negative]){
+      const candidates=kind==='triplicity'?row.triplicity.possible_owners:[row.dignity_owners[kind]];
+      for(const to_planet of candidates){
+        if(!to_planet||to_planet===row.planet)continue;
+        directional_receptions.push({from_planet:row.planet,to_planet,dignity_kind:kind,
+          polarity:negative.includes(kind)?'NEGATIVE':'POSITIVE',
+          certainty:kind==='triplicity'&&row.triplicity.status==='AMBIGUOUS'?'SECT_DEPENDENT':'CERTAIN'});
+      }
+    }
+  }
+  return {schema_version:'2.0.1',chart_id:chart.chart_id,
+    source_chart_hash:chart.source_chart_hash,
+    sect,dignity_table_profile:p.profile_id,
+    profile_sha256:await canonicalHash(p),
+    placements,directional_receptions,
+    judgment_status:'NOT_PERFORMED',can_issue_client_verdict:false,
+    warnings:['PARTIAL_SECT_REQUIRES_REVIEW',
+      'FRAWLEY_2014_TABLE_RECONCILIATION_PENDING',
+      'NO_ASTROLOGICAL_EVENT_VERDICT']};
+}
+
 export function adaptDignityChart(chart,sect){
   if(chart?.schema_version!=='1.0')throw Error('Требуется ChartSnapshot 1.0');
   return {schema_version:'1.1',chart_id:chart.chart_id,source_chart_hash:chart.source_chart_hash,
