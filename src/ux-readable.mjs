@@ -81,8 +81,34 @@ function renderSemanticPreview21(data,escape){
  'Обоснованный итоговый прогноз не сформирован: геометрические кандидаты требуют смысловой проверки, '+
  'а неполный поиск нельзя толковать как отрицательный ответ.</p></div></section>';
 }
+function renderPerfectionPreview22(data,escape){
+ const title=data?.synthesis?.headline||'Проверка путей события ещё не завершена.';
+ const human={DIRECT:'Прямой аспект',TRANSLATION:'Передача света',
+   COLLECTION:'Собирание света',ANTISCION:'Антис'};
+ const count=Array.isArray(data.candidates)?data.candidates.length:0;
+ const paths=(data.candidates||[]).slice(0,6).map(p=>{
+   const label=human[p.kind]||'Путь';
+   const concerns=(p.concerns||[]).slice(0,2).map(x=>escape(x.explanation)).join(' ');
+   return '<div class="perfection-path"><b>'+escape(label)+'</b>'+
+    '<p>'+(concerns||'Геометрический путь найден; для суждения требуется оценить способность сторон, рецепции и контекст.')+
+    '</p></div>';
+ }).join('');
+ const paragraphs=data.status==='CANDIDATES_WITH_OPEN_REVIEW'?
+  'Проверены численные кандидаты на совершенствование. Само событие ещё не подтверждено.':
+  data.status==='NO_CANDIDATE_IN_INCOMPLETE_SCOPE'?
+  'Поиск остаётся неполным. Отсутствие показанного аспекта не равнозначно отрицательному ответу.':
+  'Дальнейшее исследование требует подтверждённых сигнификаторов и подходящего типа вопроса.';
+ return '<section class="perfection-reading" aria-label="Проверка совершенствования события">'+
+  '<h3>Развитие события</h3>'+
+  '<p class="perfection-headline">'+escape(title)+'</p>'+
+  '<p class="perfection-explanation">'+escape(paragraphs)+'</p>'+
+  (count?'<details class="perfection-details"><summary>Показать найденные пути ('+Math.min(count,6)+
+    (count>6?' из '+count:'')+')</summary>'+paths+'</details>':'')+
+  '<p class="perfection-note">Рецепции, препятствия, станции и посредники оцениваются в контексте вопроса. '+
+  'Пока нет утверждённого итогового суждения «да/нет» или срока.</p></section>';
+}
 export function readableInterpretation(result,input,escape=defaultEscape){
- if(result?.evidence?.interpretation_v21)return renderSemanticPreview21(result.evidence.interpretation_v21,escape);
+ if(result?.evidence?.interpretation_v21)return (result?.evidence?.perfection_arbitration_v22?renderPerfectionPreview22(result.evidence.perfection_arbitration_v22,escape):'')+renderSemanticPreview21(result.evidence.interpretation_v21,escape);
  const roles=Array.isArray(result?.roles?.assignments)?result.roles.assignments:[];
  const correction=result?.evidence?.method_correction;
  const paragraphs=[];
