@@ -161,14 +161,15 @@ function capacity(method,significator){
 export function arbitratePerfectionV22(result,input={}){
  const {chart,method,semantic}=checkIdentity(result);
  const assignments=list(result.roles?.assignments),intent=input.intent_kind||'UNKNOWN';
- const safeCase=!TOPIC_SPECIFIC.has(intent)&&!['RECOVERY','LOCATION','RETURN'].includes(intent);
+ const contactReady=intent!=='CONTACT'||result.scenario_route?.status==='READY_FOR_V16_EVIDENCE_ONLY';
+ const safeCase=['EVENT','CONTACT'].includes(intent)&&!TOPIC_SPECIFIC.has(intent)&&contactReady;
  const roleReady=rolePair(result.roles)&&semantic.roles_confirmed===true;
  const safetyLimited=result.judgment?.processing_status==='SAFETY_LIMITED'||
   result.meta?.question_scope?.limited===true;
  const reasons=[];
  if(safetyLimited)reasons.push('SAFETY_LIMITED');
  if(!roleReady)reasons.push('ROLES_NOT_CONFIRMED_OR_COLLIDING');
- if(!safeCase)reasons.push('TOPIC_REQUIRES_SPECIAL_METHOD');
+ if(!safeCase)reasons.push(contactReady?'TOPIC_REQUIRES_SPECIAL_METHOD':'CONTACT_SCENARIO_NOT_APPROVED');
  const canAnalyze=safeCase&&roleReady&&!safetyLimited;
  const a=assignments[0]?.effective_significator,b=assignments[1]?.effective_significator;
  const candidates=[],context=[];
