@@ -1,0 +1,34 @@
+name: Horar 2.8 perfection arbiter preview
+
+on:
+  push:
+    branches: [feat/perfection-arbiter-v2-2]
+
+permissions:
+  contents: write
+
+jobs:
+  publish-preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
+      - name: Publish isolated static PWA after passing tests
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          cd dist
+          git init -b perfection-preview-build
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Horar 2.8 perfection preview from ${{ github.sha }}"
+          git push --force "https://x-access-token:$GH_TOKEN@github.com/$GH_REPO.git" HEAD:refs/heads/perfection-preview-build

@@ -1,0 +1,389 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PerfectionArbitrationEvidence v2.2 — review-grade, source-linked, no automatic event outcome",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "chart_id",
+    "source_chart_hash",
+    "provenance",
+    "method_profile",
+    "status",
+    "question_intent",
+    "roles_confirmed",
+    "channel_counts",
+    "candidates",
+    "context_checks",
+    "receptions",
+    "capacity",
+    "search_coverage",
+    "unresolved_checks",
+    "synthesis",
+    "can_issue_client_verdict",
+    "can_issue_event_verdict",
+    "final_prediction",
+    "timing_prediction"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "2.2"
+    },
+    "chart_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_chart_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "provenance": {
+      "const": "RECOMPUTED_REAL_EPHEMERIS"
+    },
+    "method_profile": {
+      "const": "FRAWLEY_EARLY_PLUS_OLESHKO_1999_SOURCE_DISTINGUISHED"
+    },
+    "status": {
+      "enum": [
+        "SAFETY_LIMITED",
+        "ROLES_REQUIRED",
+        "TOPIC_METHOD_REQUIRED",
+        "CANDIDATES_WITH_OPEN_REVIEW",
+        "NO_CANDIDATE_IN_INCOMPLETE_SCOPE"
+      ]
+    },
+    "question_intent": {
+      "type": "string"
+    },
+    "roles_confirmed": {
+      "type": "boolean"
+    },
+    "channel_counts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "candidates": {
+      "type": "array",
+      "maxItems": 80,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "candidate_id",
+          "kind",
+          "status",
+          "participants",
+          "mediator",
+          "aspect",
+          "day_offset",
+          "source_ref",
+          "concerns",
+          "review_required"
+        ],
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "pattern": "^(DIRECT|TRANSLATION|COLLECTION|ANTISCION):[0-9]+$"
+          },
+          "kind": {
+            "enum": [
+              "DIRECT",
+              "TRANSLATION",
+              "COLLECTION",
+              "ANTISCION"
+            ]
+          },
+          "status": {
+            "enum": [
+              "CHRONOLOGY_REVIEW",
+              "GEOMETRY_READY_CONTEXT_PENDING",
+              "INDIRECT_CONTEXT_REVIEW",
+              "SPECIAL_RULE_REVIEW"
+            ]
+          },
+          "participants": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "string"
+            }
+          },
+          "mediator": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "aspect": {
+            "type": "string"
+          },
+          "day_offset": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 365
+          },
+          "source_ref": {
+            "type": "string",
+            "minLength": 8
+          },
+          "concerns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "code",
+                "explanation",
+                "source_ref",
+                "disposition"
+              ],
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "minLength": 3
+                },
+                "explanation": {
+                  "type": "string",
+                  "minLength": 5
+                },
+                "source_ref": {
+                  "type": "string",
+                  "minLength": 5
+                },
+                "disposition": {
+                  "const": "REQUIRES_REVIEW"
+                }
+              }
+            }
+          },
+          "review_required": {
+            "const": true
+          }
+        }
+      }
+    },
+    "context_checks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "explanation",
+          "source_ref",
+          "disposition"
+        ],
+        "properties": {
+          "code": {
+            "type": "string",
+            "minLength": 3
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 5
+          },
+          "source_ref": {
+            "type": "string",
+            "minLength": 5
+          },
+          "disposition": {
+            "const": "REQUIRES_REVIEW"
+          }
+        }
+      }
+    },
+    "receptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "certain",
+        "ambiguous"
+      ],
+      "properties": {
+        "certain": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from_actor",
+              "to_actor",
+              "from_planet",
+              "to_planet",
+              "dignity_kind",
+              "polarity",
+              "certainty"
+            ],
+            "properties": {
+              "from_actor": {
+                "type": "string"
+              },
+              "to_actor": {
+                "type": "string"
+              },
+              "from_planet": {
+                "type": "string"
+              },
+              "to_planet": {
+                "type": "string"
+              },
+              "dignity_kind": {
+                "type": "string"
+              },
+              "polarity": {
+                "enum": [
+                  "POSITIVE",
+                  "NEGATIVE"
+                ]
+              },
+              "certainty": {
+                "enum": [
+                  "CERTAIN",
+                  "SECT_DEPENDENT"
+                ]
+              }
+            }
+          }
+        },
+        "ambiguous": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "from_actor",
+              "to_actor",
+              "from_planet",
+              "to_planet",
+              "dignity_kind",
+              "polarity",
+              "certainty"
+            ],
+            "properties": {
+              "from_actor": {
+                "type": "string"
+              },
+              "to_actor": {
+                "type": "string"
+              },
+              "from_planet": {
+                "type": "string"
+              },
+              "to_planet": {
+                "type": "string"
+              },
+              "dignity_kind": {
+                "type": "string"
+              },
+              "polarity": {
+                "enum": [
+                  "POSITIVE",
+                  "NEGATIVE"
+                ]
+              },
+              "certainty": {
+                "enum": [
+                  "CERTAIN",
+                  "SECT_DEPENDENT"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "capacity": {
+      "type": "array",
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "planet",
+          "condition",
+          "observations"
+        ],
+        "properties": {
+          "planet": {
+            "type": "string"
+          },
+          "condition": {
+            "enum": [
+              "NOT_ASSESSED",
+              "CONTEXT_FACTORS_PRESENT",
+              "NO_LISTED_FACTORS"
+            ]
+          },
+          "observations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "search_coverage": {
+      "type": "string"
+    },
+    "unresolved_checks": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "synthesis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "headline",
+        "explanation",
+        "accepted_path_ids",
+        "rejected_path_ids",
+        "expert_assessments_applied"
+      ],
+      "properties": {
+        "state": {
+          "const": "REVIEW_REQUIRED"
+        },
+        "headline": {
+          "type": "string",
+          "minLength": 15
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 30
+        },
+        "accepted_path_ids": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "rejected_path_ids": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "expert_assessments_applied": {
+          "const": false
+        }
+      }
+    },
+    "can_issue_client_verdict": {
+      "const": false
+    },
+    "can_issue_event_verdict": {
+      "const": false
+    },
+    "final_prediction": {
+      "type": "null"
+    },
+    "timing_prediction": {
+      "type": "null"
+    }
+  }
+}
