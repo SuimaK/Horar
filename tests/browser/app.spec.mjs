@@ -1,5 +1,6 @@
 import {test,expect} from '@playwright/test';
 import fs from 'node:fs/promises';
+import {createAppServer} from './server.mjs';
 
 const KEY='horary-iphone-records-v1';
 const stored=page=>page.evaluate(key=>JSON.parse(localStorage.getItem(key)||'[]'),KEY);
@@ -27,9 +28,14 @@ async function assertLayout(page){
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
 }
 
-test('real WASM sunrise, offline reload and a new offline calculation',async({page,context},testInfo)=>{
+test('real WASM sunrise, offline reload and a new offline calculation',async({page,context,browserName},testInfo)=>{
+  // A private origin can be shut down without disrupting parallel scenarios.
+  const server=createAppServer();
+  await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+  const origin=`http://127.0.0.1:${server.address().port}`;
+  try{
   const errors=[];page.on('pageerror',e=>errors.push(e.message));
-  await page.goto('/Horar/');await fillQuestion(page);await assertLayout(page);await build(page);
+  await page.goto(origin+'/Horar/');await fillQuestion(page);await assertLayout(page);await build(page);
   await tab(page,'interpretation');
   await expect(page.locator('#interpretationContent')).toContainText('Секта не определена');
   await expect(page.locator('#interpretationContent')).not.toContainText(/undefined|NaN/);
@@ -42,7 +48,13 @@ test('real WASM sunrise, offline reload and a new offline calculation',async({pa
   await page.evaluate(async()=>{await navigator.serviceWorker.ready;
     if(!navigator.serviceWorker.controller)await new Promise(resolve=>navigator.serviceWorker.addEventListener('controllerchange',resolve,{once:true}));});
   const before=await stored(page);
-  await context.setOffline(true);await page.reload();
+  server.closeAllConnections();await new Promise(resolve=>server.close(resolve));
+  await expect(fetch(origin+'/Horar/')).rejects.toThrow();
+  // WebKit's emulated offline mode blocks even literal SW responses:
+  // https://github.com/microsoft/playwright/issues/42775
+  // Stop the real origin in both engines; additionally emulate offline in Chromium.
+  if(browserName==='chromium')await context.setOffline(true);
+  await page.reload();
   await expect(page.locator('#buildBtn')).toBeVisible();
   expect(await stored(page)).toEqual(before);
   await tab(page,'archive');await page.locator('[data-action="open"]').click();
@@ -52,6 +64,7 @@ test('real WASM sunrise, offline reload and a new offline calculation',async({pa
   const fallback=await page.evaluate(async()=>{try{const r=await fetch('./assets/not-cached.wasm');return {ok:r.ok,type:r.headers.get('content-type')};}catch{return {networkError:true};}});
   expect(fallback.networkError===true||fallback.ok===false).toBe(true);
   expect(fallback.type||'').not.toContain('text/html');expect(errors).toEqual([]);
+  }finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
 });
 
 test('old revision, card export/import, complete backup and duplicate handling',async({page},testInfo)=>{
@@ -65,7 +78,7 @@ test('old revision, card export/import, complete backup and duplicate handling',
   await expect(page.locator('#questionText')).toHaveAttribute('readonly','');await build(page);
   const group=(await stored(page))[0];expect(group.revisions.map(r=>r.input.revision)).toEqual([1,2,3]);
   expect(group.revisions[0].result.chart).toEqual(original.result.chart);
-  const downloadPromise=page.waitForEvent('download');await page.locator('[data-action="download-record"]').click();
+  const downloadPromise=page.waitForEvent('download');await page.locator('#chartContent [data-action="download-record"]').click();
   const download=await downloadPromise;const file=testInfo.outputPath('card.json');await download.saveAs(file);
   const card=JSON.parse(await fs.readFile(file,'utf8'));
   expect(card.format).toBe('horary-iphone-record-v1');
@@ -124,7 +137,7 @@ test('contact, relationship and career forms keep their own settings through reo
   ];
   for(const c of cases){
     await tab(page,'question');await fillQuestion(page,`Учебная проверка ${c.intent}`);
-    await page.locator('#momentLocal').fill('2025-01-20T12:00:00');
+    await page.locator('#momentLocal').fill('2025-01-20T12:00');
     await page.locator('#intent').selectOption(c.intent);
     for(const [id,value] of Object.entries(c.fields))await page.locator('#'+id).selectOption(value);
     await page.locator('#lockRoles').check();await page.locator('#'+c.approval).check();await build(page);

@@ -27,7 +27,7 @@ function walk(dir){return fs.readdirSync(dir,{withFileTypes:true}).flatMap(e=>{
   return [path.relative(dest,full).replaceAll(path.sep,'/')];
 });}
 const files=walk(dest).filter(f=>!f.endsWith('.map')&&!f.endsWith('sw.js')).sort();
-const precache=files.map(x=>`./${x}`);
+const precache=['./',...files.map(x=>`./${x}`)];
 const hash=createHash('sha256').update(serviceWorkerSource(precache,''));
 for(const file of files)hash.update(file).update(fs.readFileSync(path.join(dest,file)));
 const sw=serviceWorkerSource(precache,hash.digest('hex').slice(0,20));
