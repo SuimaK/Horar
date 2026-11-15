@@ -214,3 +214,42 @@ test('v1.9 UI rejects VI instead of silently replacing it with X',async()=>{
  assert.equal($('subjectHouse').value,'6');assert.equal(JSON.parse(w.localStorage.getItem('horary-iphone-records-v1')).length,0);
  dom.window.close();
 });
+
+test('revision from an older card uses the next free number and preserves both earlier snapshots',async()=>{
+ const input2={...payload,revision:2};
+ const result2=await build(input2,swe,constants,rules);
+ const revisions=[{input:payload,result,saved_at:'2025-01-20T12:00:00Z'},
+  {input:input2,result:result2,saved_at:'2025-01-20T12:01:00Z'}];
+ const {dom,w,$}=open([{question_id:payload.question_id,revisions}]);
+ w.document.querySelector('[data-action="open"][data-revision="1"]').click();
+ await settle(()=>$('chartContent').textContent.includes('РЕВИЗИЯ 1'));
+ w.document.querySelector('[data-action="revise"]').click();
+ assert.match($('revisionMessage').textContent,/Ревизия 3/);
+ // The legacy contact predates explicit event criteria; confirm it in the new revision.
+ $('contactPredicate').value='MESSAGE_RECEIVED';
+ $('questionForm').dispatchEvent(new w.Event('submit',{cancelable:true,bubbles:true}));
+ await settle(()=>!$('buildBtn').disabled);
+ const saved=JSON.parse(w.localStorage.getItem('horary-iphone-records-v1'))[0].revisions;
+ assert.deepEqual(saved.map(r=>r.input.revision),[1,2,3],$('formError').textContent);
+ assert.deepEqual(saved.slice(0,2).map(r=>r.result.chart),revisions.map(r=>r.result.chart));
+ assert.equal(saved[2].input.raw_text,payload.raw_text);
+ dom.window.close();
+});
+
+test('opening an archive is atomic when refreshed evidence cannot be saved',async()=>{
+ const old=structuredClone(result);delete old.evidence.method_correction;
+ const item={input:payload,result:old,saved_at:'2025-01-20T12:00:00Z'};
+ const {dom,w,$}=open([{question_id:payload.question_id,revisions:[item]}]);
+ const before=w.localStorage.getItem('horary-iphone-records-v1');let message='';w.alert=m=>{message=m;};
+ const setItem=w.Storage.prototype.setItem;
+ w.Storage.prototype.setItem=()=>{throw Error('storage full');};
+ w.document.querySelector('[data-action="open"]').click();await settle(()=>message);
+ assert.equal(w.localStorage.getItem('horary-iphone-records-v1'),before);
+ assert.match(message,/не удалось сохранить/i);
+ assert.doesNotMatch($('chartContent').textContent,/РЕВИЗИЯ 1/);
+ w.Storage.prototype.setItem=setItem;
+ w.document.querySelector('[data-action="open"]').click();
+ await settle(()=>$('chartContent').textContent.includes('РЕВИЗИЯ 1'));
+ assert.ok(JSON.parse(w.localStorage.getItem('horary-iphone-records-v1'))[0].revisions[0].result.evidence.method_correction);
+ dom.window.close();
+});

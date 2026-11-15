@@ -56,3 +56,16 @@ test('legacy records without newer evidence fields are recomputed and duplicate 
  const renamed=mutate(r=>{r.input.raw_text='Другой вопрос';r.result.question.raw_text='Другой вопрос';});
  await assert.rejects(verifyArchive(source(renamed),first.records,calculate),/Конфликт/);
 });
+
+test('individual card export can be imported and deduplicated through the same verification boundary',async()=>{
+ const card={format:'horary-iphone-record-v1',...record};
+ const first=await verifyArchive(card,[],calculate);
+ assert.equal(first.added,1);
+ const second=await verifyArchive(card,first.records,calculate);
+ assert.equal(second.added,0);assert.equal(second.duplicates,1);
+ assert.deepEqual(second.records[0].revisions[0].result.chart,record.result.chart);
+ const forged=structuredClone(card);forged.result.chart.planets[0].longitude_deg+=1;
+ const before=structuredClone(first.records);
+ await assert.rejects(verifyArchive(forged,first.records,calculate),/численные данные/);
+ assert.deepEqual(first.records,before);
+});
