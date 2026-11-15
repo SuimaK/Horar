@@ -29,9 +29,9 @@ import {renderCareerEvidence} from './src/career-view.mjs';
   function readRecords() {
     try {const x=JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]');return Array.isArray(x)?x.filter(g=>g&&typeof g.question_id==='string'&&Array.isArray(g.revisions)).map(g=>({...g,revisions:g.revisions.filter(r=>r&&r.input&&typeof r.input.raw_text==='string')})):[]}catch{return []}
   }
-  function persist() {
-    try {localStorage.setItem(STORAGE_KEY,JSON.stringify(records));return true}
-    catch {alert('Не удалось сохранить локально. Экспортируйте уже имеющиеся записи: память браузера может быть заполнена.');return false}
+  function nextRevision(questionId) {
+    const group=records.find(g=>g.question_id===questionId);
+    return Math.max(0,...(group?.revisions||[]).map(r=>r.input.revision))+1;
   }
   function toast(message) { const el=$('formError');el.hidden=false;el.textContent=message;el.scrollIntoView({behavior:'smooth',block:'nearest'}); }
   function hideToast() {const el=$('formError');el.hidden=true;el.textContent='';}
@@ -88,7 +88,7 @@ import {renderCareerEvidence} from './src/career-view.mjs';
     const src=revisionSource?.input;
     const raw=$('questionText').value;
     if(src && raw!==src.raw_text)throw Error('Исходный вопрос нельзя изменять в новой ревизии. Создайте новый вопрос.');
-    const p={question_id:src?.question_id||uuid(), revision:(src?.revision||0)+1,
+    const p={question_id:src?.question_id||uuid(), revision:src?nextRevision(src.question_id):1,
       recorded_at_utc:src?.recorded_at_utc||new Date().toISOString().replace(/\.\d\d\dZ$/,'Z'),
       raw_text:raw,context:$('questionContext').value,question_provenance:$('questionProvenance').value,sensitive_topic:$('sensitiveTopic').value,
       question_owner_id:$('ownerId').value.trim()||'я', speaker_id:$('speakerId').value.trim()||'я',
@@ -231,7 +231,7 @@ import {renderCareerEvidence} from './src/career-view.mjs';
       const {input}=item;
       return `<div class="archive-item"><div class="date">${esc(dateRU(input.moment_local||input.moment_utc))} · R${input.revision}</div><h3>${esc(input.raw_text)}</h3><div class="bottom"><span>${esc(input.location_label||'Без названия города')} · ${esc(intentRu[input.intent_kind])}</span><button type="button" data-action="open" data-id="${esc(input.question_id)}" data-revision="${input.revision}">Открыть →</button></div></div>`;
     }).join('');
-    $('archiveContent').innerHTML=`<div class="page-top"><div><div class="sub">ВАША БИБЛИОТЕКА</div><h2>Архив хораров</h2></div><span class="version-tag">${count} записей</span></div><p class="small-note">Все карты хранятся только на этом устройстве. При очистке данных Safari они могут исчезнуть — делайте резервные копии.</p><div class="archive-controls"><button type="button" class="secondary-button" data-action="export-all">↓ Экспорт архива</button><button type="button" class="secondary-button" data-action="import-all">↑ Импорт архива</button></div><p class="small-note" id="archiveProgress" role="status" aria-live="polite">При открытии и импорте карта сверяется повторным расчётом. Текст разбора формируется заново.</p><input type="file" id="importFile" accept="application/json,.json" class="file-upload"><div>${html||'<div class="empty-screen"><div class="empty-icon">▤</div><h2>Архив пока пуст</h2><p>Первая построенная карта автоматически появится здесь.</p></div>'}</div>`;
+    $('archiveContent').innerHTML=`<div class="page-top"><div><div class="sub">ВАША БИБЛИОТЕКА</div><h2>Архив хораров</h2></div><span class="version-tag">${count} записей</span></div><p class="small-note">Все карты хранятся только на этом устройстве. При очистке данных Safari они могут исчезнуть — делайте резервные копии.</p><div class="archive-controls"><button type="button" class="secondary-button" data-action="export-all">↓ Экспорт архива</button><button type="button" class="secondary-button" data-action="import-all">↑ Импорт JSON</button></div><p class="small-note" id="archiveProgress" role="status" aria-live="polite">Можно импортировать архив или отдельную карту JSON. При открытии и импорте карта сверяется повторным расчётом; разбор формируется заново.</p><input type="file" id="importFile" accept="application/json,.json" class="file-upload"><div>${html||'<div class="empty-screen"><div class="empty-icon">▤</div><h2>Архив пока пуст</h2><p>Первая построенная карта автоматически появится здесь.</p></div>'}</div>`;
   }
   function revise(){
     if(!active)return;
@@ -277,7 +277,7 @@ import {renderCareerEvidence} from './src/career-view.mjs';
       const el=document.createElement('div');el.id='revisionMessage';el.className='revision-lock';
       $('questionText').closest('.field').insertAdjacentElement('afterend',el);
     }
-    $('revisionMessage').textContent=`Ревизия ${input.revision+1}: исходный текст заблокирован. Изменение времени, места или ролей создаст новый расчёт; прежняя карта сохранится.`;
+    $('revisionMessage').textContent=`Ревизия ${nextRevision(input.question_id)}: исходный текст заблокирован. Изменение времени, места или ролей создаст новый расчёт; прежняя карта сохранится.`;
     $('buildBtn').querySelector('span').textContent='Сохранить новую ревизию';
     updateDerived();go('question');
   }
@@ -296,7 +296,7 @@ import {renderCareerEvidence} from './src/career-view.mjs';
     archiveBusy=busy;
     $('buildBtn').disabled=busy;
     document.querySelectorAll('#archiveContent button').forEach(b=>{b.disabled=busy;});
-    if($('archiveProgress'))$('archiveProgress').textContent=busy?'Проверяем архив и пересчитываем карты…':'При открытии и импорте карта сверяется повторным расчётом. Текст разбора формируется заново.';
+    if($('archiveProgress'))$('archiveProgress').textContent=busy?'Проверяем архив и пересчитываем карты…':'Можно импортировать архив или отдельную карту JSON. При открытии и импорте карта сверяется повторным расчётом; разбор формируется заново.';
   }
   async function calculateArchiveInput(input){
     if(typeof window.horaryBuild!=='function')throw Error('Не загружен локальный модуль проверки карты. Обновите страницу.');
@@ -323,7 +323,11 @@ import {renderCareerEvidence} from './src/career-view.mjs';
     try{
       const checked=await verifyArchiveRecord(item,calculateArchiveInput);
       const index=group.revisions.indexOf(item);
-      group.revisions[index]=checked;persist();
+      const draft=structuredClone(records);
+      draft.find(g=>g.question_id===group.question_id).revisions[index]=checked;
+      try{localStorage.setItem(STORAGE_KEY,JSON.stringify(draft));}
+      catch{throw Error('Не удалось сохранить проверенную карту: хранилище недоступно или заполнено. Прежние записи не изменены.');}
+      records=draft;
       active=checked;renderAll();go('chart');
     }catch(e){alert(`Карта не прошла проверку: ${e.message}`);}
     finally{archiveState(false);}
@@ -345,8 +349,8 @@ import {renderCareerEvidence} from './src/career-view.mjs';
     const check=name=>form.querySelector(`[name="${name}"]`)?.checked===true;
     const review={path_id:pid,assessment:value('assessment'),reviewer_id:value('reviewer_id'),rationale:value('rationale'),blind_to_outcome:check('blind_to_outcome'),receptions_considered:check('receptions_considered'),capacity_considered:check('capacity_considered'),
       interventions:[...form.querySelectorAll('.intervention-review')].map(el=>({event_id:el.dataset.eventId,effect:el.querySelector('[name="effect"]').value,role:el.querySelector('[name="role"]').value,rationale:el.querySelector('[name="intervention_rationale"]').value})),ingress_assessment:value('ingress_assessment')||'NOT_APPLICABLE',station_assessment:value('station_assessment')||'NOT_APPLICABLE',context_role:value('context_role')||''};
-    const input=structuredClone(active.input),group=records.find(g=>g.question_id===input.question_id);
-    input.revision=Math.max(...group.revisions.map(r=>r.input.revision))+1;
+    const input=structuredClone(active.input);
+    input.revision=nextRevision(input.question_id);
     input.path_reviews=[...(input.path_reviews||[]).filter(r=>r.path_id!==pid),review];
     calculating=true;button.disabled=true;
     try{

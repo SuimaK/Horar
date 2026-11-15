@@ -60,6 +60,12 @@ export async function verifyArchiveRecord(item,calculate){
 }
 
 export async function verifyArchive(source,existing,calculate){
+  if(object(source)&&source.format==='horary-iphone-record-v1'){
+    source={format:'horary-iphone-archive-v1',records:[{
+      question_id:source.input?.question_id,
+      revisions:[{input:source.input,result:source.result,saved_at:source.saved_at}]
+    }]};
+  }
   if(!object(source)||source.format!=='horary-iphone-archive-v1'||!Array.isArray(source.records))fail('Неизвестный формат архива.');
   if(source.records.length>5000)fail('Слишком много групп вопросов в архиве.');
   const draft=structuredClone(existing);
