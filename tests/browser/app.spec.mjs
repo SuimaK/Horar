@@ -61,9 +61,13 @@ test('real WASM sunrise, offline reload and a new offline calculation',async({pa
   await expect(page.locator('#screen-chart')).toHaveClass(/active/);
   await tab(page,'question');await fillQuestion(page,'Вторая учебная карта без сети');await build(page);
   expect((await stored(page)).length).toBe(2);
+  expect(errors).toEqual([]);
   const fallback=await page.evaluate(async()=>{try{const r=await fetch('./assets/not-cached.wasm');return {ok:r.ok,type:r.headers.get('content-type')};}catch{return {networkError:true};}});
   expect(fallback.networkError===true||fallback.ok===false).toBe(true);
-  expect(fallback.type||'').not.toContain('text/html');expect(errors).toEqual([]);
+  expect(fallback.type||'').not.toContain('text/html');
+  // WebKit reports Response.error() for this deliberate missing asset as a
+  // pageerror too; every error from normal app use was checked above.
+  expect(errors.filter(message=>message!=='Response served by service worker is an error')).toEqual([]);
   }finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve));}
 });
 
