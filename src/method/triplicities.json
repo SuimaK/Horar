@@ -1,0 +1,12 @@
+{
+  "table": "triplicities",
+  "version": "1.0",
+  "description": "Управители триплицитетов по Дорофею: дневной, ночной и участвующий. В расчёте баллов используются дневной и ночной по секте карты (ТЗ 3.5).",
+  "note": "У Лилли (кн. I, с. 104) водный триплицитет — Марс и днём, и ночью; здесь, по решению ТЗ, дорофеева схема: днём Венера, ночью Марс.",
+  "rows": [
+    { "element": "fire", "name": "огненный", "day": "sun", "night": "jupiter", "participating": "saturn", "source": "Дорофей Сидонский, «Carmen Astrologicum», кн. I, гл. 1" },
+    { "element": "earth", "name": "земной", "day": "venus", "night": "moon", "participating": "mars", "source": "Дорофей Сидонский, «Carmen Astrologicum», кн. I, гл. 1" },
+    { "element": "air", "name": "воздушный", "day": "saturn", "night": "mercury", "participating": "jupiter", "source": "Дорофей Сидонский, «Carmen Astrologicum», кн. I, гл. 1" },
+    { "element": "water", "name": "водный", "day": "venus", "night": "mars", "participating": "moon", "source": "Дорофей Сидонский, «Carmen Astrologicum», кн. I, гл. 1" }
+  ]
+}

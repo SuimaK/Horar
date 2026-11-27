@@ -1,0 +1,19 @@
+{
+  "table": "signs",
+  "version": "1.0",
+  "description": "Знаки, стихии, обители, экзальтации, изгнания и падения (традиционные управители, без высших планет).",
+  "rows": [
+    { "sign": "aries", "name": "Овен", "element": "fire", "modality": "cardinal", "domicile": "mars", "exaltation": { "planet": "sun", "degree": 19 }, "detriment": "venus", "fall": "saturn", "source": "Лилли, «Христианская астрология», кн. I, таблица существенных достоинств (1647, с. 104)" },
+    { "sign": "taurus", "name": "Телец", "element": "earth", "modality": "fixed", "domicile": "venus", "exaltation": { "planet": "moon", "degree": 3 }, "detriment": "mars", "fall": null, "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "gemini", "name": "Близнецы", "element": "air", "modality": "mutable", "domicile": "mercury", "exaltation": null, "detriment": "jupiter", "fall": null, "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "cancer", "name": "Рак", "element": "water", "modality": "cardinal", "domicile": "moon", "exaltation": { "planet": "jupiter", "degree": 15 }, "detriment": "saturn", "fall": "mars", "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "leo", "name": "Лев", "element": "fire", "modality": "fixed", "domicile": "sun", "exaltation": null, "detriment": "saturn", "fall": null, "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "virgo", "name": "Дева", "element": "earth", "modality": "mutable", "domicile": "mercury", "exaltation": { "planet": "mercury", "degree": 15 }, "detriment": "jupiter", "fall": "venus", "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "libra", "name": "Весы", "element": "air", "modality": "cardinal", "domicile": "venus", "exaltation": { "planet": "saturn", "degree": 21 }, "detriment": "mars", "fall": "sun", "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "scorpio", "name": "Скорпион", "element": "water", "modality": "fixed", "domicile": "mars", "exaltation": null, "detriment": "venus", "fall": "moon", "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "sagittarius", "name": "Стрелец", "element": "fire", "modality": "mutable", "domicile": "jupiter", "exaltation": null, "detriment": "mercury", "fall": null, "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "capricorn", "name": "Козерог", "element": "earth", "modality": "cardinal", "domicile": "saturn", "exaltation": { "planet": "mars", "degree": 28 }, "detriment": "moon", "fall": "jupiter", "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "aquarius", "name": "Водолей", "element": "air", "modality": "fixed", "domicile": "saturn", "exaltation": null, "detriment": "sun", "fall": null, "source": "Лилли, «Христианская астрология», кн. I, с. 104" },
+    { "sign": "pisces", "name": "Рыбы", "element": "water", "modality": "mutable", "domicile": "jupiter", "exaltation": { "planet": "venus", "degree": 27 }, "detriment": "mercury", "fall": "mercury", "source": "Лилли, «Христианская астрология», кн. I, с. 104" }
+  ]
+}
