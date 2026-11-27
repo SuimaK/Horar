@@ -14,6 +14,7 @@ import { formatDate, formatOffset, formatTime } from '../core/time/format';
 import { parseOffset } from '../core/time/parse';
 import { isValidTimeZone, offsetSecondsAt, wallTimeAt, type WallTime } from '../core/time/zoned';
 import { CitySearch, cityLabel } from './CitySearch';
+import { maskDate, maskTime } from './masks';
 import { loadLastPlace, saveLastPlace } from './storage';
 
 type Field = FieldError['field'];
@@ -136,10 +137,13 @@ export function BuildForm({ onBuild }: Props) {
             id="date"
             inputMode="numeric"
             placeholder="ДД.ММ.ГГГГ"
+            enterKeyHint="next"
             autocomplete="off"
             value={raw.date}
             aria-invalid={visible('date').length > 0}
-            onInput={(e) => update({ date: (e.target as HTMLInputElement).value })}
+            onInput={(e) => update({ date: maskDate((e.target as HTMLInputElement).value) })}
+            onFocus={selectAll}
+            maxLength={10}
             onBlur={() => touch('date')}
           />
         </label>
@@ -148,11 +152,13 @@ export function BuildForm({ onBuild }: Props) {
           <input
             id="time"
             inputMode="numeric"
-            placeholder="ЧЧ:ММ"
+            placeholder="ЧЧ:ММ, например 2335"
             autocomplete="off"
             value={raw.time}
             aria-invalid={visible('time').length > 0}
-            onInput={(e) => update({ time: (e.target as HTMLInputElement).value })}
+            onInput={(e) => update({ time: maskTime((e.target as HTMLInputElement).value) })}
+            onFocus={selectAll}
+            maxLength={8}
             onBlur={() => touch('time')}
           />
         </label>
@@ -278,6 +284,12 @@ function suggestOffset(raw: ChartInputRaw, tz: string | null): string {
 function ambiguousOptionsFor(raw: ChartInputRaw) {
   const r = validateChartInput({ ...raw, ambiguousChoice: undefined });
   return !r.ok ? (r.errors.find((e) => e.code === 'LOCAL_TIME_AMBIGUOUS')?.options ?? []) : [];
+}
+
+/** При фокусе поле выделяется целиком: новое значение набирается поверх старого. */
+function selectAll(e: FocusEvent) {
+  const el = e.target as HTMLInputElement;
+  requestAnimationFrame(() => el.select());
 }
 
 function FieldErrors({ errors }: { errors: FieldError[] }) {
