@@ -1,0 +1,20 @@
+{
+  "table": "planets",
+  "version": "1.0",
+  "description": "Названия, символы и средние суточные скорости (для отношения скорости, ТЗ 3.6).",
+  "rows": [
+    { "id": "sun", "name": "Солнце", "genitive": "Солнца", "symbol": "☉", "meanSpeed": 0.9856, "source": "средние движения — Лилли, «Христианская астрология», кн. I (главы о планетах)" },
+    { "id": "moon", "name": "Луна", "genitive": "Луны", "symbol": "☽", "meanSpeed": 13.1767, "source": "средние движения — Лилли, «Христианская астрология», кн. I (главы о планетах)" },
+    { "id": "mercury", "name": "Меркурий", "genitive": "Меркурия", "symbol": "☿", "meanSpeed": 0.9856, "source": "средние движения — Лилли, «Христианская астрология», кн. I (главы о планетах)" },
+    { "id": "venus", "name": "Венера", "genitive": "Венеры", "symbol": "♀", "meanSpeed": 0.9856, "source": "средние движения — Лилли, «Христианская астрология», кн. I (главы о планетах)" },
+    { "id": "mars", "name": "Марс", "genitive": "Марса", "symbol": "♂", "meanSpeed": 0.5242, "source": "средние движения — Лилли, «Христианская астрология», кн. I (главы о планетах)" },
+    { "id": "jupiter", "name": "Юпитер", "genitive": "Юпитера", "symbol": "♃", "meanSpeed": 0.0831, "source": "средние движения — Лилли, «Христианская астрология», кн. I (главы о планетах)" },
+    { "id": "saturn", "name": "Сатурн", "genitive": "Сатурна", "symbol": "♄", "meanSpeed": 0.0336, "source": "средние движения — Лилли, «Христианская астрология», кн. I (главы о планетах)" },
+    { "id": "uranus", "name": "Уран", "genitive": "Урана", "symbol": "♅", "meanSpeed": null, "source": "" },
+    { "id": "neptune", "name": "Нептун", "genitive": "Нептуна", "symbol": "♆", "meanSpeed": null, "source": "" },
+    { "id": "pluto", "name": "Плутон", "genitive": "Плутона", "symbol": "♇", "meanSpeed": null, "source": "" },
+    { "id": "north_node", "name": "Северный узел", "genitive": "Северного узла", "symbol": "☊", "meanSpeed": null, "source": "" },
+    { "id": "south_node", "name": "Южный узел", "genitive": "Южного узла", "symbol": "☋", "meanSpeed": null, "source": "" },
+    { "id": "fortune", "name": "Парс Фортуны", "genitive": "Парса Фортуны", "symbol": "⊗", "meanSpeed": null, "source": "Лилли, кн. I, гл. о Парсе Фортуны: Асц + Луна − Солнце" }
+  ]
+}

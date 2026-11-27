@@ -26,3 +26,27 @@ export function saveLastPlace(p: LastPlace): void {
     /* хранилище недоступно — пропускаем */
   }
 }
+
+const SETTINGS_KEY = 'horar.settings.v1';
+
+export function loadSettings<T extends object>(defaults: T): T {
+  try {
+    const raw = localStorage.getItem(SETTINGS_KEY);
+    if (!raw) return defaults;
+    const v = JSON.parse(raw);
+    // Берём только известные ключи того же типа.
+    const out = { ...defaults } as Record<string, unknown>;
+    for (const k of Object.keys(defaults)) if (typeof v?.[k] === typeof out[k]) out[k] = v[k];
+    return out as T;
+  } catch {
+    return defaults;
+  }
+}
+
+export function saveSettings(s: object): void {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(s));
+  } catch {
+    /* хранилище недоступно — пропускаем */
+  }
+}

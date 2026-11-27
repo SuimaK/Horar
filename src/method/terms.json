@@ -1,0 +1,43 @@
+{
+  "table": "terms",
+  "version": "1.0",
+  "description": "Термы: верхняя граница (градус знака, не включительно) и управитель. По умолчанию — птолемеевы в редакции Лилли, в настройках — египетские.",
+  "systems": {
+    "ptolemaic": {
+      "name": "птолемеевы (по Лилли)",
+      "source": "Лилли, «Христианская астрология», кн. I, таблица существенных достоинств (1647, с. 104)",
+      "rows": {
+        "aries": [[6, "jupiter"], [14, "venus"], [21, "mercury"], [26, "mars"], [30, "saturn"]],
+        "taurus": [[8, "venus"], [15, "mercury"], [22, "jupiter"], [26, "saturn"], [30, "mars"]],
+        "gemini": [[7, "mercury"], [14, "jupiter"], [21, "venus"], [25, "saturn"], [30, "mars"]],
+        "cancer": [[6, "mars"], [13, "jupiter"], [20, "mercury"], [27, "venus"], [30, "saturn"]],
+        "leo": [[6, "saturn"], [13, "mercury"], [19, "venus"], [25, "jupiter"], [30, "mars"]],
+        "virgo": [[7, "mercury"], [13, "venus"], [18, "jupiter"], [24, "saturn"], [30, "mars"]],
+        "libra": [[6, "saturn"], [11, "venus"], [19, "jupiter"], [24, "mercury"], [30, "mars"]],
+        "scorpio": [[6, "mars"], [14, "jupiter"], [21, "venus"], [27, "mercury"], [30, "saturn"]],
+        "sagittarius": [[8, "jupiter"], [14, "venus"], [19, "mercury"], [25, "saturn"], [30, "mars"]],
+        "capricorn": [[6, "venus"], [12, "mercury"], [19, "jupiter"], [25, "mars"], [30, "saturn"]],
+        "aquarius": [[6, "saturn"], [12, "mercury"], [20, "venus"], [25, "jupiter"], [30, "mars"]],
+        "pisces": [[8, "venus"], [14, "jupiter"], [20, "mercury"], [26, "mars"], [30, "saturn"]]
+      }
+    },
+    "egyptian": {
+      "name": "египетские",
+      "source": "Птолемей, «Тетрабиблос», кн. I, гл. 20 (21)",
+      "rows": {
+        "aries": [[6, "jupiter"], [12, "venus"], [20, "mercury"], [25, "mars"], [30, "saturn"]],
+        "taurus": [[8, "venus"], [14, "mercury"], [22, "jupiter"], [27, "saturn"], [30, "mars"]],
+        "gemini": [[6, "mercury"], [12, "jupiter"], [17, "venus"], [24, "mars"], [30, "saturn"]],
+        "cancer": [[7, "mars"], [13, "venus"], [19, "mercury"], [26, "jupiter"], [30, "saturn"]],
+        "leo": [[6, "jupiter"], [11, "venus"], [18, "saturn"], [24, "mercury"], [30, "mars"]],
+        "virgo": [[7, "mercury"], [17, "venus"], [21, "jupiter"], [28, "mars"], [30, "saturn"]],
+        "libra": [[6, "saturn"], [14, "mercury"], [21, "jupiter"], [28, "venus"], [30, "mars"]],
+        "scorpio": [[7, "mars"], [11, "venus"], [19, "mercury"], [24, "jupiter"], [30, "saturn"]],
+        "sagittarius": [[12, "jupiter"], [17, "venus"], [21, "mercury"], [26, "saturn"], [30, "mars"]],
+        "capricorn": [[7, "mercury"], [14, "jupiter"], [22, "venus"], [26, "saturn"], [30, "mars"]],
+        "aquarius": [[7, "mercury"], [13, "venus"], [20, "jupiter"], [25, "mars"], [30, "saturn"]],
+        "pisces": [[12, "venus"], [16, "jupiter"], [19, "mercury"], [28, "mars"], [30, "saturn"]]
+      }
+    }
+  }
+}

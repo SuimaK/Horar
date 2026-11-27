@@ -1,12 +1,20 @@
 import { useState } from 'preact/hooks';
+import { DEFAULT_SETTINGS, type ChartSettings } from '../core/astro/chart';
 import type { ChartMoment } from '../core/input/chart-input';
-import { checkLine } from '../core/input/check-line';
 import { BuildForm } from './BuildForm';
+import { ChartView } from './ChartView';
+import { loadSettings, saveSettings } from './storage';
 
 export const DISCLAIMER = 'Описание геометрии карты по правилам традиционной астрологии. Не является прогнозом и рекомендацией.';
 
 export function App() {
   const [moment, setMoment] = useState<ChartMoment | null>(null);
+  const [settings, setSettings] = useState<ChartSettings>(() => loadSettings(DEFAULT_SETTINGS));
+
+  const changeSettings = (s: ChartSettings) => {
+    setSettings(s);
+    saveSettings(s);
+  };
 
   return (
     <div class="app">
@@ -15,16 +23,7 @@ export function App() {
         <p class="subtitle">Карта неба на момент и место</p>
       </header>
       <main>
-        {moment && (
-          <section class="chart-placeholder" aria-labelledby="chart-title">
-            <h2 id="chart-title">Карта</h2>
-            <p class="check-line">{checkLine(moment)}</p>
-            {moment.placeName && <p>{moment.placeName}</p>}
-            <p>Часовой пояс: {moment.timeZone ?? 'смещение задано вручную'}</p>
-            <p class="muted">Расчёт положений, домов и аспектов появится на следующем этапе разработки.</p>
-            <button type="button" class="secondary" onClick={() => setMoment(null)}>Изменить ввод</button>
-          </section>
-        )}
+        {moment && <ChartView moment={moment} settings={settings} onSettings={changeSettings} onEdit={() => setMoment(null)} />}
         <div hidden={moment !== null}>
           <BuildForm onBuild={setMoment} />
         </div>

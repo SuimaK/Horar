@@ -1,0 +1,20 @@
+{
+  "table": "faces",
+  "version": "1.0",
+  "description": "Фасы (деканы) по 10°, халдейский порядок начиная с Марса в 0° Овна.",
+  "source": "Лилли, «Христианская астрология», кн. I, с. 104",
+  "rows": {
+    "aries": ["mars", "sun", "venus"],
+    "taurus": ["mercury", "moon", "saturn"],
+    "gemini": ["jupiter", "mars", "sun"],
+    "cancer": ["venus", "mercury", "moon"],
+    "leo": ["saturn", "jupiter", "mars"],
+    "virgo": ["sun", "venus", "mercury"],
+    "libra": ["moon", "saturn", "jupiter"],
+    "scorpio": ["mars", "sun", "venus"],
+    "sagittarius": ["mercury", "moon", "saturn"],
+    "capricorn": ["jupiter", "mars", "sun"],
+    "aquarius": ["venus", "mercury", "moon"],
+    "pisces": ["saturn", "jupiter", "mars"]
+  }
+}
