@@ -1,21 +1,31 @@
 {
-  "name": "horary-browser",
-  "version": "2.5.0",
+  "name": "horar",
+  "version": "0.1.0",
   "private": true,
+  "description": "«Хорар» — карта неба на заданный момент и место и описание её строения",
   "type": "module",
+  "license": "UNLICENSED",
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
-    "build": "vite build && node scripts/postbuild.mjs",
+    "data": "node scripts/build-cities.mjs",
+    "predev": "npm run data",
     "dev": "vite --host 0.0.0.0",
+    "prebuild": "npm run data",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 0.0.0.0",
-    "generate:validators": "node scripts/generate-semantic-validators.mjs"
+    "pretest": "npm run data",
+    "test": "vitest run",
+    "typecheck": "npm run data && tsc --noEmit"
   },
   "dependencies": {
-    "@swisseph/browser": "1.3.1"
+    "@photostructure/tz-lookup": "11.8.0",
+    "preact": "10.29.8"
   },
   "devDependencies": {
-    "ajv": "^8.20.0",
-    "jsdom": "^31.0.0",
-    "vite": "6.3.5"
+    "@preact/preset-vite": "2.10.6",
+    "@types/node": "22.20.7",
+    "cities15000": "0.0.1",
+    "typescript": "5.9.3",
+    "vite": "6.4.6",
+    "vitest": "3.2.7"
   }
 }
